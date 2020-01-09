@@ -2,12 +2,12 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.PIDDartMechanism;
 
-public class ActuatorSubsystem extends Subsystem {
+public class ActuatorSubsystem extends SubsystemBase {
 
-  public TalonSRX dartTalon = new TalonSRX(6);
+  public TalonSRX dartTalon = new TalonSRX(4);
 
 
   private static final int pidIdx = 0;
@@ -30,11 +30,6 @@ public class ActuatorSubsystem extends Subsystem {
     dartTalon.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
     
 
-  }
-
-  @Override
-  public void initDefaultCommand() {
-        setDefaultCommand(new PIDDartMechanism(0)); // 0 original
   }
 
   public double getDartPosition() {

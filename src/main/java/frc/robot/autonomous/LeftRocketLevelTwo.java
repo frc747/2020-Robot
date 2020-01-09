@@ -1,14 +1,14 @@
 package frc.robot.autonomous;
 
 import frc.robot.Robot;
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.PIDDriveRotateCustom;
 import frc.robot.commands.PIDDriveInchesHoldHatch;
 
-public class LeftRocketLevelTwo extends CommandGroup {
+public class LeftRocketLevelTwo extends SequentialCommandGroup {
   
   @Override
-  protected void initialize() {
+  public void initialize() {
     Robot.autoSideLeft = true;
     Robot.autoSideRight = false;
     Robot.autoSideFaceCargoShip = false;
@@ -19,13 +19,15 @@ public class LeftRocketLevelTwo extends CommandGroup {
   }
 
   public LeftRocketLevelTwo() {
-    addSequential(new PIDDriveInchesHoldHatch(109.775, false), 4);
-    // addSequential(new PIDDriveInchesHoldHatch(93, false), 4);
-    addSequential(new PIDDriveRotateCustom(-45, false), 4);
+    addCommands(
+      new PIDDriveInchesHoldHatch(109.775, false).withTimeout(4),
+      //new PIDDriveInchesHoldHatch(93, false).withTimeout(4),
+      new PIDDriveRotateCustom(-45, false).withTimeout(4)
+    );
   }
 
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     Robot.operatorControl = true;
   }
 }

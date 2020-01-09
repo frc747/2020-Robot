@@ -1,37 +1,36 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  *
  */
-public class PauseCommand extends Command {
+public class PauseCommand extends CommandBase {
 
     public PauseCommand(double timeOutAmount) {
-    	setTimeout(timeOutAmount);
+    	withTimeout(timeOutAmount);
     	
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    @Override
+    public void initialize() {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    @Override
+    public void execute() {
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return isTimedOut();
+    @Override
+    public boolean isFinished() {
+        return false;//isTimedOut();
     }
 
     // Called once after isFinished returns true
-    protected void end() {
+    @Override
+    public void end(boolean interrupted) {
     	
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
     }
 }

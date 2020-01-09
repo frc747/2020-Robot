@@ -1,10 +1,10 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.Robot;
 
-public class TankDriveCommand extends Command {
+public class TankDriveCommand extends CommandBase {
 
   int timeoutMs = 10;
 
@@ -14,12 +14,12 @@ public class TankDriveCommand extends Command {
   private static final double MIN_PERCENT_VOLTAGE = 0.0;
 
   public TankDriveCommand() {
-    requires(Robot.DRIVE_SUBSYSTEM);
+    addRequirements(Robot.DRIVE_SUBSYSTEM);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
     Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
     Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
     Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
@@ -32,7 +32,7 @@ public class TankDriveCommand extends Command {
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     double left = -OI.leftStick.getRawAxis(1);
     double right = -OI.rightStick.getRawAxis(1);
 
@@ -50,18 +50,13 @@ public class TankDriveCommand extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
+  public void end(boolean interrupted) {
+    
   }
 }

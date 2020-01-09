@@ -1,10 +1,9 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
-import frc.robot.Robot;
 
-public class SwapPipelines extends Command {
+public class SwapPipelines extends CommandBase {
 
   public SwapPipelines() {
     // Use requires() here to declare subsystem dependencies
@@ -13,31 +12,24 @@ public class SwapPipelines extends Command {
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
     OI.table.getEntry("pipeline").setDouble(1.0);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
-    OI.table.getEntry("pipeline").setDouble(0.0);
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
+  public void end(boolean interrupted) {
     OI.table.getEntry("pipeline").setDouble(0.0);
   }
 }

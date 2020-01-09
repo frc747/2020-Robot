@@ -1,9 +1,9 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class PIDDriveRotateCustom extends Command {
+public class PIDDriveRotateCustom extends CommandBase {
 
   double p = 3, i = 0, dAcute = 2.7, dObtuse = 2.7, output;
 
@@ -16,7 +16,7 @@ public class PIDDriveRotateCustom extends Command {
   double errorSlope;
 
   public PIDDriveRotateCustom(double angle, boolean resetNavX) {
-    requires(Robot.DRIVE_SUBSYSTEM);
+    addRequirements(Robot.DRIVE_SUBSYSTEM);
     goal = angle;
     if (resetNavX) {
       Robot.resetPigeonAngle();
@@ -25,13 +25,13 @@ public class PIDDriveRotateCustom extends Command {
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
 
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     lastError = error;
 
     error = goal - Robot.getPigeonAngle();
@@ -54,7 +54,7 @@ public class PIDDriveRotateCustom extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     if(error < threshold && error > -threshold) {
       onTargetCount++;
     } else {
@@ -66,12 +66,7 @@ public class PIDDriveRotateCustom extends Command {
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
-  }
+  public void end(boolean interrupted) {
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
   }
 }

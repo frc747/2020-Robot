@@ -1,9 +1,9 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class RotationalLockMode extends Command {
+public class RotationalLockMode extends CommandBase {
 
   double p = 1, i = 0, dAcute = .2, dObtuse = .2, output ;
 
@@ -16,18 +16,18 @@ public class RotationalLockMode extends Command {
   double errorSlope;
 
   public RotationalLockMode() {
-    requires(Robot.DRIVE_SUBSYSTEM);
+    addRequirements(Robot.DRIVE_SUBSYSTEM);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
     Robot.resetPigeonAngle();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     lastError = error;
 
     error = goal - Robot.getPigeonAngle();
@@ -50,18 +50,13 @@ public class RotationalLockMode extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
-  }
+  public void end(boolean interrupted) {
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
   }
 }

@@ -2,7 +2,12 @@ package frc.robot.commands;
 
 import frc.robot.Robot;
 
-import edu.wpi.first.wpilibj.command.PIDCommand;
+import java.util.function.DoubleConsumer;
+import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpiutil.math.MathUtil;
 
 public class PIDDriveRotate extends PIDCommand {
 
@@ -23,9 +28,12 @@ public class PIDDriveRotate extends PIDCommand {
     
     private static final int timeoutMs = 10;
     
+    private static DoubleSupplier currentAngle = () -> {return Robot.getPigeonAngle();};
+    private static DoubleConsumer output = (x) -> {MathUtil.clamp(x, -MAX_PERCENT_VBUS, MAX_PERCENT_VBUS);};
+    
     //constructor supports Closest Equivalent
     public PIDDriveRotate(double degreesRotate, boolean closestEquivalent) {
-        super(0.03, 0.0, 0.05);
+        super(new PIDController(0.03, 0.0, 0.05), currentAngle, degreesRotate, output, Robot.DRIVE_SUBSYSTEM);
         
         if (closestEquivalent)  {
             if (degreesRotate > 0) {
@@ -37,21 +45,22 @@ public class PIDDriveRotate extends PIDCommand {
             this.angleToRotate = degreesRotate;
         }
 
-        requires(Robot.DRIVE_SUBSYSTEM);
+        addRequirements(Robot.DRIVE_SUBSYSTEM);
     }
 
     //Default constructor Exact Mode
     public PIDDriveRotate(double degreesRotate) {
 
-        super(0.03, 0.0, 0.05);
+        super(new PIDController(0.03, 0.0, 0.05), currentAngle, degreesRotate, output, Robot.DRIVE_SUBSYSTEM);
 
         this.angleToRotate = degreesRotate;
 
-        requires(Robot.DRIVE_SUBSYSTEM);
+        addRequirements(Robot.DRIVE_SUBSYSTEM);
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    @Override
+    public void initialize() {
         
         Robot.resetPigeonAngle();
         //Robot.resetNavXAngle();
@@ -67,22 +76,23 @@ public class PIDDriveRotate extends PIDCommand {
         
         onTargetCount = 0;
         
-        getPIDController().setInputRange(-200000, 200000);
-        getPIDController().setOutputRange(-MAX_PERCENT_VBUS, MAX_PERCENT_VBUS);
-        getPIDController().setAbsoluteTolerance(STOP_THRESHOLD_DEGREES); //the threshold that the PID Controller abides by to consider the value as "on target"
-        getPIDController().setContinuous(true); //will reset back to the minimum value after reaching the max value
-
-        
-        getPIDController().setSetpoint(angleToRotate);
+        getController().setTolerance(STOP_THRESHOLD_DEGREES); //the threshold that the PID Controller abides by to consider the value as "on target"
+        getController().enableContinuousInput(-200000, 200000);
+        getController().setSetpoint(angleToRotate);
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    @Override
+    public void execute() {
+        double output = getController().calculate(Robot.getPigeonAngle());
+        MathUtil.clamp(output, -MAX_PERCENT_VBUS, MAX_PERCENT_VBUS);
+        Robot.DRIVE_SUBSYSTEM.set(output, -output);
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        if (getPIDController().onTarget()) {
+    @Override
+    public boolean isFinished() {
+        if (getController().atSetpoint()) {
             onTargetCount++;
         } else {
             onTargetCount = 0;
@@ -92,22 +102,8 @@ public class PIDDriveRotate extends PIDCommand {
     }
 
     // Called once after isFinished returns true
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
-
     @Override
-    protected double returnPIDInput() {
-        return Robot.getRawPigeonAngle();
-        //return Robot.getNavXAngle();
-    }
+    public void end(boolean interrupted) {
 
-    @Override
-    protected void usePIDOutput(double output) {
-        Robot.DRIVE_SUBSYSTEM.set(output, -output);
     }
 }

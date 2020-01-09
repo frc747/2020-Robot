@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.ClimbDoNothing;
 
 import com.revrobotics.CANSparkMax;
@@ -8,18 +8,19 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-public class ClimbSubsystem extends Subsystem {
+public class ClimbSubsystem extends SubsystemBase {
   private static final int pidIdx = 0;
   private static final int timeoutMs = 10;
 
-  public TalonSRX latch = new TalonSRX(11);
+  public TalonSRX latch = new TalonSRX(5);
 
-  public CANSparkMax leftClimbPrimary = new CANSparkMax(3, MotorType.kBrushless);
-  public CANSparkMax leftClimbSecondary = new CANSparkMax(4, MotorType.kBrushless);
-  public CANSparkMax rightClimbPrimary = new CANSparkMax(7, MotorType.kBrushless);
+  public CANSparkMax leftClimbPrimary = new CANSparkMax(12, MotorType.kBrushless);
+  public CANSparkMax leftClimbSecondary = new CANSparkMax(9, MotorType.kBrushless);
+  public CANSparkMax rightClimbPrimary = new CANSparkMax(3, MotorType.kBrushless);
   public CANSparkMax rightClimbSecondary = new CANSparkMax(8, MotorType.kBrushless);
 
   public ClimbSubsystem() {
+    super();
 
     leftClimbPrimary.restoreFactoryDefaults();
     leftClimbPrimary.setOpenLoopRampRate(0.0);
@@ -45,11 +46,6 @@ public class ClimbSubsystem extends Subsystem {
     latch.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, pidIdx, timeoutMs);
     latch.setInverted(true);
     latch.setSensorPhase(true);
-  }
-  
-  @Override
-  public void initDefaultCommand() {
-    setDefaultCommand(new ClimbDoNothing());
   }
 
   public void setClimb(double speed) {

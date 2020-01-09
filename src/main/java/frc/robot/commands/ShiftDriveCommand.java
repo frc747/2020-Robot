@@ -2,12 +2,12 @@ package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ShiftDriveCommand extends Command {
+public class ShiftDriveCommand extends CommandBase {
         
     private double driveTicks = 830;
     
@@ -38,11 +38,11 @@ public class ShiftDriveCommand extends Command {
     // private double shifterValue;
 
     public ShiftDriveCommand() {
-        requires(Robot.DRIVE_SUBSYSTEM);
+        addRequirements(Robot.DRIVE_SUBSYSTEM);
     }
     
-        
-    protected void initialize() {
+    @Override
+    public void initialize() {
         SmartDashboard.putBoolean("Currently Vision Tracking", false);
         
         Robot.DRIVE_SUBSYSTEM.tracking = false;
@@ -74,7 +74,8 @@ public class ShiftDriveCommand extends Command {
         Robot.DRIVE_SUBSYSTEM.gearShifter.config_kF(pidIdx, driveShiftF, timeoutMs);
     }
     
-    protected void execute() {
+    @Override
+    public void execute() {
         // manual application of a sloppy "deadband"
 
         // leftValue = -OI.leftStick.getRawAxis(1); // before modifying raw of axis 1: forward = negative, backward = positive
@@ -163,16 +164,13 @@ public class ShiftDriveCommand extends Command {
     }
     
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
          return false;
     }
     
-    protected void end() {
+    @Override
+    public void end(boolean interrupted) {
         Robot.DRIVE_SUBSYSTEM.gearShifter.set(ControlMode.PercentOutput, 0);
-    }
-    
-    protected void interrupted() {
-        end();
     }
 
     private double applyDeadband(double value, double deadband) {

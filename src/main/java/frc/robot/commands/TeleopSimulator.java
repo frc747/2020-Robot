@@ -2,11 +2,11 @@ package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
-public class TeleopSimulator extends Command {
+public class TeleopSimulator extends CommandBase {
         
     private double driveTicksGear = 830;
     private double driveTicksTongue = 850;
@@ -70,8 +70,8 @@ public class TeleopSimulator extends Command {
 
     }
     
-        
-    protected void initialize() {
+    @Override
+    public void initialize() {
         SmartDashboard.putBoolean("Ready to Drive", true);
         //finished = false;
         Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
@@ -170,7 +170,8 @@ public class TeleopSimulator extends Command {
         firstVisionCheckDone = false;
     }
     
-    protected void execute() {
+    @Override
+    public void execute() {
         leftValue = -OI.leftStick.getRawAxis(1);
         rightValue = -OI.rightStick.getRawAxis(1);
 
@@ -318,19 +319,16 @@ public class TeleopSimulator extends Command {
     
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return OI.operatorController.getRawButton(6);
     }
     
-    protected void end() {
+    @Override
+    public void end(boolean interrupted) {
         //finished = false;
         Robot.DRIVE_SUBSYSTEM.gearShifter.set(ControlMode.PercentOutput, 0);
         Robot.ACTUATOR_SUBSYSTEM.dartTalon.set(ControlMode.PercentOutput, 0);
         Robot.HATCH_SUBSYSTEM.hatchTalon.set(ControlMode.PercentOutput, 0);
-    }
-    
-    protected void interrupted() {
-        end();
     }
 
     public void updateTrackValues() {

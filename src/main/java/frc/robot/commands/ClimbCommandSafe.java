@@ -2,11 +2,11 @@ package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.Robot;
 
-public class ClimbCommandSafe extends Command {
+public class ClimbCommandSafe extends CommandBase {
         
     private double driveTicks = 8192; // FIND VALUE FOR PIN DISENGAGED
     
@@ -31,45 +31,46 @@ public class ClimbCommandSafe extends Command {
     private double specificDistanceF = 1.5;
 
     public ClimbCommandSafe() {
-        requires(Robot.climb);
+        addRequirements(Robot.CLIMB_SUBSYSTEM);
     }
     
-        
-    protected void initialize() {
+    @Override 
+    public void initialize() {
         OI.latchInPosition = false;
-        Robot.climb.latch.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-        Robot.climb.latch.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-        Robot.climb.latch.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-        Robot.climb.latch.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
+        Robot.CLIMB_SUBSYSTEM.latch.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
+        Robot.CLIMB_SUBSYSTEM.latch.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
+        Robot.CLIMB_SUBSYSTEM.latch.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
+        Robot.CLIMB_SUBSYSTEM.latch.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
         
-        Robot.climb.latch.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
+        Robot.CLIMB_SUBSYSTEM.latch.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
              
-        Robot.climb.latch.configMotionCruiseVelocity(1500, 10);
-        Robot.climb.latch.configMotionAcceleration(2000, 10);
+        Robot.CLIMB_SUBSYSTEM.latch.configMotionCruiseVelocity(1500, 10);
+        Robot.CLIMB_SUBSYSTEM.latch.configMotionAcceleration(2000, 10);
 
-        Robot.climb.latch.config_kP(pidIdx, specificDistanceP, timeoutMs);
+        Robot.CLIMB_SUBSYSTEM.latch.config_kP(pidIdx, specificDistanceP, timeoutMs);
         
-        Robot.climb.latch.config_kI(pidIdx, specificDistanceI, timeoutMs);
+        Robot.CLIMB_SUBSYSTEM.latch.config_kI(pidIdx, specificDistanceI, timeoutMs);
         
-        Robot.climb.latch.config_kD(pidIdx, specificDistanceD, timeoutMs);
+        Robot.CLIMB_SUBSYSTEM.latch.config_kD(pidIdx, specificDistanceD, timeoutMs);
         
-        Robot.climb.latch.config_kF(pidIdx, specificDistanceF, timeoutMs);
+        Robot.CLIMB_SUBSYSTEM.latch.config_kF(pidIdx, specificDistanceF, timeoutMs);
     }
     
-    protected void execute() {
+    @Override
+    public void execute() {
 
         if (OI.operatorController.getRawButton(RIGHT_BUMPER) && !OI.latchInPosition) {
-            if (Robot.climb.latch.getSelectedSensorPosition() > driveTicks - 200 && Robot.climb.latch.getSelectedSensorPosition() < driveTicks + 1000) {
-                Robot.climb.latch.set(ControlMode.PercentOutput, 0);
+            if (Robot.CLIMB_SUBSYSTEM.latch.getSelectedSensorPosition() > driveTicks - 200 && Robot.CLIMB_SUBSYSTEM.latch.getSelectedSensorPosition() < driveTicks + 1000) {
+                Robot.CLIMB_SUBSYSTEM.latch.set(ControlMode.PercentOutput, 0);
 
                 OI.latchInPosition = true;
             } else {
-                Robot.climb.latch.config_kP(pidIdx, specificDistanceP, timeoutMs);
-                Robot.climb.latch.config_kI(pidIdx, specificDistanceI, timeoutMs);
-                Robot.climb.latch.config_kD(pidIdx, specificDistanceD, timeoutMs);
-                Robot.climb.latch.config_kF(pidIdx, specificDistanceF, timeoutMs);
+                Robot.CLIMB_SUBSYSTEM.latch.config_kP(pidIdx, specificDistanceP, timeoutMs);
+                Robot.CLIMB_SUBSYSTEM.latch.config_kI(pidIdx, specificDistanceI, timeoutMs);
+                Robot.CLIMB_SUBSYSTEM.latch.config_kD(pidIdx, specificDistanceD, timeoutMs);
+                Robot.CLIMB_SUBSYSTEM.latch.config_kF(pidIdx, specificDistanceF, timeoutMs);
 
-                Robot.climb.latch.set(ControlMode.MotionMagic, driveTicks);
+                Robot.CLIMB_SUBSYSTEM.latch.set(ControlMode.MotionMagic, driveTicks);
             }
         }
 
@@ -80,22 +81,19 @@ public class ClimbCommandSafe extends Command {
                 winchValue = 0.4;
             }
 
-            Robot.climb.setClimb(winchValue);
+            Robot.CLIMB_SUBSYSTEM.setClimb(winchValue);
         } else {
-            Robot.climb.setClimb(0.0);
+            Robot.CLIMB_SUBSYSTEM.setClimb(0.0);
         }
     }
     
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
          return false;
     }
     
-    protected void end() {
-        Robot.climb.latch.set(ControlMode.PercentOutput, 0);
-    }
-    
-    protected void interrupted() {
-        end();
+    @Override
+    public void end(boolean interrupted) {
+        Robot.CLIMB_SUBSYSTEM.latch.set(ControlMode.PercentOutput, 0);
     }
 }

@@ -1,12 +1,12 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.PIDHatchMechanism;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-public class HatchSubsystem extends Subsystem {
+public class HatchSubsystem extends SubsystemBase {
 
-  public TalonSRX hatchTalon = new TalonSRX(5);
+  public TalonSRX hatchTalon = new TalonSRX(11);
 
 
   private static final int pidIdx = 0;
@@ -30,10 +30,5 @@ public class HatchSubsystem extends Subsystem {
     hatchTalon.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
     hatchTalon.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
     hatchTalon.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
-  }
-
-  @Override
-  public void initDefaultCommand() {
-    setDefaultCommand(new PIDHatchMechanism(-50, false));
   }
 }

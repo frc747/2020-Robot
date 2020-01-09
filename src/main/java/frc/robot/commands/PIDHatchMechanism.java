@@ -2,11 +2,11 @@ package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.Robot;
 
-public class PIDHatchMechanism extends Command {
+public class PIDHatchMechanism extends CommandBase {
         
     private double driveTicks;
     
@@ -28,12 +28,12 @@ public class PIDHatchMechanism extends Command {
     private double driveHatchF = 0;
     
     public PIDHatchMechanism(double ticks, boolean reverse) {
-        requires(Robot.HATCH_SUBSYSTEM);    
+        addRequirements(Robot.HATCH_SUBSYSTEM);    
         this.driveTicks = ticks;
     }
     
-        
-    protected void initialize() {
+    @Override
+    public void initialize() {
         Robot.HATCH_SUBSYSTEM.hatchTalon.set(ControlMode.MotionMagic, 0);
         
         Robot.HATCH_SUBSYSTEM.hatchTalon.config_kP(pidIdx, driveHatchP, timeoutMs);
@@ -58,7 +58,8 @@ public class PIDHatchMechanism extends Command {
         Robot.HATCH_SUBSYSTEM.hatchTalon.set(ControlMode.MotionMagic, driveTicks);
     }
     
-    protected void execute() {
+    @Override
+    public void execute() {
         if (Robot.HATCH_SUBSYSTEM.hatchTalon.getSelectedSensorPosition() > 500 || (!Robot.operatorControl && Robot.isAutonomous)) {
             OI.tongueIsOut = true;
         } else {
@@ -67,16 +68,13 @@ public class PIDHatchMechanism extends Command {
     }
     
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
          return false;
     }
     
-    protected void end() {
+    @Override
+    public void end(boolean interrupted) {
         Robot.HATCH_SUBSYSTEM.hatchTalon.set(ControlMode.PercentOutput, 0);
-    }
-    
-    protected void interrupted() {
-        end();
     }
 
 }

@@ -115,7 +115,7 @@ public class Autonomous{
                 OI.table.getEntry("pipeline").setDouble(0.0);
                 Robot.operatorControl = true;*/
             case AUTOMODE_BROWNIES:
-                new First().start(); // girls name here
+                new First().schedule(); // girls name here
                 break; 
             default:
                 break;

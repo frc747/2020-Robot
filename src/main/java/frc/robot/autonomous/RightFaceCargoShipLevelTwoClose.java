@@ -8,13 +8,13 @@
 package frc.robot.autonomous;
 
 import frc.robot.Robot;
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.*;
 
-public class RightFaceCargoShipLevelTwoClose extends CommandGroup {
+public class RightFaceCargoShipLevelTwoClose extends SequentialCommandGroup {
 
   @Override
-  protected void initialize() {
+  public void initialize() {
     Robot.autoSideLeft = false;
     Robot.autoSideRight = true;
     Robot.autoSideFaceCargoShip = true;
@@ -28,15 +28,17 @@ public class RightFaceCargoShipLevelTwoClose extends CommandGroup {
   public RightFaceCargoShipLevelTwoClose() {
     // addSequential(new PauseCommand(4));
     //uncomment before MIDKNIGHT
-    addSequential(new PIDDriveInchesHoldHatch(109.775, false), 4);
-    addSequential(new PIDDriveRotateCustom(21.5, false), 4);
-    addSequential(new PIDDriveInches(140.5, false), 4);
-    addSequential(new PIDDriveRotateCustom(-90, false), 4);
+    addCommands(
+      new PIDDriveInchesHoldHatch(109.775, false).withTimeout(4),
+      new PIDDriveRotateCustom(21.5, false).withTimeout(4),
+      new PIDDriveInches(140.5, false).withTimeout(4),
+      new PIDDriveRotateCustom(-90, false).withTimeout(4)
+    );
     // driver takes over now
   }
 
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     Robot.operatorControl = true;
   }
 }

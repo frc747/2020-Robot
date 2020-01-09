@@ -1,11 +1,11 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.Robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-public class PIDDriveInchesHoldHatch extends Command {
+public class PIDDriveInchesHoldHatch extends CommandBase {
         
     private double driveTicks;
     private double driveInches;
@@ -50,7 +50,7 @@ public class PIDDriveInchesHoldHatch extends Command {
     private double driveTongueF = 0;
     
     public PIDDriveInchesHoldHatch(double inches, boolean reverse) {
-        requires(Robot.DRIVE_SUBSYSTEM);
+        addRequirements(Robot.DRIVE_SUBSYSTEM);
     
         if (reverse) {
             this.driveTicks = -Robot.DRIVE_SUBSYSTEM.applyGearRatio(Robot.DRIVE_SUBSYSTEM.convertInchesToRevs(inches * ENCODER_TICKS_PER_REVOLUTION));//input now has to be ticks instead of revolutions which is why we multiply by 4096
@@ -61,8 +61,8 @@ public class PIDDriveInchesHoldHatch extends Command {
         this.driveInches = inches;
     }
     
-        
-    protected void initialize() {
+    @Override
+    public void initialize() {
         
         onTargetCount = 0;
         
@@ -131,11 +131,12 @@ public class PIDDriveInchesHoldHatch extends Command {
         Robot.HATCH_SUBSYSTEM.hatchTalon.set(ControlMode.MotionMagic, driveTicksTongue);
     }
     
-    protected void execute() {
+    @Override
+    public void execute() {
     }
     
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         double leftPosition = Robot.DRIVE_SUBSYSTEM.getLeftPosition();
         double rightPosition = Robot.DRIVE_SUBSYSTEM.getRightPosition();
         
@@ -149,16 +150,13 @@ public class PIDDriveInchesHoldHatch extends Command {
         return (onTargetCount > ON_TARGET_MINIMUM_COUNT);
     }
     
-    protected void end() {
+    @Override
+    public void end(boolean interrupted) {
         OI.distance = Math.abs(Robot.DRIVE_SUBSYSTEM.averageInchesDriven());
         Robot.DRIVE_SUBSYSTEM.enableVBusControl();
         Robot.DRIVE_SUBSYSTEM.resetBothEncoders();
         Robot.DRIVE_SUBSYSTEM.stop();
         Robot.HATCH_SUBSYSTEM.hatchTalon.set(ControlMode.MotionMagic, -50);
-    }
-    
-    protected void interrupted() {
-        end();
     }
 
 }

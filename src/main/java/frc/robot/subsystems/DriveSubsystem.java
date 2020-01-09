@@ -7,23 +7,23 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class DriveSubsystem extends Subsystem {
+public class DriveSubsystem extends SubsystemBase {
 
-    public TalonSRX leftDrivePrimary = new TalonSRX(1); // 10
+    public TalonSRX leftDrivePrimary = new TalonSRX(13); // 10
     
-    public TalonSRX leftDriveMid = new TalonSRX(13);
+    public TalonSRX leftDriveMid = new TalonSRX(14);
 
-	public TalonSRX leftDriveBack = new TalonSRX(2); // 9
+	public TalonSRX leftDriveBack = new TalonSRX(15); // 9
 
-    public TalonSRX rightDrivePrimary = new TalonSRX(10); // 1
+    public TalonSRX rightDrivePrimary = new TalonSRX(2); // 1
     
-    public TalonSRX rightDriveMid = new TalonSRX(14);
+    public TalonSRX rightDriveMid = new TalonSRX(1);
 
-    public TalonSRX rightDriveBack = new TalonSRX(9); // 2
+    public TalonSRX rightDriveBack = new TalonSRX(0); // 2
 
-    public TalonSRX gearShifter = new TalonSRX(12);
+    public TalonSRX gearShifter = new TalonSRX(6);
 
     private static final int pidIdx = 0;
     private static final int timeoutMs = 10;
@@ -43,7 +43,9 @@ public class DriveSubsystem extends Subsystem {
 	int loops = 0;
 
     public DriveSubsystem() {
+
         super();
+
         gearShifter.setInverted(false);
         gearShifter.setSensorPhase(true);
 
@@ -104,12 +106,6 @@ public class DriveSubsystem extends Subsystem {
         gearShifter.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
         gearShifter.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
 
-    }
-
-    @Override
-    public void initDefaultCommand() {
-        setDefaultCommand(new ShiftDriveCommand());
-        // setDefaultCommand(new TankDriveCommand());
     }
 
     public void updateSpeeds() {

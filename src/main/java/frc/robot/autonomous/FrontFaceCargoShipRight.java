@@ -1,11 +1,11 @@
 package frc.robot.autonomous;
 
 import frc.robot.Robot;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-public class FrontFaceCargoShipRight extends CommandGroup {
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+public class FrontFaceCargoShipRight extends SequentialCommandGroup {
 
   @Override
-  protected void initialize() {
+  public void initialize() {
     Robot.autoSideLeft = false;
     Robot.autoSideRight = true;
     Robot.autoSideFaceCargoShip = false;
@@ -19,7 +19,7 @@ public class FrontFaceCargoShipRight extends CommandGroup {
   }
 
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     Robot.operatorControl = true;
   }
 }

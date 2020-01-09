@@ -7,11 +7,11 @@
 
 package frc.robot.brownies;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.PIDDriveInches;
 import frc.robot.commands.PIDDriveRotate;
 
-public class Ninth extends CommandGroup {
+public class Ninth extends SequentialCommandGroup {
   /**
    * Add your docs here.
    */
@@ -39,36 +39,40 @@ public class Ninth extends CommandGroup {
   }
 
   private void moveForward() {
-    addSequential(new PIDDriveInches(24, false));
+    addCommands(new PIDDriveInches(24, false));
   }
 
   private void moveBackward() {
-    addSequential(new PIDDriveInches(24, true));
+    addCommands(new PIDDriveInches(24, true));
   }
 
   private void rotateLeft() {
-    addSequential(new PIDDriveRotate(-90));
+    addCommands(new PIDDriveRotate(-90));
   }
 
   private void rotateRight() {
-    addSequential(new PIDDriveRotate(90));
+    addCommands(new PIDDriveRotate(90));
   }
 
   private void reverseDirectionsLeft() {
-    addSequential(new PIDDriveRotate(-180));
+    addCommands(new PIDDriveRotate(-180));
   }
 
   private void reverseDirectionRight() {
-    addSequential(new PIDDriveRotate(180));
+    addCommands(new PIDDriveRotate(180));
   }
 
   private void Turn360Left() {
-    addSequential(new PIDDriveRotate(-180));
-    addSequential(new PIDDriveRotate(180));
+    addCommands(
+      new PIDDriveRotate(-180),
+      new PIDDriveRotate(180)
+    );
   }
 
   private void Turn360Right() {
-    addSequential(new PIDDriveRotate(180));
-    addSequential(new PIDDriveRotate(-180));
+    addCommands(
+      new PIDDriveRotate(180),
+      new PIDDriveRotate(-180)
+    );
   }
 }

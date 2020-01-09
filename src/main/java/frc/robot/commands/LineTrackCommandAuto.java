@@ -1,10 +1,10 @@
 // package frc.robot.commands;
 
-// import edu.wpi.first.wpilibj.command.Command;
+// import edu.wpi.first.wpilibj2.command.CommandBase;
 // import frc.robot.Robot;
 // import frc.robot.OI;
 
-// public class LineTrackCommandAuto extends Command {
+// public class LineTrackCommandAuto extends CommandBase {
 
 // private int timeoutMs = 10;
 // private double threshold = 0;
@@ -19,14 +19,14 @@
 // private static final double MIN_PERCENT_VOLTAGE = 0.0;
 
 //   public LineTrackCommandAuto(double seconds) {
-//     requires(Robot.DRIVE_SUBSYSTEM);
+//     addRequirements(Robot.DRIVE_SUBSYSTEM);
 //     this.seconds = seconds;
 //   }
 
 //   // Called just before this Command runs the first time
 //   @Override
-//   protected void initialize() {
-//     setTimeout(seconds);
+//   public void initialize() {
+//     withTimeout(seconds);
 //     rampDown = 1;
 
 //     if(Robot.y == 0) {
@@ -57,7 +57,7 @@
 
 //   // Called repeatedly when this Command is scheduled to run
 //   @Override
-//   protected void execute() {
+//   public void execute() {
 //     double adjustMagnitiude;
 //     if(speed < .45) {
 //       adjustMagnitiude = 5;
@@ -92,21 +92,14 @@
 
 //   // Make this return true when this Command no longer needs to run execute()
 //   @Override
-//   protected boolean isFinished() {
+//   public boolean isFinished() {
 //     return (Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.getSelectedSensorVelocity() < threshold && Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.getSelectedSensorVelocity() < threshold) || (Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.getSelectedSensorVelocity() > -threshold && Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.getSelectedSensorVelocity() > -threshold);
 //   }
 
 //   // Called once after isFinished returns true
 //   @Override
-//   protected void end() {
+//   public void end(boolean interrupted) {
 //     Robot.table.getEntry("pipeline").setDouble(0.0);
 //     Robot.DRIVE_SUBSYSTEM.stop();
-//   }
-
-//   // Called when another command which requires one or more of the same
-//   // subsystems is scheduled to run
-//   @Override
-//   protected void interrupted() {
-//     Robot.table.getEntry("pipeline").setDouble(0.0);
 //   }
 // }
