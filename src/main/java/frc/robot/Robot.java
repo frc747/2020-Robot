@@ -10,14 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.HatchSubsystem;
-import frc.robot.commands.ClimbDoNothing;
-import frc.robot.commands.PIDDartMechanism;
-import frc.robot.commands.PIDHatchMechanism;
 import frc.robot.commands.ShiftDriveCommand;
-import frc.robot.subsystems.ActuatorSubsystem;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
@@ -38,9 +32,6 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 public class Robot extends TimedRobot {
   public static boolean climbBrakeMode;
   public static DriveSubsystem DRIVE_SUBSYSTEM = new DriveSubsystem();
-  public static HatchSubsystem HATCH_SUBSYSTEM = new HatchSubsystem();
-  public static ActuatorSubsystem ACTUATOR_SUBSYSTEM = new ActuatorSubsystem();
-  public static ClimbSubsystem CLIMB_SUBSYSTEM = new ClimbSubsystem();
   public static OI m_oi;
 
   public static boolean latchInPos = false;
@@ -137,9 +128,6 @@ public class Robot extends TimedRobot {
     ucamera.setResolution(180, 240);
 
     DRIVE_SUBSYSTEM.setDefaultCommand(new ShiftDriveCommand());
-    CLIMB_SUBSYSTEM.setDefaultCommand(new ClimbDoNothing());
-    HATCH_SUBSYSTEM.setDefaultCommand(new PIDHatchMechanism(-50, false));
-    ACTUATOR_SUBSYSTEM.setDefaultCommand(new PIDDartMechanism(0)); // 0 original
 
     // ucamera.setResolution(160, 120);
     // ucamera.setFPS(10);
@@ -179,7 +167,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    CLIMB_SUBSYSTEM.changeClimbBrakeMode(true);
     DRIVE_SUBSYSTEM.changeDriveBrakeMode(false);
     operatorControl = false;
     isAutonomous = false;
@@ -205,7 +192,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     resetPigeonAngle();
-    CLIMB_SUBSYSTEM.changeClimbBrakeMode(true);
     DRIVE_SUBSYSTEM.changeDriveBrakeMode(true);
     // this is now done within the autonomous command groups (within initialize)
     // operatorControl = false;
@@ -249,7 +235,6 @@ public class Robot extends TimedRobot {
     OI.table.getEntry("pipeline").setDouble(0.0);
     resetPigeonAngle();
     //resetNavXAngle();
-    CLIMB_SUBSYSTEM.changeClimbBrakeMode(true);
     DRIVE_SUBSYSTEM.changeDriveBrakeMode(true);
     operatorControl = true;
     isAutonomous = false;

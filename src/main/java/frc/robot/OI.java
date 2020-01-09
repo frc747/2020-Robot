@@ -51,8 +51,6 @@ public class OI {
   public OI() {
     
     SELECT_BUTTON.whileHeld(new VisionTrackCommand());
-    Y_BUTTON.whileHeld(new PIDDartMechanism(-221740));
-    B_BUTTON.whileHeld(new PIDHatchMechanism(935, false)); //1020 //850
     //X_BUTTON.toggleWhenPressed(new ResetDartEncoder());
     //B_BUTTON.toggleWhenPressed(new ResetHatchEncoderCommand());
 
