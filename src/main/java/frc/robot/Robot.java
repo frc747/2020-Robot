@@ -10,18 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.HatchSubsystem;
-import frc.robot.commands.ClimbDoNothing;
-import frc.robot.commands.PIDDartMechanism;
-import frc.robot.commands.PIDHatchMechanism;
 import frc.robot.commands.ShiftDriveCommand;
-import frc.robot.subsystems.ActuatorSubsystem;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -38,9 +30,6 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 public class Robot extends TimedRobot {
   public static boolean climbBrakeMode;
   public static DriveSubsystem DRIVE_SUBSYSTEM = new DriveSubsystem();
-  public static HatchSubsystem HATCH_SUBSYSTEM = new HatchSubsystem();
-  public static ActuatorSubsystem ACTUATOR_SUBSYSTEM = new ActuatorSubsystem();
-  public static ClimbSubsystem CLIMB_SUBSYSTEM = new ClimbSubsystem();
   public static OI m_oi;
 
   public static boolean latchInPos = false;
@@ -56,11 +45,6 @@ public class Robot extends TimedRobot {
   public static boolean autoRocket = false;
 
   public static String side = "";
-
-  public static NetworkTable table;
-  public static double x;
-  public static double y;
-  public static double area;
  
 	private Command autonomousCommand;
   public Autonomous autonomous;
@@ -69,19 +53,12 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
-
-  //public static final AHRS NAV_X = new AHRS (SPI.Port.kMXP);
   
   public static final PigeonIMU PIGEON = new PigeonIMU(0);
 
   private static double[] ypr = new double[3];
 
   public static Preferences prefs;
-
-  /*public static double getNavXAngle() {
-    return NAV_X.getYaw();
-    
-  }*/
 
   public static double getPigeonAngle() {
     PIGEON.getYawPitchRoll(ypr);
@@ -97,10 +74,6 @@ public class Robot extends TimedRobot {
     PIGEON.getYawPitchRoll(ypr); 
     return -ypr[0];     //returns exact pigeon angle without range limiting
   }
-  
-  /*public static double getNavXAngleRadians() {
-    return Math.toRadians(getNavXAngle());
-  }*/
 
   public static double getPigeonAngleRadians() {
     return Math.toRadians(getPigeonAngle());
@@ -109,16 +82,6 @@ public class Robot extends TimedRobot {
   public static double getRawPigeonAngleRadians() {
     return Math.toRadians(getRawPigeonAngle());
   }
-  
-  /*public static void resetNavXAngle() {
-    NAV_X.zeroYaw();
-    try {
-          Thread.sleep(100);
-      } catch (InterruptedException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-      }
-  }*/
 
   public static void resetPigeonAngle() {
     PIGEON.setYaw(0);
@@ -137,23 +100,12 @@ public class Robot extends TimedRobot {
     ucamera.setResolution(180, 240);
 
     DRIVE_SUBSYSTEM.setDefaultCommand(new ShiftDriveCommand());
-    CLIMB_SUBSYSTEM.setDefaultCommand(new ClimbDoNothing());
-    HATCH_SUBSYSTEM.setDefaultCommand(new PIDHatchMechanism(-50, false));
-    ACTUATOR_SUBSYSTEM.setDefaultCommand(new PIDDartMechanism(0)); // 0 original
-
-    // ucamera.setResolution(160, 120);
-    // ucamera.setFPS(10);
-    //might want to lower resolution or fps for the usbcamera to compensate for the limelight
-    // ucamera.setResolution(256, 144);
-    // ucamera.setFPS(15);
     
     this.autonomous = new Autonomous();
 
     if(m_oi == null) {
       m_oi = new OI();
     }
-    //m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
-    // chooser.addOption("My Auto", new MyAutoCommand());
 
   }
 
@@ -167,9 +119,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    if (!isDisabled()) {
-      updateLimelightTracking();
-    }
   }
 
   /**
@@ -179,7 +128,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    CLIMB_SUBSYSTEM.changeClimbBrakeMode(true);
     DRIVE_SUBSYSTEM.changeDriveBrakeMode(false);
     operatorControl = false;
     isAutonomous = false;
@@ -205,7 +153,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     resetPigeonAngle();
-    CLIMB_SUBSYSTEM.changeClimbBrakeMode(true);
     DRIVE_SUBSYSTEM.changeDriveBrakeMode(true);
     // this is now done within the autonomous command groups (within initialize)
     // operatorControl = false;
@@ -248,8 +195,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     OI.table.getEntry("pipeline").setDouble(0.0);
     resetPigeonAngle();
-    //resetNavXAngle();
-    CLIMB_SUBSYSTEM.changeClimbBrakeMode(true);
     DRIVE_SUBSYSTEM.changeDriveBrakeMode(true);
     operatorControl = true;
     isAutonomous = false;
@@ -277,18 +222,5 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-  }
-
-  private void updateLimelightTracking() {
-    table = NetworkTableInstance.getDefault().getTable("limelight");
-    x = table.getEntry("tx").getDouble(0);
-    y = table.getEntry("ty").getDouble(0);
-    area = table.getEntry("ta").getDouble(0);
-
-    x = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-    y = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-    area = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
-
-
   }
 }

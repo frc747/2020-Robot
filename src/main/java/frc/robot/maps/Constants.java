@@ -16,7 +16,7 @@ public class Constants {
         private Measurements(){
         }
         
-        public static final double ROBOT_LENGTH = 38.5;
-        public static final double ROBOT_WIDTH = 34;
+        public static final double ROBOT_LENGTH = 38.5; // CHANGE THESE
+        public static final double ROBOT_WIDTH = 34; // CHANGE THESE
         }
 }

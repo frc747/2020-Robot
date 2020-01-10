@@ -49,20 +49,6 @@ public class OI {
 
   @SuppressWarnings("resource")
   public OI() {
-    
-    SELECT_BUTTON.whileHeld(new VisionTrackCommand());
-    Y_BUTTON.whileHeld(new PIDDartMechanism(-221740));
-    B_BUTTON.whileHeld(new PIDHatchMechanism(935, false)); //1020 //850
-    //X_BUTTON.toggleWhenPressed(new ResetDartEncoder());
-    //B_BUTTON.toggleWhenPressed(new ResetHatchEncoderCommand());
-
-    // LEFT_STICK_BUTTON_SEVEN.whenPressed(new BackoffRotateReloadAdaptive());
-    
-    SmartDashboard.putString("During Auto:", "Green - Auto is running; Red - Auto is finished");
-    SmartDashboard.putString("After Auto:", "Green - Tongue is out; Red - Tongue is in");
-
-    SmartDashboard.putBoolean("Currently Vision Tracking", false);
-    // DriverStation.getInstance().getMatchTime();
 
     // Ignore this error, no known conflict
     new Notifier(() -> updateOI()).startPeriodic(.1);
@@ -72,21 +58,6 @@ public class OI {
   // Anything to be updated should be done in here
   public void updateOI() {
     
-    // SmartDashboard.putNumber("Countdown", DriverStation.getInstance().getMatchTime());
-
-    SmartDashboard.putBoolean("Tongue is out: ", tongueIsOut);
-    if (latchInPosition) {
-      SmartDashboard.putString("Latch: ", "CLIMB");
-    } else {
-      SmartDashboard.putString("Latch: ", "DON'T CLIMB");
-    }
-
-    if (shiftHigh) {
-      SmartDashboard.putString("GEAR: ", "HIGH");
-    } else {
-      SmartDashboard.putString("GEAR: ", "LOW");
-    }
-
     // Limelight Value SmartDashboard display
     table = NetworkTableInstance.getDefault().getTable("limelight");
 
@@ -103,25 +74,11 @@ public class OI {
       OI.table.getEntry("camMode").setDouble(1);
       OI.table.getEntry("ledMode").setDouble(1);
     }
-
-    // SmartDashboard.putNumber("x value: ", Robot.x);
-    // SmartDashboard.putNumber("y value: ", Robot.y);
-    // SmartDashboard.putNumber("area value: ", Robot.area);
-    
-    // Sensor Values and Information
-    // SmartDashboard.putNumber("Average Inches Driven", distance);
-
-    // SmartDashboard.putNumber("Gear Shifter Encoder: ", Robot.DRIVE_SUBSYSTEM.gearShifter.getSelectedSensorPosition());
-    // SmartDashboard.putNumber("Tongue Encoder: ", Robot.HATCH_SUBSYSTEM.hatchTalon.getSelectedSensorPosition());
-    // SmartDashboard.putNumber("Dart Encoder: ", Robot.ACTUATOR_SUBSYSTEM.dartTalon.getSelectedSensorPosition());
-    // SmartDashboard.putNumber("Latch Encoder: ", Robot.climb.latch.getSelectedSensorPosition());
-    // SmartDashboard.putNumber("Robot Heading", Robot.getNavXAngle());
     
     SmartDashboard.putNumber("Joystick Left", leftStick.getRawAxis(1));
     SmartDashboard.putNumber("Joystick Right", rightStick.getRawAxis(1));
 
     SmartDashboard.putNumber("PIGEON ANGLE", Robot.getPigeonAngle());
     SmartDashboard.putNumber("RAW PIGEON ANGLE", Robot.getRawPigeonAngle());
-    //SmartDashboard.putNumber("NAVX ANGLE", Robot.getNavXAngle());
   }
 }
