@@ -195,6 +195,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     OI.table.getEntry("pipeline").setDouble(0.0);
     resetPigeonAngle();
+    DRIVE_SUBSYSTEM.resetBothEncoders();
     DRIVE_SUBSYSTEM.changeDriveBrakeMode(true);
     operatorControl = true;
     isAutonomous = false;

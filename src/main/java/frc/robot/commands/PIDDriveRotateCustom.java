@@ -15,10 +15,36 @@ public class PIDDriveRotateCustom extends CommandBase {
 
   double errorSlope;
 
-  public PIDDriveRotateCustom(double angle, boolean resetNavX) {
+  public PIDDriveRotateCustom(double angle, boolean resetGyro) {
     addRequirements(Robot.DRIVE_SUBSYSTEM);
     goal = angle;
-    if (resetNavX) {
+    if (resetGyro) {
+      Robot.resetPigeonAngle();
+    }
+  }
+
+  public PIDDriveRotateCustom(double angle, boolean resetGyro, boolean closestEquivalent) {
+    addRequirements(Robot.DRIVE_SUBSYSTEM);
+
+
+    if (closestEquivalent)  {
+    
+      if (angle > 0) {
+
+          goal = ((angle+180)%360)-180; //limits angle to range of -180 to 180
+
+      } else {
+
+        goal = ((angle-180)%360)+180; //limits angle to range of -180 to 180
+        
+      }
+    } else {
+
+    goal = angle;
+
+    }
+
+    if (resetGyro) {
       Robot.resetPigeonAngle();
     }
   }
@@ -34,11 +60,14 @@ public class PIDDriveRotateCustom extends CommandBase {
   public void execute() {
     lastError = error;
 
-    error = goal - Robot.getPigeonAngle();
+    error = goal - Robot.getRawPigeonAngle();
 
-    if (Math.abs(lastError-error) > 180) {
-      error = 0;
-    }
+    // DOESNT WORK WITH PIGEION; INTENDED FOR NAVX USE
+    // if (Math.abs(lastError-error) > 180) {
+    //   error = 0;
+    // }
+
+    
     if (goal < 90 && goal > -90) {
       errorSlope = ((lastError-error)/20)*-dAcute;
     } else {

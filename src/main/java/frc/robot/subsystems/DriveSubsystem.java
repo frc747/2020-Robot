@@ -25,7 +25,11 @@ public class DriveSubsystem extends SubsystemBase {
     private static final int pidIdx = 0;
     private static final int timeoutMs = 10;
 
-    private static final double ENCODER_TICKS = 4096;
+    private static final double ticksPerInch = 2048/(Math.PI*6.125);
+
+    public static final double scalar = 1/13.85;
+
+    private static final double ENCODER_TICKS = 2048;
 
     private static final double GEAR_RATIO_MULTIPLIER = 1;
 
@@ -43,22 +47,24 @@ public class DriveSubsystem extends SubsystemBase {
 
         super();
 
+        
+
         gearShifter.setInverted(false);
         gearShifter.setSensorPhase(true);
 
         leftDrivePrimary.setInverted(true);
-        leftDriveBack.setInverted(false); //inverted because of the way it is mounted
+        leftDriveBack.setInverted(true);
 
         rightDrivePrimary.setInverted(false);
-        rightDriveBack.setInverted(true); //inverted because of the way it is mounted
+        rightDriveBack.setInverted(false);
 
         leftDriveBack.set(ControlMode.Follower, leftDrivePrimary.getDeviceID());
         rightDriveBack.set(ControlMode.Follower, rightDrivePrimary.getDeviceID());
 
-        leftDrivePrimary.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, pidIdx, timeoutMs);
+        leftDrivePrimary.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.IntegratedSensor, pidIdx, timeoutMs);
+        rightDrivePrimary.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.IntegratedSensor, pidIdx, timeoutMs);
 
-        rightDrivePrimary.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, pidIdx, timeoutMs);
-
+        
         gearShifter.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, pidIdx, timeoutMs);
 
         leftDrivePrimary.configMotionCruiseVelocity(7500, timeoutMs);
@@ -105,11 +111,20 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void set(double left, double right) {
 
+        leftDriveBack.set(ControlMode.Follower, leftDrivePrimary.getDeviceID());
+        rightDriveBack.set(ControlMode.Follower, rightDrivePrimary.getDeviceID());
+
         leftDrivePrimary.set(ControlMode.PercentOutput, left);
         rightDrivePrimary.set(ControlMode.PercentOutput, right);
     }
 
     public void setPID(double leftTicks, double rightTicks) {
+        
+        leftDriveBack.set(ControlMode.Follower, leftDrivePrimary.getDeviceID());
+        rightDriveBack.set(ControlMode.Follower, rightDrivePrimary.getDeviceID());
+
+        
+
         leftDrivePrimary.set(ControlMode.MotionMagic, leftTicks);
         rightDrivePrimary.set(ControlMode.MotionMagic, rightTicks);
     }
@@ -131,7 +146,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public double convertInchesToTicks(double inches) {
-        return convertRevsToTicks(convertInchesToRevs(inches));
+        return ticksPerInch*inches*13.58;
     }
 
     public double convertTicksToInches(double ticks) {
@@ -204,7 +219,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetLeftEncoder() {
         this.enableVBusControl();
-        leftDrivePrimary.setSelectedSensorPosition(0, pidIdx, timeoutMs);
+        leftDrivePrimary.setSelectedSensorPosition(0);
     	try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
@@ -215,7 +230,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetRightEncoder() {
         this.enableVBusControl();
-        rightDrivePrimary.setSelectedSensorPosition(0, pidIdx, timeoutMs);
+        rightDrivePrimary.setSelectedSensorPosition(0);
     	try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
@@ -226,8 +241,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetBothEncoders(){
         this.enableVBusControl();
-    	this.rightDrivePrimary.setSelectedSensorPosition(0, pidIdx, timeoutMs);
-    	this.leftDrivePrimary.setSelectedSensorPosition(0, pidIdx, timeoutMs);
+    	this.rightDrivePrimary.setSelectedSensorPosition(0);
+    	this.leftDrivePrimary.setSelectedSensorPosition(0);
     	try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
@@ -236,24 +251,28 @@ public class DriveSubsystem extends SubsystemBase {
 		}
     }
         //get the current encoder position regardless of whether it is the current feedback device
-    public double getLeftEncoderPosition() {
-        return leftDrivePrimary.getSelectedSensorPosition(pidIdx);
+    public double getLeftAbsolutePosition() {
+        return leftDrivePrimary.getSelectedSensorPosition()*scalar;
+        
     }
 
-    public double getRightEncoderPosition() {
-        return rightDrivePrimary.getSelectedSensorPosition(pidIdx);
+    public double getRightAbsolutePosition() {
+        return rightDrivePrimary.getSelectedSensorPosition()*scalar;
+        
     }
 
     public double getLeftPosition() {
-        return leftDrivePrimary.getSelectedSensorPosition(pidIdx);
+        return leftDrivePrimary.getSelectedSensorPosition()*scalar;
+        
     }
 
     public double getRightPosition() {
-        return rightDrivePrimary.getSelectedSensorPosition(pidIdx);
+        return rightDrivePrimary.getSelectedSensorPosition()*scalar;
+        
     }
 
     public double getCombindedEncoderPosition() {
-        return (getLeftEncoderPosition() + getRightEncoderPosition()) / 2;
+        return (getLeftPosition() + getRightPosition()) / 2;
     }
 
 }

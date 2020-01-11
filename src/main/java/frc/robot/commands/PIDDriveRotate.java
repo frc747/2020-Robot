@@ -6,6 +6,7 @@ import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpiutil.math.MathUtil;
 
@@ -36,6 +37,7 @@ public class PIDDriveRotate extends PIDCommand {
         super(new PIDController(0.03, 0.0, 0.05), currentAngle, degreesRotate, output, Robot.DRIVE_SUBSYSTEM);
         
         if (closestEquivalent)  {
+    
             if (degreesRotate > 0) {
                 this.angleToRotate = ((degreesRotate+180)%360)-180; //limits angle to range of -180 to 180
             } else {
@@ -84,9 +86,11 @@ public class PIDDriveRotate extends PIDCommand {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        double output = getController().calculate(Robot.getPigeonAngle());
-        MathUtil.clamp(output, -MAX_PERCENT_VBUS, MAX_PERCENT_VBUS);
-        Robot.DRIVE_SUBSYSTEM.set(output, -output);
+
+        double out = 0;
+        output.accept(out);
+        SmartDashboard.putNumber("rotation values", out);
+        Robot.DRIVE_SUBSYSTEM.set(out, out);
     }
 
     // Make this return true when this Command no longer needs to run execute()

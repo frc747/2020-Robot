@@ -50,9 +50,12 @@ public class OI {
   @SuppressWarnings("resource")
   public OI() {
 
+    B_BUTTON.toggleWhenPressed(new PIDDriveInches(100, false));
+
     // Ignore this error, no known conflict
     new Notifier(() -> updateOI()).startPeriodic(.1);
     // OI.table.getEntry("stream").setDouble(0);
+
   }
 
   // Anything to be updated should be done in here
@@ -60,6 +63,10 @@ public class OI {
     
     // Limelight Value SmartDashboard display
     table = NetworkTableInstance.getDefault().getTable("limelight");
+        
+    SmartDashboard.putNumber("LEFT POS: ", Robot.DRIVE_SUBSYSTEM.getLeftPosition());
+    SmartDashboard.putNumber("RIGHT POS: ", Robot.DRIVE_SUBSYSTEM.getRightPosition());
+
 
     v = table.getEntry("tv").getDouble(0);
 
