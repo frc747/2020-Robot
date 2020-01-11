@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.ShiftDriveCommand;
-import edu.wpi.cscore.UsbCamera;
+//import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -95,9 +95,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     prefs = Preferences.getInstance();
+    DRIVE_SUBSYSTEM.resetBothEncoders();
 
-    UsbCamera ucamera = CameraServer.getInstance().startAutomaticCapture("cam1", 0);
-    ucamera.setResolution(180, 240);
+    //UsbCamera ucamera = CameraServer.getInstance().startAutomaticCapture("cam1", 0);
+    //ucamera.setResolution(180, 240);
 
     DRIVE_SUBSYSTEM.setDefaultCommand(new ShiftDriveCommand());
     
