@@ -44,13 +44,17 @@ public class OI {
   Button X_BUTTON = new JoystickButton(operatorController, 3);
   Button SELECT_BUTTON = new JoystickButton(operatorController, 7);
   Button START_BUTTON = new JoystickButton(operatorController, 8);
+  Button LEFT_STICK_TRIG = new JoystickButton(leftStick, 1);
+
+
+
 
   // Button LEFT_STICK_BUTTON_SEVEN = new JoystickButton(leftStick, 7);
 
   @SuppressWarnings("resource")
   public OI() {
 
-    B_BUTTON.toggleWhenPressed(new PIDDriveInches(100, false));
+    LEFT_STICK_TRIG.toggleWhenPressed(new PIDDriveInches(100, false));
 
     // Ignore this error, no known conflict
     new Notifier(() -> updateOI()).startPeriodic(.1);

@@ -21,7 +21,7 @@ public class PIDDriveInches extends CommandBase {
     private static final double MIN_PERCENT_VOLTAGE = 0.0;
 
     private final static double STOP_THRESHOLD_REAL = 1;
-    private final static double STOP_THRESHOLD_ADJUSTED = Robot.DRIVE_SUBSYSTEM.convertInchesToTicks(STOP_THRESHOLD_REAL);
+    private static double STOP_THRESHOLD_ADJUSTED = Robot.DRIVE_SUBSYSTEM.convertInchesToTicks(STOP_THRESHOLD_REAL);
     
     private final static int allowableCloseLoopError = 1;
     
@@ -32,7 +32,7 @@ public class PIDDriveInches extends CommandBase {
     //Half a second is being multiplied by the user input to achieve the desired "ON_TARGET_COUNT"
     private final static double ON_TARGET_MINIMUM_COUNT = TARGET_COUNT_ONE_SECOND * .1;
 
-    private double driveP = .15;
+    private double driveP = .5;
     
     private double driveI = 0;
     
@@ -42,6 +42,7 @@ public class PIDDriveInches extends CommandBase {
     
     public PIDDriveInches(double inches, boolean reverse) {
         addRequirements(Robot.DRIVE_SUBSYSTEM);
+        STOP_THRESHOLD_ADJUSTED*=Math.tanh(0.0625*inches);
         SmartDashboard.putNumber("THRESHOLD", STOP_THRESHOLD_ADJUSTED);
         if (reverse) {
             this.driveTicks = -Robot.DRIVE_SUBSYSTEM.convertInchesToTicks(inches);//input now has to be ticks instead of revolutions which is why we multiply by 4096
@@ -92,8 +93,7 @@ public class PIDDriveInches extends CommandBase {
             Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configMotionCruiseVelocity(10000, timeoutMs);
             Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configMotionAcceleration(20000, timeoutMs);
         } else if (driveInches <= 30) {
-            Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configMotionCruiseVelocity(7500
-            , timeoutMs);
+            Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configMotionCruiseVelocity(7500, timeoutMs);
             Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configMotionCruiseVelocity(7500, timeoutMs);
             Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configMotionAcceleration(15000, timeoutMs);
             Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configMotionAcceleration(15000, timeoutMs);
@@ -114,11 +114,12 @@ public class PIDDriveInches extends CommandBase {
         SmartDashboard.putNumber("left position in command", Robot.DRIVE_SUBSYSTEM.getLeftPosition());
         SmartDashboard.putNumber("right position in command", Robot.DRIVE_SUBSYSTEM.getRightPosition());
 
+        double driveGoal = driveTicks/13;
 
         SmartDashboard.putNumber("DRIVE TICKS: ", driveTicks);
 
-        if ((leftPosition > (driveTicks - STOP_THRESHOLD_ADJUSTED) && leftPosition < (driveTicks + STOP_THRESHOLD_ADJUSTED)) ||
-            (rightPosition > (driveTicks - STOP_THRESHOLD_ADJUSTED) && rightPosition < (driveTicks + STOP_THRESHOLD_ADJUSTED))) {
+        if ((leftPosition > (driveGoal - STOP_THRESHOLD_ADJUSTED) && leftPosition < (driveGoal + STOP_THRESHOLD_ADJUSTED)) ||
+            (rightPosition > (driveGoal - STOP_THRESHOLD_ADJUSTED) && rightPosition < (driveGoal + STOP_THRESHOLD_ADJUSTED))) {
             onTargetCount++;
         } else {
             onTargetCount = 0;

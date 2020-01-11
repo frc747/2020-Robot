@@ -25,7 +25,7 @@ public class DriveSubsystem extends SubsystemBase {
     private static final int pidIdx = 0;
     private static final int timeoutMs = 10;
 
-    private static final double ticksPerInch = 2048/(Math.PI*6.125);
+    private static final double ticksPerInch = 2048/(Math.PI*6);//.125);
 
     public static final double scalar = 1/13.85;
 
