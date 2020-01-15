@@ -25,13 +25,11 @@ public class DriveSubsystem extends SubsystemBase {
     private static final int pidIdx = 0;
     private static final int timeoutMs = 10;
 
-    private static final double ticksPerInch = 2048/(Math.PI*6);//.125);
-
-    public static final double scalar = 1/13.85;
+    private static final double ticksPerInch = 2048/(Math.PI*6.18);//.125);
 
     private static final double ENCODER_TICKS = 2048;
 
-    private static final double GEAR_RATIO_MULTIPLIER = 1;
+    private static final double GEAR_RATIO_MULTIPLIER = 13.85; //low gear
 
     private static final double WHEEL_CIRCUMFERNCE = 20.125;
 
@@ -146,7 +144,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public double convertInchesToTicks(double inches) {
-        return ticksPerInch*inches*13.58;
+        return ticksPerInch*inches*13.85;
     }
 
     public double convertTicksToInches(double ticks) {
@@ -251,23 +249,13 @@ public class DriveSubsystem extends SubsystemBase {
 		}
     }
         //get the current encoder position regardless of whether it is the current feedback device
-    public double getLeftAbsolutePosition() {
-        return leftDrivePrimary.getSelectedSensorPosition()*scalar;
-        
-    }
-
-    public double getRightAbsolutePosition() {
-        return rightDrivePrimary.getSelectedSensorPosition()*scalar;
-        
-    }
-
     public double getLeftPosition() {
-        return leftDrivePrimary.getSelectedSensorPosition()*scalar;
+        return undoGearRatio(leftDrivePrimary.getSelectedSensorPosition());
         
     }
 
     public double getRightPosition() {
-        return rightDrivePrimary.getSelectedSensorPosition()*scalar;
+        return undoGearRatio(rightDrivePrimary.getSelectedSensorPosition());
         
     }
 
