@@ -70,9 +70,11 @@ public class OI {
     // Limelight Value SmartDashboard display
     table = NetworkTableInstance.getDefault().getTable("limelight");
         
-    SmartDashboard.putNumber("LEFT POS: ", Robot.DRIVE_SUBSYSTEM.getLeftPosition());
-    SmartDashboard.putNumber("RIGHT POS: ", Robot.DRIVE_SUBSYSTEM.getRightPosition());
+    SmartDashboard.putNumber("LEFT POS: ", Robot.DRIVE_SUBSYSTEM.undoGearRatio(Robot.DRIVE_SUBSYSTEM.getLeftPosition()));
+    SmartDashboard.putNumber("RIGHT POS: ", Robot.DRIVE_SUBSYSTEM.undoGearRatio(Robot.DRIVE_SUBSYSTEM.getRightPosition()));
 
+    SmartDashboard.putNumber("X Odometry Position", Robot.DRIVE_SUBSYSTEM.getPose().getTranslation().getX()*39.3701);
+    SmartDashboard.putNumber("Y Odometry Position", Robot.DRIVE_SUBSYSTEM.getPose().getTranslation().getY()*39.3701);
 
     v = table.getEntry("tv").getDouble(0);
 

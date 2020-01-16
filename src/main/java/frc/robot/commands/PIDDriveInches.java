@@ -104,6 +104,7 @@ public class PIDDriveInches extends CommandBase {
     
     @Override
     public void execute() {
+        Robot.DRIVE_SUBSYSTEM.periodic();
     }
     
     @Override

@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -15,24 +17,24 @@ package frc.robot;
  */
 public class RobotMap {
 
-  public RobotMap() {
+    public RobotMap() {
     
-  }
-  public static enum Controller {
-    LEFT_STICK(0),
-    RIGHT_STICK(1),
-    OPERATOR_CONTROLLER(2),
-    TEST_CONTROLLER(3);
-
-    private int value;
-
-    private Controller(int value) {
-        this.value = value;
     }
+    public static enum Controller {
+        LEFT_STICK(0),
+        RIGHT_STICK(1),
+        OPERATOR_CONTROLLER(2),
+        TEST_CONTROLLER(3);
 
-    public int getValue() {
-        return value;
+        private int value;
+
+        private Controller(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
-}
 
 }

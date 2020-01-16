@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import frc.robot.Robot;
 import frc.robot.commands.ShiftDriveCommand;
 // import frc.robot.commands.TankDriveCommand;
 
@@ -8,6 +9,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -36,6 +40,9 @@ public class DriveSubsystem extends SubsystemBase {
     public static final double MAX_PERCENT_VOLTAGE = 1.0;
     private static final double MIN_PERCENT_VOLTAGE = 0.0;
 
+    // Odometry class for tracking robot pose
+    private final DifferentialDriveOdometry m_odometry;
+
     public boolean tracking = false;
 
 	StringBuilder sb = new StringBuilder();
@@ -45,7 +52,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         super();
 
-        
+        m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(Robot.getPigeonAngle()));
 
         gearShifter.setInverted(false);
         gearShifter.setSensorPhase(true);
@@ -94,6 +101,21 @@ public class DriveSubsystem extends SubsystemBase {
         gearShifter.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
         gearShifter.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
 
+    }
+
+    @Override
+    public void periodic() {
+        //                                                                    1/2048    6.18pi in meters   1/13.85
+        m_odometry.update(Rotation2d.fromDegrees(-Robot.getPigeonAngle()), 0.00048828125*0.156972*Math.PI*undoGearRatio(leftDrivePrimary.getSelectedSensorPosition()),0.00048828125*0.156972*Math.PI*undoGearRatio(rightDrivePrimary.getSelectedSensorPosition()));
+    }
+
+    public Pose2d getPose() {
+        return m_odometry.getPoseMeters();
+      }    
+
+    public void resetOdometry(Pose2d pose) {
+        resetBothEncoders();
+        m_odometry.resetPosition(pose, Rotation2d.fromDegrees(-Robot.getPigeonAngle()));
     }
 
     public void updateSpeeds() {

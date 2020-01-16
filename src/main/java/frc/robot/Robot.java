@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveSubsystem;
@@ -29,6 +30,21 @@ import com.ctre.phoenix.sensors.PigeonIMU;
  */
 public class Robot extends TimedRobot {
   public static boolean climbBrakeMode;
+
+  public static final PigeonIMU PIGEON = new PigeonIMU(0);
+
+  private static double[] ypr = new double[3];
+  
+  public static double getPigeonAngle() {
+    PIGEON.getYawPitchRoll(ypr);
+
+    if (-ypr[0] > 0) {
+      return ((-ypr[0]+180)%360)-180; //limits angle to range of -180 to 180
+    } else {
+      return ((-ypr[0]-180)%360)+180; //limits angle to range of -180 to 180
+    }
+  }
+
   public static DriveSubsystem DRIVE_SUBSYSTEM = new DriveSubsystem();
   public static OI m_oi;
 
@@ -53,22 +69,8 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
-  
-  public static final PigeonIMU PIGEON = new PigeonIMU(0);
-
-  private static double[] ypr = new double[3];
 
   public static Preferences prefs;
-
-  public static double getPigeonAngle() {
-    PIGEON.getYawPitchRoll(ypr);
-
-    if (-ypr[0] > 0) {
-      return ((-ypr[0]+180)%360)-180; //limits angle to range of -180 to 180
-    } else {
-      return ((-ypr[0]-180)%360)+180; //limits angle to range of -180 to 180
-    }
-  }
   
   public static double getRawPigeonAngle() {
     PIGEON.getYawPitchRoll(ypr); 
@@ -103,6 +105,8 @@ public class Robot extends TimedRobot {
     DRIVE_SUBSYSTEM.setDefaultCommand(new ShiftDriveCommand());
     
     this.autonomous = new Autonomous();
+
+    DRIVE_SUBSYSTEM.resetOdometry(new Pose2d());
 
     if(m_oi == null) {
       m_oi = new OI();
@@ -197,6 +201,7 @@ public class Robot extends TimedRobot {
     OI.table.getEntry("pipeline").setDouble(0.0);
     resetPigeonAngle();
     DRIVE_SUBSYSTEM.resetBothEncoders();
+    DRIVE_SUBSYSTEM.resetOdometry(new Pose2d());
     DRIVE_SUBSYSTEM.changeDriveBrakeMode(true);
     operatorControl = true;
     isAutonomous = false;
