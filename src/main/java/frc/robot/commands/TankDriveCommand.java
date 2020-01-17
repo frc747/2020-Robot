@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.OI;
+import frc.robot.RobotContainer;
 import frc.robot.Robot;
 
 public class TankDriveCommand extends CommandBase {
@@ -14,27 +14,27 @@ public class TankDriveCommand extends CommandBase {
   private static final double MIN_PERCENT_VOLTAGE = 0.0;
 
   public TankDriveCommand() {
-    addRequirements(Robot.DRIVE_SUBSYSTEM);
+    addRequirements(Robot.m_driveSubsystem);
   }
 
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
-    Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-    Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-    Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-    Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
-    Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-    Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-    Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-    Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
+    Robot.m_driveSubsystem.leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
+    Robot.m_driveSubsystem.leftDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
+    Robot.m_driveSubsystem.leftDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
+    Robot.m_driveSubsystem.leftDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
+    Robot.m_driveSubsystem.rightDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
+    Robot.m_driveSubsystem.rightDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
+    Robot.m_driveSubsystem.rightDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
+    Robot.m_driveSubsystem.rightDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    double left = -OI.leftStick.getRawAxis(1);
-    double right = -OI.rightStick.getRawAxis(1);
+    double left = -RobotContainer.leftStick.getRawAxis(1);
+    double right = -RobotContainer.rightStick.getRawAxis(1);
 
     if (Math.abs(left) < 0.1) {
         left = 0;
@@ -45,7 +45,7 @@ public class TankDriveCommand extends CommandBase {
     
     double speed = 1;
     
-    Robot.DRIVE_SUBSYSTEM.set(left * speed, right * speed);
+    Robot.m_driveSubsystem.set(left * speed, right * speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()

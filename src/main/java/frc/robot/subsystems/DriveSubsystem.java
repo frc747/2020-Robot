@@ -1,9 +1,5 @@
 package frc.robot.subsystems;
 
-import frc.robot.Robot;
-import frc.robot.commands.ShiftDriveCommand;
-// import frc.robot.commands.TankDriveCommand;
-
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -29,21 +25,19 @@ public class DriveSubsystem extends SubsystemBase {
     private static final int pidIdx = 0;
     private static final int timeoutMs = 10;
 
-    private static final double ticksPerInch = 2048/(Math.PI*6.18);//.125);
-
     private static final double ENCODER_TICKS = 2048;
 
     private static final double GEAR_RATIO_MULTIPLIER = 13.85; //low gear
 
-    private static final double WHEEL_CIRCUMFERNCE = 20.125;
+    private static final double WHEEL_DIAMETER = 6.18;
+
+    private static final double WHEEL_CIRCUMFERNCE = WHEEL_DIAMETER*Math.PI;
 
     public static final double MAX_PERCENT_VOLTAGE = 1.0;
     private static final double MIN_PERCENT_VOLTAGE = 0.0;
 
     // Odometry class for tracking robot pose
     private final DifferentialDriveOdometry m_odometry;
-
-    public boolean tracking = false;
 
 	StringBuilder sb = new StringBuilder();
 	int loops = 0;
@@ -52,7 +46,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         super();
 
-        m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(Robot.getPigeonAngle()));
+        m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(PigeonSubsystem.getPigeonAngle()));
 
         gearShifter.setInverted(false);
         gearShifter.setSensorPhase(true);
@@ -106,7 +100,7 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         //                                                                    1/2048    6.18pi in meters   1/13.85
-        m_odometry.update(Rotation2d.fromDegrees(-Robot.getPigeonAngle()), 0.00048828125*0.156972*Math.PI*undoGearRatio(leftDrivePrimary.getSelectedSensorPosition()),0.00048828125*0.156972*Math.PI*undoGearRatio(rightDrivePrimary.getSelectedSensorPosition()));
+        m_odometry.update(Rotation2d.fromDegrees(-PigeonSubsystem.getPigeonAngle()), 0.00048828125*0.156972*Math.PI*undoGearRatio(leftDrivePrimary.getSelectedSensorPosition()),0.00048828125*0.156972*Math.PI*undoGearRatio(rightDrivePrimary.getSelectedSensorPosition()));
     }
 
     public Pose2d getPose() {
@@ -115,7 +109,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose) {
         resetBothEncoders();
-        m_odometry.resetPosition(pose, Rotation2d.fromDegrees(-Robot.getPigeonAngle()));
+        m_odometry.resetPosition(pose, Rotation2d.fromDegrees(-PigeonSubsystem.getPigeonAngle()));
     }
 
     public void updateSpeeds() {
@@ -166,7 +160,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public double convertInchesToTicks(double inches) {
-        return ticksPerInch*inches*13.85;
+        return convertRevsToTicks(convertInchesToRevs(inches));
     }
 
     public double convertTicksToInches(double ticks) {
@@ -243,7 +237,6 @@ public class DriveSubsystem extends SubsystemBase {
     	try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -254,7 +247,6 @@ public class DriveSubsystem extends SubsystemBase {
     	try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -266,11 +258,11 @@ public class DriveSubsystem extends SubsystemBase {
     	try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
-        //get the current encoder position regardless of whether it is the current feedback device
+
+     //get the current encoder position regardless of whether it is the current feedback device
     public double getLeftPosition() {
         return undoGearRatio(leftDrivePrimary.getSelectedSensorPosition());
         

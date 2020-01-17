@@ -1,31 +1,27 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package frc.robot.autonomous;
 
-import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.PIDDriveRotateCustom;
+import frc.robot.commands.PIDDriveInches;
 
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class ExampleAuto extends SequentialCommandGroup {
-
-  @Override
-  public void initialize() {
-    Robot.autoSideLeft = false;
-    Robot.autoSideRight = true;
-    Robot.autoSideFaceCargoShip = false;
-    Robot.autoFrontFaceCargoShip = false;
-    Robot.autoRocket = true;
-
-    Robot.operatorControl = false;
-  }
-
-   public ExampleAuto() {
-    addCommands(
-      new PIDDriveRotateCustom(45, false).withTimeout(4),
-      new PIDDriveRotateCustom(45, false).withTimeout(4)
+  /**
+   * Creates a new ExampleAuto.
+   */
+  public ExampleAuto() {
+    // Add your commands in the super() call, e.g.
+    // super(new FooCommand(), new BarCommand());
+    super(
+      new PIDDriveInches(45, false)
     );
-  }
-
-  @Override
-  public void end(boolean interrupted) {
-    Robot.operatorControl = true;
   }
 }

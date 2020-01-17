@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.subsystems.PigeonSubsystem;
 
 public class RotationalLockMode extends CommandBase {
 
@@ -16,13 +17,13 @@ public class RotationalLockMode extends CommandBase {
   double errorSlope;
 
   public RotationalLockMode() {
-    addRequirements(Robot.DRIVE_SUBSYSTEM);
+    addRequirements(Robot.m_driveSubsystem);
   }
 
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
-    Robot.resetPigeonAngle();
+    PigeonSubsystem.resetPigeonAngle();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -30,7 +31,7 @@ public class RotationalLockMode extends CommandBase {
   public void execute() {
     lastError = error;
 
-    error = goal - Robot.getPigeonAngle();
+    error = goal - PigeonSubsystem.getPigeonAngle();
 
     if (Math.abs(lastError-error) > 180) {
       error = 0;
@@ -45,7 +46,7 @@ public class RotationalLockMode extends CommandBase {
 
     output = (Math.tanh(error/90)*p)+errorSlope+(totalError*i);
 
-    Robot.DRIVE_SUBSYSTEM.set(output, -output);
+    Robot.m_driveSubsystem.set(output, -output);
   }
 
   // Make this return true when this Command no longer needs to run execute()

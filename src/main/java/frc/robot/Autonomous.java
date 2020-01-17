@@ -1,8 +1,12 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
 import frc.robot.autonomous.*;
+import frc.robot.commands.PIDDriveInches;
+import frc.robot.subsystems.LimelightSubsystem;
 
 public class Autonomous{
     
@@ -11,28 +15,28 @@ public class Autonomous{
     }
     
     private SendableChooser<AutoMode> autoChooser1;
-    
-    public Autonomous(){
+
+    public Autonomous() {
         autoChooser1 = new SendableChooser<AutoMode>();
-        
+
         autoChooser1.setDefaultOption("Example Auto", AutoMode.AUTOMODE_EXAMPLE);
         SmartDashboard.putData("Auto mode", autoChooser1);
     }
-    
-    public void startMode(){
-        
-    	System.out.println("In Auto.StartMode");
-    	
-    	
-        AutoMode selectedAutoMode = (AutoMode)(autoChooser1.getSelected());
+
+    public void startMode() {
+
+        System.out.println("In Auto.StartMode");
+
+        AutoMode selectedAutoMode = (AutoMode) (autoChooser1.getSelected());
                     
         switch (selectedAutoMode){
             case AUTOMODE_EXAMPLE:
-                OI.table.getEntry("pipeline").setDouble(1.0);
+                LimelightSubsystem.setPipeline(1);
                 new ExampleAuto().schedule();
                 break;
             default:
                 break;
-            }
+        }
+
     }
 }

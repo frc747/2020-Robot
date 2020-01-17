@@ -19,9 +19,24 @@ public class Constants {
         public static final double ROBOT_LENGTH = 38.5; // CHANGE THESE
         public static final double ROBOT_WIDTH = 34; // CHANGE THESE
     }
-
     
+    public static enum Controller {
+        LEFT_STICK(0),
+        RIGHT_STICK(1),
+        OPERATOR_CONTROLLER(2),
+        TEST_CONTROLLER(3);
 
+        private int value;
+
+        private Controller(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+    
     public static final double ksVolts = 0.345;
     public static final double kvVoltSecondsPerMeter = 0.0766;
     public static final double kaVoltSecondsSquaredPerMeter = 0.00697;

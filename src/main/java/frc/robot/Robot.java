@@ -11,15 +11,16 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.commands.ShiftDriveCommand;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.PigeonSubsystem;
 //import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.cameraserver.CameraServer;
+//import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.DriverStation;
 
 //import com.kauailabs.navx.frc.AHRS;
-import com.ctre.phoenix.sensors.PigeonIMU;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -29,26 +30,10 @@ import com.ctre.phoenix.sensors.PigeonIMU;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static boolean climbBrakeMode;
 
-  public static final PigeonIMU PIGEON = new PigeonIMU(0);
+  public static RobotContainer m_robotContainer;
 
-  private static double[] ypr = new double[3];
-  
-  public static double getPigeonAngle() {
-    PIGEON.getYawPitchRoll(ypr);
-
-    if (-ypr[0] > 0) {
-      return ((-ypr[0]+180)%360)-180; //limits angle to range of -180 to 180
-    } else {
-      return ((-ypr[0]-180)%360)+180; //limits angle to range of -180 to 180
-    }
-  }
-
-  public static DriveSubsystem DRIVE_SUBSYSTEM = new DriveSubsystem();
-  public static OI m_oi;
-
-  public static boolean latchInPos = false;
+  public static DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 
   public static boolean operatorControl = false;
   public static boolean isAutonomous = false;
@@ -56,61 +41,31 @@ public class Robot extends TimedRobot {
 
   public static boolean autoSideLeft = false;
   public static boolean autoSideRight = false;
-  public static boolean autoSideFaceCargoShip = false;
-  public static boolean autoFrontFaceCargoShip = false;
-  public static boolean autoRocket = false;
 
   public static String side = "";
  
-	private Command autonomousCommand;
-  public Autonomous autonomous;
+  public static Autonomous autonomous;
+
+  public static Preferences prefs;
 
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
 
-  public static Preferences prefs;
-  
-  public static double getRawPigeonAngle() {
-    PIGEON.getYawPitchRoll(ypr); 
-    return -ypr[0];     //returns exact pigeon angle without range limiting
-  }
-
-  public static double getPigeonAngleRadians() {
-    return Math.toRadians(getPigeonAngle());
-  }
-  
-  public static double getRawPigeonAngleRadians() {
-    return Math.toRadians(getRawPigeonAngle());
-  }
-
-  public static void resetPigeonAngle() {
-    PIGEON.setYaw(0);
-    try {
-      Thread.sleep(100);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-  }
-
   @Override
   public void robotInit() {
     prefs = Preferences.getInstance();
-    DRIVE_SUBSYSTEM.resetBothEncoders();
+    m_driveSubsystem.resetBothEncoders();
 
     //UsbCamera ucamera = CameraServer.getInstance().startAutomaticCapture("cam1", 0);
     //ucamera.setResolution(180, 240);
 
-    DRIVE_SUBSYSTEM.setDefaultCommand(new ShiftDriveCommand());
-    
-    this.autonomous = new Autonomous();
+    autonomous = new Autonomous();
 
-    DRIVE_SUBSYSTEM.resetOdometry(new Pose2d());
+    m_driveSubsystem.resetOdometry(new Pose2d());
 
-    if(m_oi == null) {
-      m_oi = new OI();
-    }
+    m_robotContainer = new RobotContainer();
 
   }
 
@@ -124,6 +79,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
+    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
+    // commands, running already-scheduled commands, removing finished or interrupted commands,
+    // and running subsystem periodic() methods.  This must be called from the robot's periodic
+    // block in order for anything in the Command-based framework to work.
+    
+    m_robotContainer.update();
+    
   }
 
   /**
@@ -133,7 +96,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    DRIVE_SUBSYSTEM.changeDriveBrakeMode(false);
+    m_driveSubsystem.changeDriveBrakeMode(false);
     operatorControl = false;
     isAutonomous = false;
     isTeleop = false;
@@ -141,7 +104,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    CommandScheduler.getInstance().run();
+
   }
 
   /**
@@ -157,26 +120,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    resetPigeonAngle();
-    DRIVE_SUBSYSTEM.changeDriveBrakeMode(true);
+    PigeonSubsystem.resetPigeonAngle();
+    m_driveSubsystem.changeDriveBrakeMode(true);
     // this is now done within the autonomous command groups (within initialize)
     // operatorControl = false;
     isAutonomous = true;
     isTeleop = false;
 
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
-     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-     * = new MyAutoCommand(); break; case "Default Auto": default:
-     * autonomousCommand = new ExampleCommand(); break; }
-     */
-
-    // schedule the autonomous command (example)
-      autonomous.startMode();
-      if (autonomousCommand != null) {
-          autonomousCommand.schedule();
-      }
+    autonomous.startMode();
   }
+
 
   /**
    * This function is called periodically during autonomous.
@@ -185,35 +138,25 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     if (DriverStation.getInstance().getMatchTime() < 8.75 && DriverStation.getInstance().getMatchTime() > 0) {
       if (side.compareTo("rightTwo") == 0) {
-        OI.table.getEntry("pipeline").setDouble(1.0);
+        LimelightSubsystem.setPipeline(1);
       } else if (side.compareTo("leftTwo") == 0) {
-        OI.table.getEntry("pipeline").setDouble(2.0);
+        LimelightSubsystem.setPipeline(2);
       } else if (side.compareTo("left") == 0 || side.compareTo("right") == 0) {
-        OI.table.getEntry("pipeline").setDouble(0.0);
+        LimelightSubsystem.setPipeline(0);
       }
     }
-    
-    CommandScheduler.getInstance().run();
   }
 
   @Override
   public void teleopInit() {
-    OI.table.getEntry("pipeline").setDouble(0.0);
-    resetPigeonAngle();
-    DRIVE_SUBSYSTEM.resetBothEncoders();
-    DRIVE_SUBSYSTEM.resetOdometry(new Pose2d());
-    DRIVE_SUBSYSTEM.changeDriveBrakeMode(true);
+    LimelightSubsystem.setPipeline(0);
+    PigeonSubsystem.resetPigeonAngle();
+    m_driveSubsystem.resetBothEncoders();
+    m_driveSubsystem.resetOdometry(new Pose2d());
+    m_driveSubsystem.changeDriveBrakeMode(true);
     operatorControl = true;
     isAutonomous = false;
     isTeleop = true;
-    
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (autonomousCommand != null) {
-      autonomousCommand.cancel();
-  }
   }
 
   /**
@@ -221,7 +164,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    CommandScheduler.getInstance().run();
+
   }
 
   /**
@@ -229,5 +172,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+
   }
+
 }

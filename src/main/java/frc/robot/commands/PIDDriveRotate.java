@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
+import frc.robot.subsystems.PigeonSubsystem;
 
 import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
@@ -29,13 +30,13 @@ public class PIDDriveRotate extends PIDCommand {
     
     private static final int timeoutMs = 10;
     
-    private static DoubleSupplier currentAngle = () -> {return Robot.getPigeonAngle();};
+    private static DoubleSupplier currentAngle = () -> {return PigeonSubsystem.getPigeonAngle();};
     private static DoubleConsumer output = (x) -> {MathUtil.clamp(x, -MAX_PERCENT_VBUS, MAX_PERCENT_VBUS);};
     
     //constructor supports Closest Equivalent
     public PIDDriveRotate(double degreesRotate, boolean closestEquivalent) {
-        super(new PIDController(0.03, 0.0, 0.05), currentAngle, degreesRotate, output, Robot.DRIVE_SUBSYSTEM);
-        
+        super(new PIDController(0.03, 0.0, 0.05), currentAngle, degreesRotate, output, Robot.m_driveSubsystem);
+
         if (closestEquivalent)  {
     
             if (degreesRotate > 0) {
@@ -47,34 +48,34 @@ public class PIDDriveRotate extends PIDCommand {
             this.angleToRotate = degreesRotate;
         }
 
-        addRequirements(Robot.DRIVE_SUBSYSTEM);
+        addRequirements(Robot.m_driveSubsystem);
     }
 
     //Default constructor Exact Mode
     public PIDDriveRotate(double degreesRotate) {
 
-        super(new PIDController(0.03, 0.0, 0.05), currentAngle, degreesRotate, output, Robot.DRIVE_SUBSYSTEM);
+        super(new PIDController(0.03, 0.0, 0.05), currentAngle, degreesRotate, output, Robot.m_driveSubsystem);
 
         this.angleToRotate = degreesRotate;
 
-        addRequirements(Robot.DRIVE_SUBSYSTEM);
+        addRequirements(Robot.m_driveSubsystem);
     }
 
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
         
-        Robot.resetPigeonAngle();
+        PigeonSubsystem.resetPigeonAngle();
         //Robot.resetNavXAngle();
         
-        Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
+        Robot.m_driveSubsystem.leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
+        Robot.m_driveSubsystem.leftDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
+        Robot.m_driveSubsystem.leftDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
+        Robot.m_driveSubsystem.leftDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
+        Robot.m_driveSubsystem.rightDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
+        Robot.m_driveSubsystem.rightDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
+        Robot.m_driveSubsystem.rightDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
+        Robot.m_driveSubsystem.rightDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
         
         onTargetCount = 0;
         
@@ -90,7 +91,7 @@ public class PIDDriveRotate extends PIDCommand {
         double out = 0;
         output.accept(out);
         SmartDashboard.putNumber("rotation values", out);
-        Robot.DRIVE_SUBSYSTEM.set(out, out);
+        Robot.m_driveSubsystem.set(out, out);
     }
 
     // Make this return true when this Command no longer needs to run execute()

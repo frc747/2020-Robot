@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-
+import frc.robot.subsystems.PigeonSubsystem;
 import jaci.pathfinder.Trajectory;
 
 import jaci.pathfinder.Pathfinder;
@@ -22,7 +22,7 @@ import jaci.pathfinder.followers.EncoderFollower;
 public class FollowPath extends CommandBase {
 
   String pathName;
-  double ticksPerRev = Robot.DRIVE_SUBSYSTEM.convertRevsToTicks(1);
+  double ticksPerRev = Robot.m_driveSubsystem.convertRevsToTicks(1);
 
   double maxVelocity = 10;
 
@@ -32,10 +32,9 @@ public class FollowPath extends CommandBase {
   boolean targetReached = false;
 
   public FollowPath(String name) {
-    addRequirements(Robot.DRIVE_SUBSYSTEM);
+    addRequirements(Robot.m_driveSubsystem);
 
     this.pathName = name;
-    
 
     try {
       Trajectory left_trajectory = PathfinderFRC.getTrajectory(pathName + ".left");
@@ -46,14 +45,11 @@ public class FollowPath extends CommandBase {
 
       leftEncoderFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / maxVelocity, 0);
       rightEncoderFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / maxVelocity, 0);
-
     
     } catch(IOException e) {
       System.out.println("TRAJECTORY NOT FOUND!");
       e.printStackTrace();
     }
-
-    
 
   }
 
@@ -69,19 +65,19 @@ public class FollowPath extends CommandBase {
       targetReached = true;
     }
 
-    double left_speed = leftEncoderFollower.calculate((int)Robot.DRIVE_SUBSYSTEM.getLeftPosition());
-    double right_speed = rightEncoderFollower.calculate((int)Robot.DRIVE_SUBSYSTEM.getRightPosition());
-    double heading = Robot.getPigeonAngle();
+    double left_speed = leftEncoderFollower.calculate((int)Robot.m_driveSubsystem.getLeftPosition());
+    double right_speed = rightEncoderFollower.calculate((int)Robot.m_driveSubsystem.getRightPosition());
+    double heading = PigeonSubsystem.getPigeonAngle();
     double desired_heading = Pathfinder.r2d(leftEncoderFollower.getHeading());
     double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading);
     double turn =  0.8 * (-1.0/80.0) * heading_difference;
-    Robot.DRIVE_SUBSYSTEM.set(left_speed + turn, right_speed - turn);
+    Robot.m_driveSubsystem.set(left_speed + turn, right_speed - turn);
 
   }
 
   @Override
   public void end(boolean interrupted) {
-    Robot.DRIVE_SUBSYSTEM.stop();
+    Robot.m_driveSubsystem.stop();
   }
 
   @Override

@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.subsystems.PigeonSubsystem;
 
 public class PIDDriveRotateCustom extends CommandBase {
 
@@ -16,15 +17,15 @@ public class PIDDriveRotateCustom extends CommandBase {
   double errorSlope;
 
   public PIDDriveRotateCustom(double angle, boolean resetGyro) {
-    addRequirements(Robot.DRIVE_SUBSYSTEM);
+    addRequirements(Robot.m_driveSubsystem);
     goal = angle;
     if (resetGyro) {
-      Robot.resetPigeonAngle();
+      PigeonSubsystem.resetPigeonAngle();
     }
   }
 
   public PIDDriveRotateCustom(double angle, boolean resetGyro, boolean closestEquivalent) {
-    addRequirements(Robot.DRIVE_SUBSYSTEM);
+    addRequirements(Robot.m_driveSubsystem);
 
 
     if (closestEquivalent)  {
@@ -45,7 +46,7 @@ public class PIDDriveRotateCustom extends CommandBase {
     }
 
     if (resetGyro) {
-      Robot.resetPigeonAngle();
+      PigeonSubsystem.resetPigeonAngle();
     }
   }
 
@@ -60,7 +61,7 @@ public class PIDDriveRotateCustom extends CommandBase {
   public void execute() {
     lastError = error;
 
-    error = goal - Robot.getRawPigeonAngle();
+    error = goal - PigeonSubsystem.getRawPigeonAngle();
 
     // DOESNT WORK WITH PIGEION; INTENDED FOR NAVX USE
     // if (Math.abs(lastError-error) > 180) {
@@ -78,7 +79,7 @@ public class PIDDriveRotateCustom extends CommandBase {
 
     output = (Math.tanh(error/90)*p)+errorSlope+(totalError*i);
 
-    Robot.DRIVE_SUBSYSTEM.set(output, -output);
+    Robot.m_driveSubsystem.set(output, -output);
   }
 
   // Make this return true when this Command no longer needs to run execute()
