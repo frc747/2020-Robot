@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -95,6 +96,10 @@ public class DriveSubsystem extends SubsystemBase {
         gearShifter.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
         gearShifter.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
 
+    }
+
+    public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        return new DifferentialDriveWheelSpeeds(leftDrivePrimary.getSelectedSensorVelocity(), rightDrivePrimary.getSelectedSensorVelocity());
     }
 
     @Override
