@@ -65,7 +65,7 @@ public class OI {
   // Anything to be updated should be done in here
   public void updateOI() {
     
-    System.out.println(Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.getSelectedSensorVelocity());
+    //System.out.println(Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.getSelectedSensorVelocity());
     //System.out.println(Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.getSelectedSensorPosition());
     // Limelight Value SmartDashboard display
     table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -73,6 +73,7 @@ public class OI {
     SmartDashboard.putNumber("LEFT POS: ", Robot.DRIVE_SUBSYSTEM.getLeftPosition());
     SmartDashboard.putNumber("RIGHT POS: ", Robot.DRIVE_SUBSYSTEM.getRightPosition());
 
+    SmartDashboard.putNumber("Intake percent", OI.operatorController.getRawAxis(1));
 
     v = table.getEntry("tv").getDouble(0);
 

@@ -17,6 +17,8 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.DriverStation;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 //import com.kauailabs.navx.frc.AHRS;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
@@ -49,6 +51,8 @@ public class Robot extends TimedRobot {
 	private Command autonomousCommand;
   public Autonomous autonomous;
 
+  public TalonSRX motorNine = new TalonSRX(9);
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -59,6 +63,8 @@ public class Robot extends TimedRobot {
   private static double[] ypr = new double[3];
 
   public static Preferences prefs;
+
+
 
   public static double getPigeonAngle() {
     PIGEON.getYawPitchRoll(ypr);
@@ -217,6 +223,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     CommandScheduler.getInstance().run();
+    double motorSpeed = OI.operatorController.getRawAxis(1);
+    if (motorSpeed < 0.05 && motorSpeed > -0.05) {
+      motorSpeed = 0;
+    }
+    motorNine.set(ControlMode.PercentOutput, motorSpeed);
+    
   }
 
   /**
