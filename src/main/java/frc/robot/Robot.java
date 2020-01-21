@@ -16,7 +16,10 @@ import frc.robot.commands.ShiftDriveCommand;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 //import com.kauailabs.navx.frc.AHRS;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
@@ -44,10 +47,15 @@ public class Robot extends TimedRobot {
   public static boolean autoFrontFaceCargoShip = false;
   public static boolean autoRocket = false;
 
+  public static double RPM = 0.0;
+
   public static String side = "";
  
 	private Command autonomousCommand;
   public Autonomous autonomous;
+
+  public TalonSRX indexerFour = new TalonSRX(4);
+  public TalonSRX intakeNine = new TalonSRX(9);
 
   /**
    * This function is run when the robot is first started up and should be
@@ -99,6 +107,8 @@ public class Robot extends TimedRobot {
 
     //UsbCamera ucamera = CameraServer.getInstance().startAutomaticCapture("cam1", 0);
     //ucamera.setResolution(180, 240);
+
+    SmartDashboard.putNumber("SET RPM : ", 0);
 
     DRIVE_SUBSYSTEM.setDefaultCommand(new ShiftDriveCommand());
     
@@ -208,7 +218,7 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
-  }
+    }
   }
 
   /**
@@ -217,6 +227,15 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     CommandScheduler.getInstance().run();
+    indexerFour.set(ControlMode.PercentOutput, OI.operatorController.getRawAxis(1));
+    intakeNine.set(ControlMode.PercentOutput, -RPM/6380.0);//OI.operatorController.getRawAxis(5));
+    SmartDashboard.putNumber("indexer", OI.operatorController.getRawAxis(1));
+
+    SmartDashboard.putNumber("ACTUAL RPM", intakeNine.getSelectedSensorVelocity()/2048);
+    SmartDashboard.putNumber("Current Draw", intakeNine.getStatorCurrent());
+
+    SmartDashboard.putNumber("intake", OI.operatorController.getRawAxis(5));
+    
   }
 
   /**
