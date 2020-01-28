@@ -15,10 +15,13 @@ import frc.robot.commands.ShiftDriveCommand;
 //import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 //import com.kauailabs.navx.frc.AHRS;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -47,15 +50,13 @@ public class Robot extends TimedRobot {
   public static boolean autoFrontFaceCargoShip = false;
   public static boolean autoRocket = false;
 
-  public static double RPM = 0.0;
-
   public static String side = "";
  
 	private Command autonomousCommand;
   public Autonomous autonomous;
 
   public TalonSRX indexerFour = new TalonSRX(4);
-  public TalonSRX intakeNine = new TalonSRX(9);
+  public TalonSRX shooterThirteen = new TalonSRX(13);
 
   /**
    * This function is run when the robot is first started up and should be
@@ -118,6 +119,9 @@ public class Robot extends TimedRobot {
       m_oi = new OI();
     }
 
+    /*shooterThirteen.configPeakCurrentLimit(45);
+    shooterThirteen.configPeakOutputForward(1);
+    shooterThirteen.configPeakOutputReverse(1);*/
   }
 
   /**e
@@ -209,8 +213,11 @@ public class Robot extends TimedRobot {
     DRIVE_SUBSYSTEM.resetBothEncoders();
     DRIVE_SUBSYSTEM.changeDriveBrakeMode(true);
     operatorControl = true;
+    shooterThirteen.setNeutralMode(NeutralMode.Coast);
     isAutonomous = false;
     isTeleop = true;
+
+    shooterThirteen.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -227,15 +234,24 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     CommandScheduler.getInstance().run();
-    indexerFour.set(ControlMode.PercentOutput, OI.operatorController.getRawAxis(1));
-    intakeNine.set(ControlMode.PercentOutput, -RPM/6380.0);//OI.operatorController.getRawAxis(5));
+    
+    double RPM = 2200.0;//6380.0;
+
+    shooterThirteen.set(ControlMode.PercentOutput, OI.operatorController.getRawAxis(5)*(RPM/6380.0));
+    /*if (OI.operatorController.getRawButton(1)) {
+      shooterThirteen.set(ControlMode.PercentOutput, SHOOTER_PERCENT);
+    } else {
+      shooterThirteen.set(ControlMode.PercentOutput, 0.0);
+
+    }*/
+
     SmartDashboard.putNumber("indexer", OI.operatorController.getRawAxis(1));
 
-    SmartDashboard.putNumber("ACTUAL RPM", intakeNine.getSelectedSensorVelocity()/2048);
-    SmartDashboard.putNumber("Current Draw", intakeNine.getStatorCurrent());
+    SmartDashboard.putNumber("ACTUAL RPM", shooterThirteen.getSelectedSensorVelocity()*600.0/2048.0);
+    SmartDashboard.putNumber("Current Draw", shooterThirteen.getStatorCurrent());
 
-    SmartDashboard.putNumber("intake", OI.operatorController.getRawAxis(5));
-    
+    SmartDashboard.putNumber("Shooter", OI.operatorController.getRawAxis(5));
+
   }
 
   /**
