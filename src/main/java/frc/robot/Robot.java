@@ -11,13 +11,21 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.HoodSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.ShiftDriveCommand;
+import frc.robot.commands.ShooterStick;
 //import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import com.playingwithfusion.TimeOfFlight;
+
+import java.util.concurrent.TimeoutException;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -36,6 +44,8 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 public class Robot extends TimedRobot {
   public static boolean climbBrakeMode;
   public static DriveSubsystem DRIVE_SUBSYSTEM = new DriveSubsystem();
+  public static ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
+  public static HoodSubsystem HOOD_SUBSYSTEM = new HoodSubsystem();
   public static OI m_oi;
 
   public static boolean latchInPos = false;
@@ -50,13 +60,22 @@ public class Robot extends TimedRobot {
   public static boolean autoFrontFaceCargoShip = false;
   public static boolean autoRocket = false;
 
+  private double transferPos;
+  private int count;
+
   public static String side = "";
  
 	private Command autonomousCommand;
   public Autonomous autonomous;
 
   public TalonSRX indexerFour = new TalonSRX(4);
+  public TalonSRX intakeNine = new TalonSRX(9);
   public TalonSRX shooterThirteen = new TalonSRX(13);
+  public TalonSRX transferTwo = new TalonSRX(2);
+
+  DigitalInput IRBreakBeam = new DigitalInput(0);
+
+  TimeOfFlight TOFSensor = new TimeOfFlight(0);
 
   /**
    * This function is run when the robot is first started up and should be
@@ -112,6 +131,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("SET RPM : ", 0);
 
     DRIVE_SUBSYSTEM.setDefaultCommand(new ShiftDriveCommand());
+    SHOOTER_SUBSYSTEM.setDefaultCommand(new ShooterStick());
     
     this.autonomous = new Autonomous();
 
@@ -134,6 +154,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Transfer Pos", transferTwo.getSelectedSensorPosition());
+    if (LimelightSubsystem.validTargets()) {
+      SmartDashboard.putNumber("Distance (trig): ", 1.16545 * ( (83-13.5) / Math.tan(Math.toRadians(12.5+LimelightSubsystem.getVerticalOffset()))) -12.1941) ;
+      SmartDashboard.putNumber("Distance (trig original): ", ( (83-13.5) / Math.tan(Math.toRadians(12.5+LimelightSubsystem.getVerticalOffset())))) ;
+      
+      SmartDashboard.putNumber("Distance (area):", 194.1278201032424 * Math.sqrt(LimelightSubsystem.getArea()));
+    }
+
+    SmartDashboard.putNumber("Shooter", OI.operatorController.getRawAxis(5));
+
+
+    SmartDashboard.putNumber("DISTANCE VIA TOF", TOFSensor.getRange());
+
   }
 
   /**
@@ -234,10 +267,27 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     CommandScheduler.getInstance().run();
-    
-    double RPM = 2200.0;//6380.0;
 
-    shooterThirteen.set(ControlMode.PercentOutput, OI.operatorController.getRawAxis(5)*(RPM/6380.0));
+    //shooterThirteen.set(ControlMode.PercentOutput, OI.operatorController.getRawAxis(1)*(RPM/6380.0));
+    
+    if (OI.operatorController.getRawButton(2)) {
+      indexerFour.set(ControlMode.PercentOutput, -0.75);
+    } else {
+      indexerFour.set(ControlMode.PercentOutput, 0);
+    }
+
+    if (OI.operatorController.getRawButton(1)) {
+      transferTwo.set(ControlMode.PercentOutput, -1.0);
+    } else {
+      transferTwo.set(ControlMode.PercentOutput, 0.0);
+    }
+
+    if (OI.operatorController.getRawButton(4)) {
+      intakeNine.set(ControlMode.PercentOutput, -0.50);
+    } else {
+      intakeNine.set(ControlMode.PercentOutput, 0);
+    }
+
     /*if (OI.operatorController.getRawButton(1)) {
       shooterThirteen.set(ControlMode.PercentOutput, SHOOTER_PERCENT);
     } else {
@@ -247,10 +297,24 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("indexer", OI.operatorController.getRawAxis(1));
 
-    SmartDashboard.putNumber("ACTUAL RPM", shooterThirteen.getSelectedSensorVelocity()*600.0/2048.0);
+    //SmartDashboard.putNumber("ACTUAL RPM", shooterThirteen.getSelectedSensorVelocity()*600.0/2048.0);
     SmartDashboard.putNumber("Current Draw", shooterThirteen.getStatorCurrent());
 
-    SmartDashboard.putNumber("Shooter", OI.operatorController.getRawAxis(5));
+    SmartDashboard.putBoolean("IR Sensor: ", !IRBreakBeam.get());
+
+    /*if (IRBreakBeam.get()) {
+      //count = 0;
+      transferTwo.set(ControlMode.PercentOutput, -1.0);
+    } else {
+      /*count++;
+      if (count == 1) {
+        transferPos = transferTwo.getSelectedSensorPosition();
+      }
+      if (count > 0) {
+        transferTwo.set(ControlMode.PercentOutput, Math.tanh(transferTwo.getSelectedSensorPosition()-transferPos));
+      }
+      transferTwo.set(ControlMode.PercentOutput, 1.0);
+    }*/
 
   }
 
