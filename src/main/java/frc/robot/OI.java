@@ -8,8 +8,16 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.*;
-
+import frc.robot.subsystems.HoodSubsystem;
+import frc.robot.subsystems.LIDARSubsystem;
+import frc.robot.subsystems.TransferSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 public class OI {
+
+  public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
+  public static final TransferSubsystem TRANSFER_SUBSYSTEM = new TransferSubsystem();
+  public static final HoodSubsystem HOOD_SUBSYSTEM = new HoodSubsystem();
+  public static final LIDARSubsystem LIDAR_SUBSYSTEM = new LIDARSubsystem(I2C.Port.kOnboard);
 
   public static boolean shiftHigh = false;
 
@@ -54,8 +62,9 @@ public class OI {
   @SuppressWarnings("resource")
   public OI() {
 
-    LEFT_STICK_TRIG.toggleWhenPressed(new PIDDriveInches(100, false));
 
+    LEFT_STICK_TRIG.toggleWhenPressed(new PIDDriveInches(100, false));
+    B_BUTTON.whileHeld(new RunTransfer(TRANSFER_SUBSYSTEM));
     // Ignore this error, no known conflict
     new Notifier(() -> updateOI()).startPeriodic(.1);
     // OI.table.getEntry("stream").setDouble(0);
@@ -93,5 +102,17 @@ public class OI {
 
     SmartDashboard.putNumber("PIGEON ANGLE", Robot.getPigeonAngle());
     SmartDashboard.putNumber("RAW PIGEON ANGLE", Robot.getRawPigeonAngle());
+  }
+
+  public ShooterSubsystem getShooterSubsystem() {
+    return SHOOTER_SUBSYSTEM;
+  }
+
+  public static HoodSubsystem getHoodSubsystem() {
+    return HOOD_SUBSYSTEM;
+  }
+
+  public TransferSubsystem getTransferSubsystem() {
+    return TRANSFER_SUBSYSTEM;
   }
 }

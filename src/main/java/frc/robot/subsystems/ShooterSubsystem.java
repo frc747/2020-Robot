@@ -18,15 +18,13 @@ public class ShooterSubsystem extends SubsystemBase {
  
   TalonFX shooterMotor = new TalonFX(13);
 
-  double kP = 0.2;//0.13;
+  double kP = 0.13;
   double kF = 0.04592;
 
   public ShooterSubsystem() {
     shooterMotor.setInverted(false);
     shooterMotor.setSensorPhase(false);
     shooterMotor.config_kP(0, kP);
-    shooterMotor.config_kI(0, 0);
-    shooterMotor.config_kD(0, 0);
     shooterMotor.config_kF(0, kF);
   }
 
@@ -42,7 +40,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setRPM(double rpm) {
     // double output = rpm/6380;
     // shooterMotor.set(ControlMode.Velocity, output);
-    double output = /*(rpm*2048)/600;.//correct*/(rpm*2048.0)/600.0;
+    double output = /*(rpm*2048)/600;.//correct*/(rpm*2048)/600;
     shooterMotor.set(ControlMode.Velocity, output);
   }
 
@@ -51,6 +49,6 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public double getRPM() {
-    return (shooterMotor.getSelectedSensorVelocity()*600.0)/2048.0;
+    return (shooterMotor.getSelectedSensorVelocity()*600)/2048;
   }
 }

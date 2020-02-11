@@ -11,11 +11,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.ShiftDriveCommand;
-import frc.robot.commands.ShooterStick;
 //import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Preferences;
@@ -33,6 +30,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 //import com.kauailabs.navx.frc.AHRS;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import frc.robot.commands.HoodToAngle;
+import frc.robot.commands.ShooterStick;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -44,8 +43,6 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 public class Robot extends TimedRobot {
   public static boolean climbBrakeMode;
   public static DriveSubsystem DRIVE_SUBSYSTEM = new DriveSubsystem();
-  public static ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
-  public static HoodSubsystem HOOD_SUBSYSTEM = new HoodSubsystem();
   public static OI m_oi;
 
   public static boolean latchInPos = false;
@@ -122,6 +119,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    
+    OI.SHOOTER_SUBSYSTEM.setDefaultCommand(new ShooterStick(OI.SHOOTER_SUBSYSTEM));
+    OI.HOOD_SUBSYSTEM.setDefaultCommand(new HoodToAngle());//OI.LIDAR_SUBSYSTEM.getDistance(), OI.HOOD_SUBSYSTEM));
+
+    OI.LIDAR_SUBSYSTEM.startMeasuring();
+
     prefs = Preferences.getInstance();
     DRIVE_SUBSYSTEM.resetBothEncoders();
 
@@ -131,7 +134,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("SET RPM : ", 0);
 
     DRIVE_SUBSYSTEM.setDefaultCommand(new ShiftDriveCommand());
-    SHOOTER_SUBSYSTEM.setDefaultCommand(new ShooterStick());
     
     this.autonomous = new Autonomous();
 
@@ -166,6 +168,8 @@ public class Robot extends TimedRobot {
 
 
     SmartDashboard.putNumber("DISTANCE VIA TOF", TOFSensor.getRange());
+
+    SmartDashboard.putNumber("LIDAR Distance", OI.LIDAR_SUBSYSTEM.getDistance());
 
   }
 
@@ -244,7 +248,7 @@ public class Robot extends TimedRobot {
     OI.table.getEntry("pipeline").setDouble(0.0);
     resetPigeonAngle();
     DRIVE_SUBSYSTEM.resetBothEncoders();
-    DRIVE_SUBSYSTEM.changeDriveBrakeMode(true);
+    DRIVE_SUBSYSTEM.changeDriveBrakeMode(false/*true*/);
     operatorControl = true;
     shooterThirteen.setNeutralMode(NeutralMode.Coast);
     isAutonomous = false;
@@ -270,7 +274,7 @@ public class Robot extends TimedRobot {
 
     //shooterThirteen.set(ControlMode.PercentOutput, OI.operatorController.getRawAxis(1)*(RPM/6380.0));
     
-    if (OI.operatorController.getRawButton(2)) {
+    /*if (OI.operatorController.getRawButton(2)) {
       indexerFour.set(ControlMode.PercentOutput, -0.75);
     } else {
       indexerFour.set(ControlMode.PercentOutput, 0);
@@ -286,7 +290,7 @@ public class Robot extends TimedRobot {
       intakeNine.set(ControlMode.PercentOutput, -0.50);
     } else {
       intakeNine.set(ControlMode.PercentOutput, 0);
-    }
+    }*/
 
     /*if (OI.operatorController.getRawButton(1)) {
       shooterThirteen.set(ControlMode.PercentOutput, SHOOTER_PERCENT);

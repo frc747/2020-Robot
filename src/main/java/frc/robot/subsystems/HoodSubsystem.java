@@ -16,7 +16,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class HoodSubsystem extends SubsystemBase {
   
-  public TalonSRX hoodMotor = new TalonSRX(3);
+  public TalonSRX hoodMotor = new TalonSRX(10);
 
   public HoodSubsystem() {
     hoodMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);

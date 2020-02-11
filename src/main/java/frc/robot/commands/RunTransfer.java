@@ -9,17 +9,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.subsystems.HoodSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.OI;
-public class HoodStick extends CommandBase {
-  
-  HoodSubsystem subsystem;
+import frc.robot.subsystems.TransferSubsystem;
 
-  double max = .1;
+public class RunTransfer extends CommandBase {
+ 
+  TransferSubsystem subsystem;
 
-  public HoodStick(HoodSubsystem sub) {
+  public RunTransfer(TransferSubsystem sub) {
     subsystem = sub;
     addRequirements(subsystem);
   }
@@ -32,26 +28,19 @@ public class HoodStick extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    double leftStick = OI.operatorController.getRawAxis(1);
-
-    if(leftStick > max) {
-      leftStick = max;
-    } else if (leftStick < -max) {
-      leftStick = -max;
-    }
-
-    subsystem.set(leftStick);
+    subsystem.set(-.8);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    subsystem.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+  
     return false;
   }
 }
