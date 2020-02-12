@@ -37,7 +37,7 @@ public class LIDARSubsystem extends SubsystemBase {
   }
 
   public double getDistance() {
-    return 0.393701 * readShort(0x8F);
+    return (0.393701 * readShort(0x8F) - 6.5);
   }
 
   private int writeRegister(int address, int value) {
