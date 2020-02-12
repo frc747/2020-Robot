@@ -65,7 +65,6 @@ public class OI {
   // Anything to be updated should be done in here
   public void updateOI() {
     
-    System.out.println(Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.getSelectedSensorVelocity());
     //System.out.println(Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.getSelectedSensorPosition());
     // Limelight Value SmartDashboard display
     table = NetworkTableInstance.getDefault().getTable("limelight");

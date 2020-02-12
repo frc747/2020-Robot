@@ -11,12 +11,36 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveSubsystem;
+<<<<<<< Updated upstream
 import frc.robot.commands.ShiftDriveCommand;
+=======
+import frc.robot.subsystems.HoodSubsystem;
+import frc.robot.subsystems.LIDARSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.commands.HoodToAngle;
+import frc.robot.commands.ShiftDriveCommand;
+import frc.robot.commands.ShooterStick;
+import frc.robot.commands.TankDriveCommand;
+>>>>>>> Stashed changes
 //import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.DriverStation;
+<<<<<<< Updated upstream
 
+=======
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.concurrent.TimeoutException;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+>>>>>>> Stashed changes
 //import com.kauailabs.navx.frc.AHRS;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
@@ -30,6 +54,12 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 public class Robot extends TimedRobot {
   public static boolean climbBrakeMode;
   public static DriveSubsystem DRIVE_SUBSYSTEM = new DriveSubsystem();
+<<<<<<< Updated upstream
+=======
+  public static ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
+  public static HoodSubsystem HOOD_SUBSYSTEM = new HoodSubsystem();
+  public static LIDARSubsystem LIDAR_SUBSYSTEM = new LIDARSubsystem(I2C.Port.kOnboard);
+>>>>>>> Stashed changes
   public static OI m_oi;
 
   public static boolean latchInPos = false;
@@ -49,6 +79,19 @@ public class Robot extends TimedRobot {
 	private Command autonomousCommand;
   public Autonomous autonomous;
 
+<<<<<<< Updated upstream
+=======
+  public TalonSRX indexerFour = new TalonSRX(4);
+  public TalonSRX intakeNine = new TalonSRX(9);
+  public TalonSRX shooterThirteen = new TalonSRX(13);
+  public TalonSRX transferTwo = new TalonSRX(2);
+
+  public TalonFX intakeLiftRightThree = new TalonFX(3);
+  public TalonFX intakeLiftLeftTwelve = new TalonFX(12);
+
+  DigitalInput IRBreakBeam = new DigitalInput(0);
+
+>>>>>>> Stashed changes
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -100,14 +143,34 @@ public class Robot extends TimedRobot {
     //UsbCamera ucamera = CameraServer.getInstance().startAutomaticCapture("cam1", 0);
     //ucamera.setResolution(180, 240);
 
+<<<<<<< Updated upstream
     DRIVE_SUBSYSTEM.setDefaultCommand(new ShiftDriveCommand());
     
+=======
+    SmartDashboard.putNumber("SET RPM : ", 0);
+
+    DRIVE_SUBSYSTEM.setDefaultCommand(new TankDriveCommand());
+    SHOOTER_SUBSYSTEM.setDefaultCommand(new ShooterStick());
+    HOOD_SUBSYSTEM.setDefaultCommand(new HoodToAngle(0));
+
+>>>>>>> Stashed changes
     this.autonomous = new Autonomous();
 
     if(m_oi == null) {
       m_oi = new OI();
     }
 
+<<<<<<< Updated upstream
+=======
+    /*shooterThirteen.configPeakCurrentLimit(45);
+    shooterThirteen.configPeakOutputForward(1);
+    shooterThirteen.configPeakOutputReverse(1);*/
+
+    intakeLiftLeftTwelve.follow(intakeLiftRightThree);
+    intakeLiftLeftTwelve.setInverted(true);
+
+    LIDAR_SUBSYSTEM.startMeasuring();
+>>>>>>> Stashed changes
   }
 
   /**e
@@ -120,6 +183,23 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+<<<<<<< Updated upstream
+=======
+    SmartDashboard.putNumber("Transfer Pos", transferTwo.getSelectedSensorPosition());
+    if (LimelightSubsystem.validTargets()) {
+      SmartDashboard.putNumber("Distance (trig): ", 1.16545 * ( (83-13.5) / Math.tan(Math.toRadians(12.5+LimelightSubsystem.getVerticalOffset()))) -12.1941) ;
+      SmartDashboard.putNumber("Distance (trig original): ", ( (83-13.5) / Math.tan(Math.toRadians(12.5+LimelightSubsystem.getVerticalOffset())))) ;
+      
+      SmartDashboard.putNumber("Distance (area):", 194.1278201032424 * Math.sqrt(LimelightSubsystem.getArea()));
+    }
+
+    SmartDashboard.putNumber("Shooter", OI.operatorController.getRawAxis(5));
+
+    SmartDashboard.putNumber("ANGLE", Math.toDegrees(Math.atan((2*(98.25-20))/((0.393701 * LIDAR_SUBSYSTEM.getDistance()) - 8))));
+
+    SmartDashboard.putNumber("LIDAR Distance", (0.393701 * LIDAR_SUBSYSTEM.getDistance()) - 8);
+
+>>>>>>> Stashed changes
   }
 
   /**
@@ -217,6 +297,64 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     CommandScheduler.getInstance().run();
+<<<<<<< Updated upstream
+=======
+
+    //shooterThirteen.set(ControlMode.PercentOutput, OI.operatorController.getRawAxis(1)*(RPM/6380.0));
+    
+    if (OI.operatorController.getRawButton(2)) {
+      indexerFour.set(ControlMode.PercentOutput, -0.75);
+    } else {
+      indexerFour.set(ControlMode.PercentOutput, 0);
+    }
+
+    if (OI.operatorController.getRawButton(1)) {
+      transferTwo.set(ControlMode.PercentOutput, -1.0);
+    } else {
+      transferTwo.set(ControlMode.PercentOutput, 0.0);
+    }
+
+    if (OI.operatorController.getRawButton(4)) {
+      intakeNine.set(ControlMode.PercentOutput, -0.50);
+    } else {
+      intakeNine.set(ControlMode.PercentOutput, 0);
+    }
+
+    double limit = 0.25;
+
+    intakeLiftRightThree.set(ControlMode.PercentOutput, limit * OI.operatorController.getRawAxis(5));
+
+    
+
+    /*if (OI.operatorController.getRawButton(1)) {
+      shooterThirteen.set(ControlMode.PercentOutput, SHOOTER_PERCENT);
+    } else {
+      shooterThirteen.set(ControlMode.PercentOutput, 0.0);
+
+    }*/
+
+    SmartDashboard.putNumber("indexer", OI.operatorController.getRawAxis(1));
+
+    //SmartDashboard.putNumber("ACTUAL RPM", shooterThirteen.getSelectedSensorVelocity()*600.0/2048.0);
+    SmartDashboard.putNumber("Current Draw", shooterThirteen.getStatorCurrent());
+
+    SmartDashboard.putBoolean("IR Sensor: ", !IRBreakBeam.get());
+
+    /*if (IRBreakBeam.get()) {
+      //count = 0;
+      transferTwo.set(ControlMode.PercentOutput, -1.0);
+    } else {
+      /* count++;
+      if (count == 1) {
+        transferPos = transferTwo.getSelectedSensorPosition();
+      }
+      if (count > 0) {
+        transferTwo.set(ControlMode.PercentOutput, Math.tanh(transferTwo.getSelectedSensorPosition()-transferPos));
+      }
+      transferTwo.set(ControlMode.PercentOutput, 1.0);
+    }*/
+
+>>>>>>> Stashed changes
   }
 
   /**

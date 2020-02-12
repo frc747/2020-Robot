@@ -33,8 +33,10 @@ public class TankDriveCommand extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    double left = -OI.leftStick.getRawAxis(1);
-    double right = -OI.rightStick.getRawAxis(1);
+    /*double left = -OI.leftStick.getRawAxis(1);
+    double right = -OI.rightStick.getRawAxis(1);*/
+    double left = OI.rightStick.getRawAxis(1);
+    double right = OI.leftStick.getRawAxis(1);
 
     if (Math.abs(left) < 0.1) {
         left = 0;
