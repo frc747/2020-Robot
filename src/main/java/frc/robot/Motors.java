@@ -15,9 +15,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
  */
 public class Motors {
 
-    public static TalonFX rightDrivePrimary = new TalonFX(0);
+    public static TalonFX leftDrivePrimary = new TalonFX(0);
 
-    public static TalonFX rightDriveBack = new TalonFX(1);
+    public static TalonFX leftDriveBack = new TalonFX(1);
 
     public static TalonSRX transfer = new TalonSRX(2);
 
@@ -43,8 +43,8 @@ public class Motors {
 
     public static TalonFX shooter = new TalonFX(13);
 
-    public static TalonFX leftDriveBack = new TalonFX(14);
+    public static TalonFX rightDriveBack = new TalonFX(14);
 
-    public static TalonFX leftDrivePrimary = new TalonFX(15);
+    public static TalonFX rightDrivePrimary = new TalonFX(15);
 
 }

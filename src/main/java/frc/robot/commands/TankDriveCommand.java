@@ -34,19 +34,22 @@ public class TankDriveCommand extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    double left = -OI.leftStick.getRawAxis(1);
-    double right = -OI.rightStick.getRawAxis(1);
+    double speed = 1.0;
 
-    if (Math.abs(left) < 0.1) {
-        left = 0;
-    }
-    if (Math.abs(right) < 0.1) {
-        right = 0;
-    }
+    // double left = -OI.leftStick.getRawAxis(1);
+    // double right = -OI.rightStick.getRawAxis(1);
+
+    // if (Math.abs(left) < 0.1) {
+    //     left = 0;
+    // }
+    // if (Math.abs(right) < 0.1) {
+    //     right = 0;
+    // }    
+    // Robot.DRIVE_SUBSYSTEM.set(left * speed, right * speed);    
     
-    double speed = 1;
-    
-    Robot.DRIVE_SUBSYSTEM.set(left * speed, right * speed);
+    double leftValue = applyDeadband(OI.leftStick.getRawAxis(1), 0.1);
+    double rightValue = applyDeadband(OI.rightStick.getRawAxis(1), 0.1);
+    Robot.DRIVE_SUBSYSTEM.set(leftValue * speed, rightValue * speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -59,5 +62,17 @@ public class TankDriveCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     
+  }
+
+  private double applyDeadband(double value, double deadband) {
+    if (Math.abs(value) > deadband) {
+      if (value > 0.0) {
+        return (value - deadband) / (1.0 - deadband);
+      } else {
+        return (value + deadband) / (1.0 - deadband);
+      }
+    } else {
+      return 0.0;
+    }
   }
 }

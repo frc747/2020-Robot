@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import frc.robot.Motors;
-import frc.robot.commands.ShiftDriveCommand;
 // import frc.robot.commands.TankDriveCommand;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
