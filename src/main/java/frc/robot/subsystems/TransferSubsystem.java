@@ -11,10 +11,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Motors;
 
 public class TransferSubsystem extends SubsystemBase {
  
-  TalonSRX transferMotor = new TalonSRX(2);
+  //TalonSRX transferMotor = new TalonSRX(2);
 
   public TransferSubsystem() {
 
@@ -26,10 +27,10 @@ public class TransferSubsystem extends SubsystemBase {
   }
 
   public void set(double output) {
-    transferMotor.set(ControlMode.PercentOutput, output);
+    Motors.transfer.set(ControlMode.PercentOutput, output);
   }
 
   public void stop() {
-    transferMotor.set(ControlMode.PercentOutput, 0);
+    Motors.transfer.set(ControlMode.PercentOutput, 0);
   }
 }

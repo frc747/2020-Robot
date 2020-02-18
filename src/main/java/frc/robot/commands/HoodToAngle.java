@@ -131,8 +131,8 @@ public class HoodToAngle extends CommandBase {
   }
 
   public double angleFromDistance(double distance) {
-    if(distance > 25) {
-      return Math.toDegrees( Math.atan( ( 2 * (98.25 - 20.375/* robot height */) ) / distance ) );
+    if(distance > 35) {
+      return Math.toDegrees( Math.atan( ( 1.45 * (98.25 - 20.375/* robot height */) ) / distance ) );
     } else {
       return 100;
     }

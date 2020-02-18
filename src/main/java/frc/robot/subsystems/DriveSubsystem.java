@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import frc.robot.Motors;
 import frc.robot.commands.ShiftDriveCommand;
 // import frc.robot.commands.TankDriveCommand;
 
@@ -11,16 +12,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
-
-    public TalonFX leftDrivePrimary = new TalonFX(15);
-
-	public TalonFX leftDriveBack = new TalonFX(14);
-
-    public TalonFX rightDrivePrimary = new TalonFX(0);
-
-    public TalonFX rightDriveBack = new TalonFX(1);
-
-    public TalonSRX gearShifter = new TalonSRX(6);
 
     private static final int pidIdx = 0;
     private static final int timeoutMs = 10;
@@ -47,86 +38,72 @@ public class DriveSubsystem extends SubsystemBase {
 
         super();
 
-        
+        Motors.leftDrivePrimary.setInverted(true);
+        Motors.leftDriveBack.setInverted(true);
 
-        gearShifter.setInverted(false);
-        gearShifter.setSensorPhase(true);
+        Motors.rightDrivePrimary.setInverted(false);
+        Motors.rightDriveBack.setInverted(false);
 
-        leftDrivePrimary.setInverted(true);
-        leftDriveBack.setInverted(true);
+        Motors.leftDriveBack.set(ControlMode.Follower, Motors.leftDrivePrimary.getDeviceID());
+        Motors.rightDriveBack.set(ControlMode.Follower, Motors.rightDrivePrimary.getDeviceID());
 
-        rightDrivePrimary.setInverted(false);
-        rightDriveBack.setInverted(false);
+        Motors.leftDrivePrimary.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.IntegratedSensor, pidIdx, timeoutMs);
+        Motors.rightDrivePrimary.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.IntegratedSensor, pidIdx, timeoutMs);
 
-        leftDriveBack.set(ControlMode.Follower, leftDrivePrimary.getDeviceID());
-        rightDriveBack.set(ControlMode.Follower, rightDrivePrimary.getDeviceID());
+        Motors.leftDrivePrimary.configMotionCruiseVelocity(7500, timeoutMs);
+        Motors.leftDrivePrimary.configMotionAcceleration(20500, timeoutMs);
+        Motors.rightDrivePrimary.configMotionCruiseVelocity(7500, timeoutMs);
+        Motors.rightDrivePrimary.configMotionAcceleration(20000, timeoutMs);
 
-        leftDrivePrimary.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.IntegratedSensor, pidIdx, timeoutMs);
-        rightDrivePrimary.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.IntegratedSensor, pidIdx, timeoutMs);
+        Motors.leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
 
-        
-        gearShifter.configSelectedFeedbackSensor(com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, pidIdx, timeoutMs);
-
-        leftDrivePrimary.configMotionCruiseVelocity(7500, timeoutMs);
-        leftDrivePrimary.configMotionAcceleration(20500, timeoutMs);
-        rightDrivePrimary.configMotionCruiseVelocity(7500, timeoutMs);
-        rightDrivePrimary.configMotionAcceleration(20000, timeoutMs);
-
-        leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-        leftDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-        leftDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-        leftDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
-        rightDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-        rightDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-        rightDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-        rightDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
-
-        leftDriveBack.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-        leftDriveBack.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-        leftDriveBack.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-        leftDriveBack.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
-        rightDriveBack.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-        rightDriveBack.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-        rightDriveBack.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-        rightDriveBack.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
-
-
-        gearShifter.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-        gearShifter.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-        gearShifter.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-        gearShifter.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDriveBack.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDriveBack.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDriveBack.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDriveBack.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDriveBack.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDriveBack.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDriveBack.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDriveBack.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
 
     }
 
     public void updateSpeeds() {
-        leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-        leftDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-        leftDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-        leftDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
-        rightDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-        rightDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-        rightDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-        rightDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
     }
 
     public void set(double left, double right) {
 
-        leftDriveBack.set(ControlMode.Follower, leftDrivePrimary.getDeviceID());
-        rightDriveBack.set(ControlMode.Follower, rightDrivePrimary.getDeviceID());
+        Motors.leftDriveBack.set(ControlMode.Follower, Motors.leftDrivePrimary.getDeviceID());
+        Motors.rightDriveBack.set(ControlMode.Follower, Motors.rightDrivePrimary.getDeviceID());
 
-        leftDrivePrimary.set(ControlMode.PercentOutput, left);
-        rightDrivePrimary.set(ControlMode.PercentOutput, right);
+        Motors.leftDrivePrimary.set(ControlMode.PercentOutput, left);
+        Motors.rightDrivePrimary.set(ControlMode.PercentOutput, right);
     }
 
     public void setPID(double leftTicks, double rightTicks) {
         
-        leftDriveBack.set(ControlMode.Follower, leftDrivePrimary.getDeviceID());
-        rightDriveBack.set(ControlMode.Follower, rightDrivePrimary.getDeviceID());
+        Motors.leftDriveBack.set(ControlMode.Follower, Motors.leftDrivePrimary.getDeviceID());
+        Motors.rightDriveBack.set(ControlMode.Follower, Motors.rightDrivePrimary.getDeviceID());
 
         
 
-        leftDrivePrimary.set(ControlMode.MotionMagic, leftTicks);
-        rightDrivePrimary.set(ControlMode.MotionMagic, rightTicks);
+        Motors.leftDrivePrimary.set(ControlMode.MotionMagic, leftTicks);
+        Motors.rightDrivePrimary.set(ControlMode.MotionMagic, rightTicks);
     }
 
     public double convertRevsToInches(double revs) {
@@ -166,22 +143,22 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void changeControlMode(ControlMode mode) {
-    	leftDrivePrimary.setSelectedSensorPosition(0, pidIdx, timeoutMs);
-    	rightDrivePrimary.setSelectedSensorPosition(0, pidIdx, timeoutMs);
-        leftDrivePrimary.set(mode, 0);
-        rightDrivePrimary.set(mode, 0);
+    	Motors.leftDrivePrimary.setSelectedSensorPosition(0, pidIdx, timeoutMs);
+    	Motors.rightDrivePrimary.setSelectedSensorPosition(0, pidIdx, timeoutMs);
+        Motors.leftDrivePrimary.set(mode, 0);
+        Motors.rightDrivePrimary.set(mode, 0);
     }
 
     public void stop() {
-        ControlMode mode = leftDrivePrimary.getControlMode();
+        ControlMode mode = Motors.leftDrivePrimary.getControlMode();
 
         double left = 0;
         double right = 0;
 
         switch (mode) {
         case MotionMagic:
-            left = leftDrivePrimary.getSelectedSensorPosition(pidIdx);
-            right = rightDrivePrimary.getSelectedSensorPosition(pidIdx);
+            left = Motors.leftDrivePrimary.getSelectedSensorPosition(pidIdx);
+            right = Motors.rightDrivePrimary.getSelectedSensorPosition(pidIdx);
             break;
         case PercentOutput:
         case Velocity:
@@ -196,15 +173,15 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void changeDriveBrakeMode(boolean enabled) {
         if (enabled) {
-          leftDrivePrimary.setNeutralMode(NeutralMode.Brake);
-          leftDriveBack.setNeutralMode(NeutralMode.Brake);
-          rightDrivePrimary.setNeutralMode(NeutralMode.Brake);
-          rightDriveBack.setNeutralMode(NeutralMode.Brake);
+          Motors.leftDrivePrimary.setNeutralMode(NeutralMode.Brake);
+          Motors.leftDriveBack.setNeutralMode(NeutralMode.Brake);
+          Motors.rightDrivePrimary.setNeutralMode(NeutralMode.Brake);
+          Motors.rightDriveBack.setNeutralMode(NeutralMode.Brake);
         } else {
-            leftDrivePrimary.setNeutralMode(NeutralMode.Coast);
-            leftDriveBack.setNeutralMode(NeutralMode.Coast);
-            rightDrivePrimary.setNeutralMode(NeutralMode.Coast);
-            rightDriveBack.setNeutralMode(NeutralMode.Coast);
+            Motors.leftDrivePrimary.setNeutralMode(NeutralMode.Coast);
+            Motors.leftDriveBack.setNeutralMode(NeutralMode.Coast);
+            Motors.rightDrivePrimary.setNeutralMode(NeutralMode.Coast);
+            Motors.rightDriveBack.setNeutralMode(NeutralMode.Coast);
         }
     
       }
@@ -219,7 +196,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetLeftEncoder() {
         this.enableVBusControl();
-        leftDrivePrimary.setSelectedSensorPosition(0);
+        Motors.leftDrivePrimary.setSelectedSensorPosition(0);
     	try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
@@ -230,7 +207,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetRightEncoder() {
         this.enableVBusControl();
-        rightDrivePrimary.setSelectedSensorPosition(0);
+        Motors.rightDrivePrimary.setSelectedSensorPosition(0);
     	try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
@@ -241,8 +218,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetBothEncoders(){
         this.enableVBusControl();
-    	this.rightDrivePrimary.setSelectedSensorPosition(0);
-    	this.leftDrivePrimary.setSelectedSensorPosition(0);
+    	Motors.rightDrivePrimary.setSelectedSensorPosition(0);
+    	Motors.leftDrivePrimary.setSelectedSensorPosition(0);
     	try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
@@ -252,22 +229,22 @@ public class DriveSubsystem extends SubsystemBase {
     }
         //get the current encoder position regardless of whether it is the current feedback device
     public double getLeftAbsolutePosition() {
-        return leftDrivePrimary.getSelectedSensorPosition()*scalar;
+        return Motors.leftDrivePrimary.getSelectedSensorPosition()*scalar;
         
     }
 
     public double getRightAbsolutePosition() {
-        return rightDrivePrimary.getSelectedSensorPosition()*scalar;
+        return Motors.rightDrivePrimary.getSelectedSensorPosition()*scalar;
         
     }
 
     public double getLeftPosition() {
-        return leftDrivePrimary.getSelectedSensorPosition()*scalar;
+        return Motors.leftDrivePrimary.getSelectedSensorPosition()*scalar;
         
     }
 
     public double getRightPosition() {
-        return rightDrivePrimary.getSelectedSensorPosition()*scalar;
+        return Motors.rightDrivePrimary.getSelectedSensorPosition()*scalar;
         
     }
 

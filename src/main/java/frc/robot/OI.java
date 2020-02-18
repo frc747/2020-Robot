@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.*;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.LIDARSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.TransferSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 public class OI {
@@ -65,17 +66,20 @@ public class OI {
 
     LEFT_STICK_TRIG.toggleWhenPressed(new PIDDriveInches(100, false));
     B_BUTTON.whileHeld(new RunTransfer(TRANSFER_SUBSYSTEM));
+    
+    START_BUTTON.whenPressed(new PIDDriveRotateCustom(LimelightSubsystem.getHorizontalOffset(), true));
+    Y_BUTTON.whileHeld(new LimelightPreviewCommand());
+
     // Ignore this error, no known conflict
     new Notifier(() -> updateOI()).startPeriodic(.1);
     // OI.table.getEntry("stream").setDouble(0);
+
 
   }
 
   // Anything to be updated should be done in here
   public void updateOI() {
     
-    System.out.println(Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.getSelectedSensorVelocity());
-    //System.out.println(Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.getSelectedSensorPosition());
     // Limelight Value SmartDashboard display
     table = NetworkTableInstance.getDefault().getTable("limelight");
         

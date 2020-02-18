@@ -122,6 +122,7 @@ public class Robot extends TimedRobot {
     
     OI.SHOOTER_SUBSYSTEM.setDefaultCommand(new ShooterStick(OI.SHOOTER_SUBSYSTEM));
     OI.HOOD_SUBSYSTEM.setDefaultCommand(new HoodToAngle());//OI.LIDAR_SUBSYSTEM.getDistance(), OI.HOOD_SUBSYSTEM));
+    DRIVE_SUBSYSTEM.setDefaultCommand(new ShiftDriveCommand());
 
     OI.LIDAR_SUBSYSTEM.startMeasuring();
 
@@ -133,7 +134,6 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("SET RPM : ", 0);
 
-    DRIVE_SUBSYSTEM.setDefaultCommand(new ShiftDriveCommand());
     
     this.autonomous = new Autonomous();
 

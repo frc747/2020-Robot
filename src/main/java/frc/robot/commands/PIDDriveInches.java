@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Motors;
 import frc.robot.OI;
 import frc.robot.Robot;
 
@@ -62,41 +63,41 @@ public class PIDDriveInches extends CommandBase {
 
         //Robot.DRIVE_SUBSYSTEM.enablePositionControl();
         
-        Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.config_kP(pidIdx, driveP, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.config_kP(pidIdx, driveP, timeoutMs);
+        Motors.leftDrivePrimary.config_kP(pidIdx, driveP, timeoutMs);
+        Motors.rightDrivePrimary.config_kP(pidIdx, driveP, timeoutMs);
         
-        Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.config_kI(pidIdx, driveI, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.config_kI(pidIdx, driveI, timeoutMs);
+        Motors.leftDrivePrimary.config_kI(pidIdx, driveI, timeoutMs);
+        Motors.rightDrivePrimary.config_kI(pidIdx, driveI, timeoutMs);
         
-        Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.config_kD(pidIdx, driveD, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.config_kD(pidIdx, driveD, timeoutMs);
+        Motors.leftDrivePrimary.config_kD(pidIdx, driveD, timeoutMs);
+        Motors.rightDrivePrimary.config_kD(pidIdx, driveD, timeoutMs);
         
-        Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.config_kF(pidIdx, driveF, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.config_kF(pidIdx, driveF, timeoutMs);
+        Motors.leftDrivePrimary.config_kF(pidIdx, driveF, timeoutMs);
+        Motors.rightDrivePrimary.config_kF(pidIdx, driveF, timeoutMs);
         
         // where do you plug in the error for the falcons
-        Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.leftDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDrivePrimary.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
+        Motors.rightDrivePrimary.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
                 
-        Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
-        Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
+        Motors.leftDrivePrimary.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
+        Motors.rightDrivePrimary.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
                 
         if (driveInches > 30) {
-            Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configMotionCruiseVelocity(10000, timeoutMs);
-            Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configMotionAcceleration(20000, timeoutMs);
-            Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configMotionCruiseVelocity(10000, timeoutMs);
-            Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configMotionAcceleration(20000, timeoutMs);
+            Motors.leftDrivePrimary.configMotionCruiseVelocity(10000, timeoutMs);
+            Motors.leftDrivePrimary.configMotionAcceleration(20000, timeoutMs);
+            Motors.rightDrivePrimary.configMotionCruiseVelocity(10000, timeoutMs);
+            Motors.rightDrivePrimary.configMotionAcceleration(20000, timeoutMs);
         } else if (driveInches <= 30) {
-            Robot.DRIVE_SUBSYSTEM.leftDrivePrimary.configMotionCruiseVelocity(7500, timeoutMs);
-            Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configMotionCruiseVelocity(7500, timeoutMs);
-            Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configMotionAcceleration(15000, timeoutMs);
-            Robot.DRIVE_SUBSYSTEM.rightDrivePrimary.configMotionAcceleration(15000, timeoutMs);
+            Motors.leftDrivePrimary.configMotionCruiseVelocity(7500, timeoutMs);
+            Motors.leftDrivePrimary.configMotionAcceleration(15000, timeoutMs);
+            Motors.rightDrivePrimary.configMotionCruiseVelocity(7500, timeoutMs);
+            Motors.rightDrivePrimary.configMotionAcceleration(15000, timeoutMs);
         }
         Robot.DRIVE_SUBSYSTEM.changeControlMode(ControlMode.MotionMagic);
         Robot.DRIVE_SUBSYSTEM.setPID(driveTicks, driveTicks);

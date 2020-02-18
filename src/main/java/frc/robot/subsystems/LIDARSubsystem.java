@@ -10,10 +10,19 @@ package frc.robot.subsystems;
 import java.nio.ByteBuffer;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Motors;
+import frc.robot.Robot;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.hal.I2CJNI;
 
 public class LIDARSubsystem extends SubsystemBase {
+
+
+  private double savedDistance;
+  boolean firstStart = true;
+  boolean isRobotMovingCheck = true;
+  private double leftSpeed = 0;
+  private double rightSpeed = 0;
 
   private static final byte mDeviceAddress = 0x62;
 
@@ -22,6 +31,7 @@ public class LIDARSubsystem extends SubsystemBase {
   private final ByteBuffer mBuffer = ByteBuffer.allocateDirect(2);
 
   public LIDARSubsystem(Port port) {
+    firstStart = true;
     mPort = (byte) port.value;
     I2CJNI.i2CInitialize(mPort);
   }
@@ -37,7 +47,21 @@ public class LIDARSubsystem extends SubsystemBase {
   }
 
   public double getDistance() {
-    return (0.393701 * readShort(0x8F) - 6.5);
+    if(firstStart) {
+      savedDistance = (0.393701 * readShort(0x8F) - 6.5);
+      firstStart = false;
+    }
+
+    if(isRobotMoving()) {
+      isRobotMovingCheck = true;
+      return (0.393701 * readShort(0x8F) - 6.5);
+    } else {
+      if(isRobotMovingCheck) {
+        savedDistance = (0.393701 * readShort(0x8F) - 6.5);
+        isRobotMovingCheck = false;
+      }
+      return savedDistance;
+    }
   }
 
   private int writeRegister(int address, int value) {
@@ -52,6 +76,12 @@ public class LIDARSubsystem extends SubsystemBase {
     I2CJNI.i2CWrite(mPort, mDeviceAddress, mBuffer, (byte) 1);
     I2CJNI.i2CRead(mPort, mDeviceAddress, mBuffer, (byte) 2);
     return mBuffer.getShort(0);
+  }
+
+  public boolean isRobotMoving() {
+    leftSpeed = Math.abs(Motors.leftDrivePrimary.getSelectedSensorVelocity());
+    rightSpeed = Math.abs(Motors.rightDrivePrimary.getSelectedSensorVelocity());
+    return (leftSpeed > 50 || rightSpeed > 50);
   }
 
   @Override
