@@ -28,7 +28,7 @@ public class Autonomous{
                     
         switch (selectedAutoMode){
             case AUTOMODE_EXAMPLE:
-                OI.table.getEntry("pipeline").setDouble(1.0);
+                Sensors.Limelight.setPipeline(1);
                 new ExampleAuto().schedule();
                 break;
             default:

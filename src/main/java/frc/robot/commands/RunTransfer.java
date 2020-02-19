@@ -8,16 +8,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
-import frc.robot.subsystems.TransferSubsystem;
+import frc.robot.Subsystems;
 
 public class RunTransfer extends CommandBase {
- 
-  TransferSubsystem subsystem;
 
-  public RunTransfer(TransferSubsystem sub) {
-    subsystem = sub;
-    addRequirements(subsystem);
+  public RunTransfer() {
+    addRequirements(Subsystems.Transfer);
   }
 
   // Called when the command is initially scheduled.
@@ -28,13 +24,13 @@ public class RunTransfer extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.set(-.8);
+    Subsystems.Transfer.set(-.8);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.stop();
+    Subsystems.Transfer.stop();
   }
 
   // Returns true when the command should end.

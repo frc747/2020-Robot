@@ -8,17 +8,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.HoodSubsystem;
-import frc.robot.OI;
-public class HoodStick extends CommandBase {
-  
-  HoodSubsystem subsystem;
+import frc.robot.Subsystems;
 
-  double max = .1;
+public class RunIntake extends CommandBase {
 
-  public HoodStick(HoodSubsystem sub) {
-    subsystem = sub;
-    addRequirements(subsystem);
+  public RunIntake() {
+    addRequirements(Subsystems.Intake);
   }
 
   // Called when the command is initially scheduled.
@@ -29,26 +24,19 @@ public class HoodStick extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    double leftStick = OI.operatorController.getRawAxis(1);
-
-    if(leftStick > max) {
-      leftStick = max;
-    } else if (leftStick < -max) {
-      leftStick = -max;
-    }
-
-    subsystem.set(leftStick);
+    Subsystems.Intake.set(-0.50); // change to setInverted once motor direction has been confirmed
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Subsystems.Intake.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+  
     return false;
   }
 }

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Motors;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ShiftDriveCommand extends CommandBase {
@@ -39,14 +40,14 @@ public class ShiftDriveCommand extends CommandBase {
     // private double shifterValue;
 
     public ShiftDriveCommand() {
-        addRequirements(Robot.DRIVE_SUBSYSTEM);
+        addRequirements(Subsystems.Drive);
     }
     
     @Override
     public void initialize() {
         SmartDashboard.putBoolean("Currently Vision Tracking", false);
         
-        Robot.DRIVE_SUBSYSTEM.tracking = false;
+        Subsystems.Drive.tracking = false;
 
         Motors.leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
         Motors.leftDrivePrimary.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
@@ -91,7 +92,7 @@ public class ShiftDriveCommand extends CommandBase {
 
             // when forward, left and right side both go forward
             // when backward, left and right side both go backward
-            Robot.DRIVE_SUBSYSTEM.set(straightDrive, straightDrive);
+            Subsystems.Drive.set(straightDrive, straightDrive);
         } else if (OI.leftStick.getRawButton(7)) {
             // drive rotate function
 
@@ -103,9 +104,9 @@ public class ShiftDriveCommand extends CommandBase {
             rotateDrive = Math.copySign(rotateValue*rotateValue, rotateValue);
             // when counter clockwise, left goes backward and right side goes forward
             // when clockwise, left side goes forward and right side goes backward
-            Robot.DRIVE_SUBSYSTEM.set(rotateDrive, -rotateDrive);            
+            Subsystems.Drive.set(rotateDrive, -rotateDrive);            
         } else {
-            Robot.DRIVE_SUBSYSTEM.set(leftValue, rightValue);
+            Subsystems.Drive.set(leftValue, rightValue);
         }
 
         // check if the robot should be considered moving towards high gear or stay in low gear
@@ -116,9 +117,9 @@ public class ShiftDriveCommand extends CommandBase {
         }
       
         if (OI.operatorController.getRawAxis(2) > 0.25) {
-            Robot.DRIVE_SUBSYSTEM.tracking = true;
+            Subsystems.Drive.tracking = true;
         } else {
-            Robot.DRIVE_SUBSYSTEM.tracking = false;
+            Subsystems.Drive.tracking = false;
         }
 
         // if shift count has been adding for half a second
@@ -129,21 +130,21 @@ public class ShiftDriveCommand extends CommandBase {
         }
        
         if (OI.shiftHigh && !(OI.operatorController.getRawAxis(3) > .25)) {
-            // Robot.DRIVE_SUBSYSTEM.gearShifter.set(ControlMode.PercentOutput, shifterValue);
-            if (Robot.DRIVE_SUBSYSTEM.gearShifter.getSelectedSensorPosition() > driveTicks - 10 && Robot.DRIVE_SUBSYSTEM.gearShifter.getSelectedSensorPosition() < driveTicks + 10) {
-                Robot.DRIVE_SUBSYSTEM.gearShifter.set(ControlMode.PercentOutput, 0);
+            // Subsystems.Drive.gearShifter.set(ControlMode.PercentOutput, shifterValue);
+            if (Subsystems.Drive.gearShifter.getSelectedSensorPosition() > driveTicks - 10 && Subsystems.Drive.gearShifter.getSelectedSensorPosition() < driveTicks + 10) {
+                Subsystems.Drive.gearShifter.set(ControlMode.PercentOutput, 0);
             } else {
-                Robot.DRIVE_SUBSYSTEM.gearShifter.configMotionCruiseVelocity(7500, 10); //1500
-                Robot.DRIVE_SUBSYSTEM.gearShifter.configMotionAcceleration(20000, 10); //2000
-                Robot.DRIVE_SUBSYSTEM.gearShifter.set(ControlMode.MotionMagic, driveTicks);
+                Subsystems.Drive.gearShifter.configMotionCruiseVelocity(7500, 10); //1500
+                Subsystems.Drive.gearShifter.configMotionAcceleration(20000, 10); //2000
+                Subsystems.Drive.gearShifter.set(ControlMode.MotionMagic, driveTicks);
             }
 
         } else {
-            // Robot.DRIVE_SUBSYSTEM.gearShifter.set(ControlMode.PercentOutput, 0);
-            if (Robot.DRIVE_SUBSYSTEM.gearShifter.getSelectedSensorPosition() > -10 && Robot.DRIVE_SUBSYSTEM.gearShifter.getSelectedSensorPosition() < 10) {
-                Robot.DRIVE_SUBSYSTEM.gearShifter.set(ControlMode.PercentOutput, 0);
+            // Subsystems.Drive.gearShifter.set(ControlMode.PercentOutput, 0);
+            if (Subsystems.Drive.gearShifter.getSelectedSensorPosition() > -10 && Subsystems.Drive.gearShifter.getSelectedSensorPosition() < 10) {
+                Subsystems.Drive.gearShifter.set(ControlMode.PercentOutput, 0);
             } else {
-                Robot.DRIVE_SUBSYSTEM.gearShifter.set(ControlMode.MotionMagic, 0);
+                Subsystems.Drive.gearShifter.set(ControlMode.MotionMagic, 0);
             }
         }
     }
@@ -155,7 +156,7 @@ public class ShiftDriveCommand extends CommandBase {
     
     @Override
     public void end(boolean interrupted) {
-        Robot.DRIVE_SUBSYSTEM.gearShifter.set(ControlMode.PercentOutput, 0);
+        Subsystems.Drive.gearShifter.set(ControlMode.PercentOutput, 0);
     }
 
     private double applyDeadband(double value, double deadband) {

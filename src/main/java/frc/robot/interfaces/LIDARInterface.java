@@ -5,17 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package frc.robot.interfaces;
 
 import java.nio.ByteBuffer;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Motors;
-import frc.robot.Robot;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.hal.I2CJNI;
 
-public class LIDARSubsystem extends SubsystemBase {
+public class LIDARInterface extends SubsystemBase {
 
 
   private double savedDistance;
@@ -30,7 +29,7 @@ public class LIDARSubsystem extends SubsystemBase {
 
   private final ByteBuffer mBuffer = ByteBuffer.allocateDirect(2);
 
-  public LIDARSubsystem(Port port) {
+  public LIDARInterface(Port port) {
     firstStart = true;
     mPort = (byte) port.value;
     I2CJNI.i2CInitialize(mPort);

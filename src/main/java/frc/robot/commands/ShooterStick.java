@@ -8,17 +8,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
-import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
+import frc.robot.Subsystems;
 public class ShooterStick extends CommandBase {
-  
-  ShooterSubsystem subsystem;
 
-  public ShooterStick(ShooterSubsystem sub) {
-    subsystem = sub;
-    addRequirements(subsystem);
+  public ShooterStick() {
+    addRequirements(Subsystems.Shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -31,10 +27,10 @@ public class ShooterStick extends CommandBase {
   public void execute() {
     SmartDashboard.putString("execute: ", "EXECUTE!");
     if(OI.operatorController.getRawButton(1)) {
-      ///subsystem.set(RobotContainer.operatorController.getRawAxis(5));
-      subsystem.setRPM(6000);
+      ///Subsystems.Shooter.set(RobotContainer.operatorController.getRawAxis(5));
+      Subsystems.Shooter.setRPM(6000);
     } else {
-      subsystem.stop();
+      Subsystems.Shooter.stop();
     }
   }
 

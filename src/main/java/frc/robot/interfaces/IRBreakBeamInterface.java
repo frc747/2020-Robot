@@ -5,31 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package frc.robot.interfaces;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Motors;
 
-public class TransferSubsystem extends SubsystemBase {
- 
-  //TalonSRX transferMotor = new TalonSRX(2);
+public class IRBreakBeamInterface extends SubsystemBase {
 
-  public TransferSubsystem() {
+  public static DigitalInput IRBreakBeamRaw;
 
+  public IRBreakBeamInterface(int port) {
+    IRBreakBeamRaw = new DigitalInput(port);
+  }
+
+  public boolean getValue() {
+    return IRBreakBeamRaw.get();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  }
-
-  public void set(double output) {
-    Motors.transfer.set(ControlMode.PercentOutput, output);
-  }
-
-  public void stop() {
-    Motors.transfer.set(ControlMode.PercentOutput, 0);
   }
 }

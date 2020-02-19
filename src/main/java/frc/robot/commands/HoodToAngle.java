@@ -9,10 +9,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.subsystems.HoodSubsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import frc.robot.Motors;
 import frc.robot.OI;
+import frc.robot.Sensors;
+import frc.robot.Subsystems;
 public class HoodToAngle extends CommandBase {
   
   HoodSubsystem subsystem;
@@ -61,10 +64,9 @@ public class HoodToAngle extends CommandBase {
   }
 
   public HoodToAngle() {
-    subsystem = OI.HOOD_SUBSYSTEM;
-    addRequirements(subsystem);
+    addRequirements(Subsystems.Hood);
 
-    actualAngle = angleFromDistance(OI.LIDAR_SUBSYSTEM.getDistance()) + 17.5;
+    actualAngle = angleFromDistance(Sensors.LIDAR.getDistance()) + 17.5;
 
 
 
@@ -85,30 +87,30 @@ public class HoodToAngle extends CommandBase {
   @Override
   public void initialize() {
 
-    OI.getHoodSubsystem().hoodMotor.setInverted(false);
+    Motors.hood.setInverted(false);
 
 
-    OI.getHoodSubsystem().hoodMotor.set(ControlMode.MotionMagic, -200);
+    Motors.hood.set(ControlMode.MotionMagic, -200);
         
-    OI.getHoodSubsystem().hoodMotor.config_kP(pidIdx, driveHatchP, timeoutMs);
+    Motors.hood.config_kP(pidIdx, driveHatchP, timeoutMs);
         
-    OI.getHoodSubsystem().hoodMotor.config_kI(pidIdx, driveHatchI, timeoutMs);
+    Motors.hood.config_kI(pidIdx, driveHatchI, timeoutMs);
         
-    OI.getHoodSubsystem().hoodMotor.config_kD(pidIdx, driveHatchD, timeoutMs);
+    Motors.hood.config_kD(pidIdx, driveHatchD, timeoutMs);
         
-    OI.getHoodSubsystem().hoodMotor.config_kF(pidIdx, driveHatchF, timeoutMs);
+    Motors.hood.config_kF(pidIdx, driveHatchF, timeoutMs);
         
-    OI.getHoodSubsystem().hoodMotor.setSensorPhase(true);
+    Motors.hood.setSensorPhase(true);
 
-    OI.getHoodSubsystem().hoodMotor.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
-    OI.getHoodSubsystem().hoodMotor.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
-    OI.getHoodSubsystem().hoodMotor.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
-    OI.getHoodSubsystem().hoodMotor.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
+    Motors.hood.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
+    Motors.hood.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, timeoutMs);
+    Motors.hood.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, timeoutMs);
+    Motors.hood.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, timeoutMs);
         
-    OI.getHoodSubsystem().hoodMotor.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
+    Motors.hood.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
         
-    OI.getHoodSubsystem().hoodMotor.configMotionCruiseVelocity(7500, 10); //7500
-    OI.getHoodSubsystem().hoodMotor.configMotionAcceleration(20000, 10);
+    Motors.hood.configMotionCruiseVelocity(7500, 10); //7500
+    Motors.hood.configMotionAcceleration(20000, 10);
 
 
   }
@@ -116,16 +118,16 @@ public class HoodToAngle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    actualAngle = angleFromDistance(OI.LIDAR_SUBSYSTEM.getDistance()) + 17.5;
+    actualAngle = angleFromDistance(Sensors.LIDAR.getDistance()) + 17.5;
     driveTicks = -(actualAngle/360)*4096;
     SmartDashboard.putNumber("angle: ", actualAngle);
     SmartDashboard.putNumber("DriveTicks for hood: ", driveTicks);
 
     if(!OI.operatorController.getRawButton(7)) {
-      OI.getHoodSubsystem().hoodMotor.set(ControlMode.MotionMagic, -200);
+      Motors.hood.set(ControlMode.MotionMagic, -200);
       SmartDashboard.putBoolean("Inside motion magic: ", true);
     } else {
-      OI.getHoodSubsystem().hoodMotor.set(ControlMode.MotionMagic, driveTicks);
+      Motors.hood.set(ControlMode.MotionMagic, driveTicks);
       SmartDashboard.putBoolean("Inside motion magic: ", false);
     }
   }

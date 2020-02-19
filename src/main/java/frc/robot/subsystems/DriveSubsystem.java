@@ -1,11 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Motors;
-import frc.robot.commands.ShiftDriveCommand;
-// import frc.robot.commands.TankDriveCommand;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 

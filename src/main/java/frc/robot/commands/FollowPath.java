@@ -10,8 +10,8 @@ package frc.robot.commands;
 import java.io.IOException;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
-
+import frc.robot.Sensors;
+import frc.robot.Subsystems;
 import jaci.pathfinder.Trajectory;
 
 import jaci.pathfinder.Pathfinder;
@@ -22,7 +22,7 @@ import jaci.pathfinder.followers.EncoderFollower;
 public class FollowPath extends CommandBase {
 
   String pathName;
-  double ticksPerRev = Robot.DRIVE_SUBSYSTEM.convertRevsToTicks(1);
+  double ticksPerRev = Subsystems.Drive.convertRevsToTicks(1);
 
   double maxVelocity = 10;
 
@@ -32,7 +32,7 @@ public class FollowPath extends CommandBase {
   boolean targetReached = false;
 
   public FollowPath(String name) {
-    addRequirements(Robot.DRIVE_SUBSYSTEM);
+    addRequirements(Subsystems.Drive);
 
     this.pathName = name;
     
@@ -69,19 +69,19 @@ public class FollowPath extends CommandBase {
       targetReached = true;
     }
 
-    double left_speed = leftEncoderFollower.calculate((int)Robot.DRIVE_SUBSYSTEM.getLeftPosition());
-    double right_speed = rightEncoderFollower.calculate((int)Robot.DRIVE_SUBSYSTEM.getRightPosition());
-    double heading = Robot.getPigeonAngle();
+    double left_speed = leftEncoderFollower.calculate((int)Subsystems.Drive.getLeftPosition());
+    double right_speed = rightEncoderFollower.calculate((int)Subsystems.Drive.getRightPosition());
+    double heading = Sensors.Pigeon.getAngle();
     double desired_heading = Pathfinder.r2d(leftEncoderFollower.getHeading());
     double heading_difference = Pathfinder.boundHalfDegrees(desired_heading - heading);
     double turn =  0.8 * (-1.0/80.0) * heading_difference;
-    Robot.DRIVE_SUBSYSTEM.set(left_speed + turn, right_speed - turn);
+    Subsystems.Drive.set(left_speed + turn, right_speed - turn);
 
   }
 
   @Override
   public void end(boolean interrupted) {
-    Robot.DRIVE_SUBSYSTEM.stop();
+    Subsystems.Drive.stop();
   }
 
   @Override

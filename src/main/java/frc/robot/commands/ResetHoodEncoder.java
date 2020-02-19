@@ -8,21 +8,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.HoodSubsystem;
+import frc.robot.Subsystems;
 
 public class ResetHoodEncoder extends CommandBase {
- 
-  HoodSubsystem subsystem;
 
-  public ResetHoodEncoder(HoodSubsystem sub) {
-    subsystem = sub;
-    addRequirements(subsystem);
+  public ResetHoodEncoder() {
+    addRequirements(Subsystems.Hood);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subsystem.resetPosition();
+    Subsystems.Hood.resetPosition();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

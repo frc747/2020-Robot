@@ -7,38 +7,30 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Motors;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
-public class HoodSubsystem extends SubsystemBase {
+import frc.robot.Motors;
 
-  public HoodSubsystem() {
-    Motors.hood.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-    Motors.hood.setSensorPhase(true);
+public class IntakeSubsystem extends SubsystemBase {
+  /**
+   * Creates a new IntakeSubsystem.
+   */
+  public IntakeSubsystem() {
+
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("ENCODER POS", getPosition());
+    // This method will be called once per scheduler run
   }
 
   public void set(double output) {
-    Motors.hood.set(ControlMode.PercentOutput, output);
+    Motors.intake.set(ControlMode.PercentOutput, output);
   }
 
   public void stop() {
-    Motors.hood.set(ControlMode.PercentOutput, 0);
-  }
-
-  public int getPosition() {
-    return Motors.hood.getSelectedSensorPosition();
-  }
-
-  public void resetPosition() {
-    Motors.hood.setSelectedSensorPosition(0);
+    Motors.intake.set(ControlMode.PercentOutput, 0);
   }
 }

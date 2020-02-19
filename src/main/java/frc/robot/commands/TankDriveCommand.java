@@ -3,7 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Motors;
 import frc.robot.OI;
-import frc.robot.Robot;
+import frc.robot.Subsystems;
 
 public class TankDriveCommand extends CommandBase {
 
@@ -15,7 +15,7 @@ public class TankDriveCommand extends CommandBase {
   private static final double MIN_PERCENT_VOLTAGE = 0.0;
 
   public TankDriveCommand() {
-    addRequirements(Robot.DRIVE_SUBSYSTEM);
+    addRequirements(Subsystems.Drive);
   }
 
   // Called just before this Command runs the first time
@@ -46,7 +46,7 @@ public class TankDriveCommand extends CommandBase {
     
     double speed = 1;
     
-    Robot.DRIVE_SUBSYSTEM.set(left * speed, right * speed);
+    Subsystems.Drive.set(left * speed, right * speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()

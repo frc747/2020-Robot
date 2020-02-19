@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Motors;
 import frc.robot.OI;
-import frc.robot.Robot;
+import frc.robot.Subsystems;
 
 public class PIDDriveInches extends CommandBase {
     private double driveTicks;
@@ -22,7 +22,7 @@ public class PIDDriveInches extends CommandBase {
     private static final double MIN_PERCENT_VOLTAGE = 0.0;
 
     private final static double STOP_THRESHOLD_REAL = 1;
-    private static double STOP_THRESHOLD_ADJUSTED = Robot.DRIVE_SUBSYSTEM.convertInchesToTicks(STOP_THRESHOLD_REAL);
+    private static double STOP_THRESHOLD_ADJUSTED = Subsystems.Drive.convertInchesToTicks(STOP_THRESHOLD_REAL);
     
     private final static int allowableCloseLoopError = 1;
     
@@ -42,13 +42,13 @@ public class PIDDriveInches extends CommandBase {
     private double driveF = 0;//.199;
     
     public PIDDriveInches(double inches, boolean reverse) {
-        addRequirements(Robot.DRIVE_SUBSYSTEM);
+        addRequirements(Subsystems.Drive);
         STOP_THRESHOLD_ADJUSTED*=Math.tanh(0.0625*inches);
         SmartDashboard.putNumber("THRESHOLD", STOP_THRESHOLD_ADJUSTED);
         if (reverse) {
-            this.driveTicks = -Robot.DRIVE_SUBSYSTEM.convertInchesToTicks(inches);//input now has to be ticks instead of revolutions which is why we multiply by 4096
+            this.driveTicks = -Subsystems.Drive.convertInchesToTicks(inches);//input now has to be ticks instead of revolutions which is why we multiply by 4096
         } else {
-            this.driveTicks = Robot.DRIVE_SUBSYSTEM.convertInchesToTicks(inches);
+            this.driveTicks = Subsystems.Drive.convertInchesToTicks(inches);
         }
         
         this.driveInches = inches;
@@ -59,9 +59,9 @@ public class PIDDriveInches extends CommandBase {
         
         onTargetCount = 0;
         
-        Robot.DRIVE_SUBSYSTEM.resetBothEncoders();
+        Subsystems.Drive.resetBothEncoders();
 
-        //Robot.DRIVE_SUBSYSTEM.enablePositionControl();
+        //Subsystems.Drive.enablePositionControl();
         
         Motors.leftDrivePrimary.config_kP(pidIdx, driveP, timeoutMs);
         Motors.rightDrivePrimary.config_kP(pidIdx, driveP, timeoutMs);
@@ -99,8 +99,8 @@ public class PIDDriveInches extends CommandBase {
             Motors.rightDrivePrimary.configMotionCruiseVelocity(7500, timeoutMs);
             Motors.rightDrivePrimary.configMotionAcceleration(15000, timeoutMs);
         }
-        Robot.DRIVE_SUBSYSTEM.changeControlMode(ControlMode.MotionMagic);
-        Robot.DRIVE_SUBSYSTEM.setPID(driveTicks, driveTicks);
+        Subsystems.Drive.changeControlMode(ControlMode.MotionMagic);
+        Subsystems.Drive.setPID(driveTicks, driveTicks);
     }
     
     @Override
@@ -109,11 +109,11 @@ public class PIDDriveInches extends CommandBase {
     
     @Override
     public boolean isFinished() {
-        double leftPosition = Robot.DRIVE_SUBSYSTEM.getLeftPosition();
-        double rightPosition = Robot.DRIVE_SUBSYSTEM.getRightPosition();
+        double leftPosition = Subsystems.Drive.getLeftPosition();
+        double rightPosition = Subsystems.Drive.getRightPosition();
 
-        SmartDashboard.putNumber("left position in command", Robot.DRIVE_SUBSYSTEM.getLeftPosition());
-        SmartDashboard.putNumber("right position in command", Robot.DRIVE_SUBSYSTEM.getRightPosition());
+        SmartDashboard.putNumber("left position in command", Subsystems.Drive.getLeftPosition());
+        SmartDashboard.putNumber("right position in command", Subsystems.Drive.getRightPosition());
 
         double driveGoal = driveTicks/13;
 
@@ -132,10 +132,10 @@ public class PIDDriveInches extends CommandBase {
     
     @Override
     public void end(boolean interrupted) {
-        OI.distance = Math.abs(Robot.DRIVE_SUBSYSTEM.averageInchesDriven());
-        Robot.DRIVE_SUBSYSTEM.enableVBusControl();
-        Robot.DRIVE_SUBSYSTEM.resetBothEncoders();
-        Robot.DRIVE_SUBSYSTEM.stop();
+        OI.distance = Math.abs(Subsystems.Drive.averageInchesDriven());
+        Subsystems.Drive.enableVBusControl();
+        Subsystems.Drive.resetBothEncoders();
+        Subsystems.Drive.stop();
     }
 
 }

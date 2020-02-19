@@ -7,18 +7,9 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.networktables.*;
-import frc.robot.subsystems.HoodSubsystem;
-import frc.robot.subsystems.LIDARSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.subsystems.TransferSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.interfaces.LimelightInterface.camMode;
+import frc.robot.interfaces.LimelightInterface.ledMode;
 public class OI {
-
-  public static final ShooterSubsystem SHOOTER_SUBSYSTEM = new ShooterSubsystem();
-  public static final TransferSubsystem TRANSFER_SUBSYSTEM = new TransferSubsystem();
-  public static final HoodSubsystem HOOD_SUBSYSTEM = new HoodSubsystem();
-  public static final LIDARSubsystem LIDAR_SUBSYSTEM = new LIDARSubsystem(I2C.Port.kOnboard);
 
   public static boolean shiftHigh = false;
 
@@ -27,12 +18,6 @@ public class OI {
   public static boolean latchInPosition = false;
 
   public static double distance;
-
-  public static NetworkTable table;
-  public static double v;
-  public static double x;
-  public static double y;
-  public static double area;
 
   public static Joystick leftStick = new Joystick(RobotMap.Controller.LEFT_STICK.getValue());
   public static Joystick rightStick = new Joystick(RobotMap.Controller.RIGHT_STICK.getValue());
@@ -65,9 +50,9 @@ public class OI {
 
 
     LEFT_STICK_TRIG.toggleWhenPressed(new PIDDriveInches(100, false));
-    B_BUTTON.whileHeld(new RunTransfer(TRANSFER_SUBSYSTEM));
+    B_BUTTON.whileHeld(new RunTransfer());
     
-    START_BUTTON.whenPressed(new PIDDriveRotateCustom(LimelightSubsystem.getHorizontalOffset(), true));
+    START_BUTTON.whenPressed(new PIDDriveRotateCustom(Sensors.Limelight.getHorizontalOffset(), true));
     Y_BUTTON.whileHeld(new LimelightPreviewCommand());
 
     // Ignore this error, no known conflict
@@ -81,42 +66,22 @@ public class OI {
   public void updateOI() {
     
     // Limelight Value SmartDashboard display
-    table = NetworkTableInstance.getDefault().getTable("limelight");
         
-    SmartDashboard.putNumber("LEFT POS: ", Robot.DRIVE_SUBSYSTEM.getLeftPosition());
-    SmartDashboard.putNumber("RIGHT POS: ", Robot.DRIVE_SUBSYSTEM.getRightPosition());
+    SmartDashboard.putNumber("LEFT POS: ", Subsystems.Drive.getLeftPosition());
+    SmartDashboard.putNumber("RIGHT POS: ", Subsystems.Drive.getRightPosition());
 
-
-    v = table.getEntry("tv").getDouble(0);
-
-    x = table.getEntry("tx").getDouble(0);
-    y = table.getEntry("ty").getDouble(0);
-    area = table.getEntry("ta").getDouble(0);
-
-    if (Robot.DRIVE_SUBSYSTEM.tracking) {
-      OI.table.getEntry("camMode").setDouble(0);
-      OI.table.getEntry("ledMode").setDouble(3);
+    if (Subsystems.Drive.tracking) {
+      Sensors.Limelight.setCamMode(camMode.VISION_PROCESSOR);
+      Sensors.Limelight.setLEDMode(ledMode.ON);
     } else {
-      OI.table.getEntry("camMode").setDouble(1);
-      OI.table.getEntry("ledMode").setDouble(1);
+      Sensors.Limelight.setCamMode(camMode.DRIVER_CAMERA);
+      Sensors.Limelight.setLEDMode(ledMode.OFF);
     }
     
     SmartDashboard.putNumber("Joystick Left", leftStick.getRawAxis(1));
     SmartDashboard.putNumber("Joystick Right", rightStick.getRawAxis(1));
 
-    SmartDashboard.putNumber("PIGEON ANGLE", Robot.getPigeonAngle());
-    SmartDashboard.putNumber("RAW PIGEON ANGLE", Robot.getRawPigeonAngle());
-  }
-
-  public ShooterSubsystem getShooterSubsystem() {
-    return SHOOTER_SUBSYSTEM;
-  }
-
-  public static HoodSubsystem getHoodSubsystem() {
-    return HOOD_SUBSYSTEM;
-  }
-
-  public TransferSubsystem getTransferSubsystem() {
-    return TRANSFER_SUBSYSTEM;
+    SmartDashboard.putNumber("PIGEON ANGLE", Sensors.Pigeon.getAngle());
+    SmartDashboard.putNumber("RAW PIGEON ANGLE", Sensors.Pigeon.getRawAngle());
   }
 }

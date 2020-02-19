@@ -8,15 +8,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.Robot;
+import frc.robot.Sensors;
+import frc.robot.Subsystems;
 
 public class RotateVision extends CommandBase {
   
   double modifier = .5;
 
   public RotateVision() {
-    addRequirements(Robot.DRIVE_SUBSYSTEM);
+    addRequirements(Subsystems.Drive);
   }
 
   // Called when the command is initially scheduled.
@@ -28,17 +28,17 @@ public class RotateVision extends CommandBase {
   @Override
   public void execute() {
 
-    double x = LimelightSubsystem.getHorizontalOffset();
+    double x = Sensors.Limelight.getHorizontalOffset();
 
     double left = modifier + x;
     double right = -modifier - x;
-    Robot.DRIVE_SUBSYSTEM.set(left, right);
+    Subsystems.Drive.set(left, right);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.DRIVE_SUBSYSTEM.stop();
+    Subsystems.Drive.stop();
   }
 
   // Returns true when the command should end.

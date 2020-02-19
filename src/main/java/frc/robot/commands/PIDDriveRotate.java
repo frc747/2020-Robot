@@ -1,7 +1,9 @@
 package frc.robot.commands;
 
 import frc.robot.Motors;
-import frc.robot.Robot;
+import frc.robot.OI;
+import frc.robot.Sensors;
+import frc.robot.Subsystems;
 
 import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
@@ -30,12 +32,12 @@ public class PIDDriveRotate extends PIDCommand {
     
     private static final int timeoutMs = 10;
     
-    private static DoubleSupplier currentAngle = () -> {return Robot.getPigeonAngle();};
+    private static DoubleSupplier currentAngle = () -> {return Sensors.Pigeon.getAngle();};
     private static DoubleConsumer output = (x) -> {MathUtil.clamp(x, -MAX_PERCENT_VBUS, MAX_PERCENT_VBUS);};
     
     //constructor supports Closest Equivalent
     public PIDDriveRotate(double degreesRotate, boolean closestEquivalent) {
-        super(new PIDController(0.03, 0.0, 0.05), currentAngle, degreesRotate, output, Robot.DRIVE_SUBSYSTEM);
+        super(new PIDController(0.03, 0.0, 0.05), currentAngle, degreesRotate, output, Subsystems.Drive);
         
         if (closestEquivalent)  {
     
@@ -48,24 +50,24 @@ public class PIDDriveRotate extends PIDCommand {
             this.angleToRotate = degreesRotate;
         }
 
-        addRequirements(Robot.DRIVE_SUBSYSTEM);
+        addRequirements(Subsystems.Drive);
     }
 
     //Default constructor Exact Mode
     public PIDDriveRotate(double degreesRotate) {
 
-        super(new PIDController(0.03, 0.0, 0.05), currentAngle, degreesRotate, output, Robot.DRIVE_SUBSYSTEM);
+        super(new PIDController(0.03, 0.0, 0.05), currentAngle, degreesRotate, output, Subsystems.Drive);
 
         this.angleToRotate = degreesRotate;
 
-        addRequirements(Robot.DRIVE_SUBSYSTEM);
+        addRequirements(Subsystems.Drive);
     }
 
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
         
-        Robot.resetPigeonAngle();
+        Sensors.Pigeon.resetAngle();
         //Robot.resetNavXAngle();
         
         Motors.leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);
@@ -91,7 +93,7 @@ public class PIDDriveRotate extends PIDCommand {
         double out = 0;
         output.accept(out);
         SmartDashboard.putNumber("rotation values", out);
-        Robot.DRIVE_SUBSYSTEM.set(out, out);
+        Subsystems.Drive.set(out, out);
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -8,16 +8,11 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Motors;
-import frc.robot.Robot;
-import frc.robot.commands.ShooterStick;
 public class ShooterSubsystem extends SubsystemBase {
- 
-  //TalonFX shooterMotor = new TalonFX(13);
 
   double kP = 0.13;
   double kF = 0.04592;

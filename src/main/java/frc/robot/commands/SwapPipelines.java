@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.OI;
+import frc.robot.Sensors;
 
 public class SwapPipelines extends CommandBase {
 
@@ -13,7 +13,7 @@ public class SwapPipelines extends CommandBase {
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
-    OI.table.getEntry("pipeline").setDouble(1.0);
+    Sensors.Limelight.setPipeline(1);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -30,6 +30,6 @@ public class SwapPipelines extends CommandBase {
   // Called once after isFinished returns true
   @Override
   public void end(boolean interrupted) {
-    OI.table.getEntry("pipeline").setDouble(0.0);
+    Sensors.Limelight.setPipeline(0);
   }
 }

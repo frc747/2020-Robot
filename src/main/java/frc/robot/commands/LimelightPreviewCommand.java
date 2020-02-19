@@ -7,7 +7,8 @@
 
 package frc.robot.commands;
 
-import frc.robot.Robot;
+import frc.robot.OI;
+import frc.robot.Subsystems;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class LimelightPreviewCommand extends CommandBase {
@@ -19,7 +20,7 @@ public class LimelightPreviewCommand extends CommandBase {
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
-    Robot.DRIVE_SUBSYSTEM.tracking = true;
+    Subsystems.Drive.tracking = true;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -36,6 +37,6 @@ public class LimelightPreviewCommand extends CommandBase {
   // Called once after isFinished returns true
   @Override
   public void end(boolean interrupted) {
-    Robot.DRIVE_SUBSYSTEM.tracking = false;
+    Subsystems.Drive.tracking = false;
   }
 }
