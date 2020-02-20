@@ -10,14 +10,14 @@ package frc.robot.commands;
 import java.io.IOException;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.Sensors;
 import frc.robot.Subsystems;
-import jaci.pathfinder.Trajectory;
 
+import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.PathfinderFRC;
 import jaci.pathfinder.followers.EncoderFollower;
-
 
 public class FollowPath extends CommandBase {
 

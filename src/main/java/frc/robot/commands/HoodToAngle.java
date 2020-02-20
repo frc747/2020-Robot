@@ -9,16 +9,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.HoodSubsystem;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import frc.robot.Motors;
-import frc.robot.OI;
 import frc.robot.Sensors;
 import frc.robot.Subsystems;
+import frc.robot.input.Devices;
 public class HoodToAngle extends CommandBase {
-  
-  HoodSubsystem subsystem;
 
   private double driveTicks;
   
@@ -42,45 +40,33 @@ public class HoodToAngle extends CommandBase {
   
   private double driveHatchF = .5;
 
-  public HoodToAngle(double angle, HoodSubsystem sub) {
-    subsystem = sub;
-    addRequirements(subsystem);
+  /***
+   * 
+   * @param angle
+   * Use this to move the hood to a specific angle positive up from 0 degrees (horizontal)
+   * Do not provide one to auto adjust based on LIDAR Distance
+   */
 
-    actualAngle = angle + 17.5;
+  public HoodToAngle(double angle) {
+    addRequirements(Subsystems.Hood);
+
+    actualAngle = angle + angleConstant;
 
     driveTicks = -(actualAngle/360)*4096;
 
-    double distance = 89;
-
-    //driveTicks = angle;
-
-    //driveTicks = calcTicks(distance);
-
-    SmartDashboard.putNumber("ticks", calcTicks(distance));
-
     SmartDashboard.putNumber("DriveTicks test", driveTicks);
 
-    subsystem.resetPosition();
+    Subsystems.Hood.resetPosition();
   }
 
   public HoodToAngle() {
     addRequirements(Subsystems.Hood);
 
-    actualAngle = angleFromDistance(Sensors.LIDAR.getDistance()) + 17.5;
-
-
+    actualAngle = angleFromDistance(Sensors.LIDAR.getDistance()) + angleConstant;
 
     driveTicks = -(actualAngle/360)*4096;
 
-    double distance = 89;
-
-    //driveTicks = angle;
-
-    //driveTicks = calcTicks(distance);
-
-
-
-    subsystem.resetPosition();
+    Subsystems.Hood.resetPosition();
   }
 
   // Called when the command is initially scheduled.
@@ -88,7 +74,6 @@ public class HoodToAngle extends CommandBase {
   public void initialize() {
 
     Motors.hood.setInverted(false);
-
 
     Motors.hood.set(ControlMode.MotionMagic, -200);
         
@@ -118,12 +103,12 @@ public class HoodToAngle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    actualAngle = angleFromDistance(Sensors.LIDAR.getDistance()) + 17.5;
+    actualAngle = angleFromDistance(Sensors.LIDAR.getDistance()) + angleConstant;
     driveTicks = -(actualAngle/360)*4096;
     SmartDashboard.putNumber("angle: ", actualAngle);
     SmartDashboard.putNumber("DriveTicks for hood: ", driveTicks);
 
-    if(!OI.operatorController.getRawButton(7)) {
+    if(!Devices.operatorController.getB()) {
       Motors.hood.set(ControlMode.MotionMagic, -200);
       SmartDashboard.putBoolean("Inside motion magic: ", true);
     } else {
@@ -138,21 +123,6 @@ public class HoodToAngle extends CommandBase {
     } else {
       return 100;
     }
-  }
-
-  public double calcTicks(double distance) {
-    double ticks;
-    if(distance < 25) {
-      ticks = -1200;
-    } else {
-      double aCoeff = -.02963599;
-      double bCoeff = 9.447184;
-      double cCoeff = -1026.159;
-      ticks = (aCoeff*distance*distance)+(bCoeff*distance)+(cCoeff);
-    }
-
-
-    return ticks;
   }
 
   // Called once the command ends or is interrupted.

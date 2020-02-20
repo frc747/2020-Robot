@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.Motors;
 import frc.robot.OI;
 import frc.robot.Subsystems;
@@ -15,8 +16,6 @@ public class PIDDriveInches extends CommandBase {
     private static final int pidIdx = 0;
     private static final int timeoutMs = 10;
     private static final int slotIdx = 0;
-    
-    private final static double ENCODER_TICKS_PER_REVOLUTION = 2048;
 
     private static final double MAX_PERCENT_VOLTAGE = 1.0;
     private static final double MIN_PERCENT_VOLTAGE = 0.0;

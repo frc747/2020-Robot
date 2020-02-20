@@ -8,7 +8,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.Subsystems;
+import frc.robot.input.Devices;
 
 public class RunIntake extends CommandBase {
 
@@ -24,7 +26,11 @@ public class RunIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Subsystems.Intake.set(-0.50); // change to setInverted once motor direction has been confirmed
+    if (Devices.operatorController.getLeftTrigger() >= 0.9) {
+      Subsystems.Intake.set(-0.50); // change to setInverted once motor direction has been confirmed
+    } else {
+      Subsystems.Intake.stop();
+    }
   }
 
   // Called once the command ends or is interrupted.

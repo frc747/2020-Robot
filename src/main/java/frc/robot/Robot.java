@@ -10,7 +10,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.ShiftDriveCommand;
 //import edu.wpi.cscore.UsbCamera;
 //import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Preferences;
@@ -18,8 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import frc.robot.commands.HoodToAngle;
-import frc.robot.commands.ShooterStick;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -44,9 +41,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    Subsystems.Shooter.setDefaultCommand(new ShooterStick());
-    Subsystems.Hood.setDefaultCommand(new HoodToAngle());// OI.LIDAR_SUBSYSTEM.getDistance(), OI.HOOD_SUBSYSTEM));
-    Subsystems.Drive.setDefaultCommand(new ShiftDriveCommand());
+    Subsystems.setDefaultCommands();
 
     Sensors.LIDAR.startMeasuring();
 
@@ -56,8 +51,6 @@ public class Robot extends TimedRobot {
     // UsbCamera ucamera = CameraServer.getInstance().startAutomaticCapture("cam1",
     // 0);
     // ucamera.setResolution(180, 240);
-
-    SmartDashboard.putNumber("SET RPM : ", 0);
 
     this.autonomous = new Autonomous();
 
@@ -90,8 +83,6 @@ public class Robot extends TimedRobot {
       
       SmartDashboard.putNumber("Distance (area):", 194.1278201032424 * Math.sqrt(Sensors.Limelight.getArea()));
     }
-
-    SmartDashboard.putNumber("Shooter", OI.operatorController.getRawAxis(5));
 
     SmartDashboard.putNumber("LIDAR Distance", Sensors.LIDAR.getDistance());
 
@@ -176,10 +167,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     CommandScheduler.getInstance().run();
-
-    SmartDashboard.putNumber("indexer", OI.operatorController.getRawAxis(1));
-
-    SmartDashboard.putNumber("Current Draw", Motors.shooter.getStatorCurrent());
 
     SmartDashboard.putBoolean("IR Sensor: ", !Sensors.IRBreakBeam.getValue());
 

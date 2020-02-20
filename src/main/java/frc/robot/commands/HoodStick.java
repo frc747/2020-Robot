@@ -8,17 +8,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.HoodSubsystem;
-import frc.robot.OI;
+
+import frc.robot.Subsystems;
+import frc.robot.input.Devices;
+
 public class HoodStick extends CommandBase {
-  
-  HoodSubsystem subsystem;
 
   double max = .1;
 
-  public HoodStick(HoodSubsystem sub) {
-    subsystem = sub;
-    addRequirements(subsystem);
+  public HoodStick() {
+    addRequirements(Subsystems.Hood);
   }
 
   // Called when the command is initially scheduled.
@@ -30,7 +29,7 @@ public class HoodStick extends CommandBase {
   @Override
   public void execute() {
 
-    double leftStick = OI.operatorController.getRawAxis(1);
+    double leftStick = Devices.operatorController.getLeftY();
 
     if(leftStick > max) {
       leftStick = max;
@@ -38,7 +37,7 @@ public class HoodStick extends CommandBase {
       leftStick = -max;
     }
 
-    subsystem.set(leftStick);
+    Subsystems.Hood.set(leftStick);
   }
 
   // Called once the command ends or is interrupted.

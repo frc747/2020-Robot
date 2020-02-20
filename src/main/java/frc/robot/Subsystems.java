@@ -7,6 +7,11 @@
 
 package frc.robot;
 
+import frc.robot.commands.HoodToAngle;
+import frc.robot.commands.RunIndexer;
+import frc.robot.commands.RunIntake;
+import frc.robot.commands.ShiftDriveCommand;
+import frc.robot.commands.RunShooter;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -24,4 +29,12 @@ public class Subsystems {
   public static final HoodSubsystem Hood = new HoodSubsystem();
   public static final IntakeSubsystem Intake = new IntakeSubsystem();
   public static final IndexerSubsystem Indexer = new IndexerSubsystem();
+
+  public static void setDefaultCommands() {
+    Subsystems.Drive.setDefaultCommand(new ShiftDriveCommand());
+    Subsystems.Shooter.setDefaultCommand(new RunShooter());
+    Subsystems.Hood.setDefaultCommand(new HoodToAngle());
+    Subsystems.Intake.setDefaultCommand(new RunIntake());
+    Subsystems.Indexer.setDefaultCommand(new RunIndexer());
+  }
 }

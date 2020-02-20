@@ -8,7 +8,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.Subsystems;
+import frc.robot.input.Devices;
 
 public class RunIndexer extends CommandBase {
 
@@ -24,7 +26,11 @@ public class RunIndexer extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Subsystems.Indexer.set(-0.75); // change to setInverted once motor direction has been confirmed
+    if (Devices.operatorController.getLeftBumper()) {
+      Subsystems.Indexer.set(-0.75); // change to setInverted once motor direction has been confirmed
+    } else {
+      Subsystems.Indexer.stop();
+    }
   }
 
   // Called once the command ends or is interrupted.

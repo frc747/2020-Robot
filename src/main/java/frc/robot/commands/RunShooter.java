@@ -9,11 +9,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.OI;
-import frc.robot.Subsystems;
-public class ShooterStick extends CommandBase {
 
-  public ShooterStick() {
+import frc.robot.Subsystems;
+import frc.robot.input.Devices;
+
+public class RunShooter extends CommandBase {
+
+  public RunShooter() {
     addRequirements(Subsystems.Shooter);
   }
 
@@ -26,9 +28,8 @@ public class ShooterStick extends CommandBase {
   @Override
   public void execute() {
     SmartDashboard.putString("execute: ", "EXECUTE!");
-    if(OI.operatorController.getRawButton(1)) {
-      ///Subsystems.Shooter.set(RobotContainer.operatorController.getRawAxis(5));
-      Subsystems.Shooter.setRPM(6000);
+    if(Devices.operatorController.getRightTrigger() > 0.9) {
+      Subsystems.Shooter.setRPM(6000); // add automatic RPM adjustment based on LIDAR
     } else {
       Subsystems.Shooter.stop();
     }

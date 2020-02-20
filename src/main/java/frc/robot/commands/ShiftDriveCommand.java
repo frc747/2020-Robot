@@ -2,12 +2,15 @@ package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.Motors;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.Subsystems;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.input.Devices;
+
 
 public class ShiftDriveCommand extends CommandBase {
         
@@ -78,11 +81,11 @@ public class ShiftDriveCommand extends CommandBase {
         
         // cleaned up version of a deadband, helper method at bottom of the class
 
-        leftValue = applyDeadband(-OI.leftStick.getRawAxis(1), 0.1); // before modifying raw of axis 1: forward = negative, backward = positive
-        rightValue = applyDeadband(-OI.rightStick.getRawAxis(1), 0.1);
-        rotateValue = applyDeadband(OI.rightStick.getRawAxis(2), 0.1); // before modifying raw of axis 3: CCW = negative, CW = positive
+        leftValue = applyDeadband(-Devices.leftStick.getY(), 0.1); // before modifying raw of axis 1: forward = negative, backward = positive
+        rightValue = applyDeadband(-Devices.rightStick.getY(), 0.1);
+        rotateValue = applyDeadband(Devices.rightStick.getZ(), 0.1); // before modifying raw of axis 3: CCW = negative, CW = positive
         
-        if (OI.leftStick.getRawButton(8)) {
+        if (Devices.leftStick.getBaseTopRight()) {
             // drive straight function
 
 
@@ -93,7 +96,7 @@ public class ShiftDriveCommand extends CommandBase {
             // when forward, left and right side both go forward
             // when backward, left and right side both go backward
             Subsystems.Drive.set(straightDrive, straightDrive);
-        } else if (OI.leftStick.getRawButton(7)) {
+        } else if (Devices.leftStick.getBaseTopLeft()) {
             // drive rotate function
 
 

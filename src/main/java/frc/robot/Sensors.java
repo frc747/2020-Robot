@@ -18,7 +18,6 @@ import frc.robot.interfaces.PigeonInterface;
  */
 public class Sensors {
   public static final IRBreakBeamInterface IRBreakBeam = new IRBreakBeamInterface(0);
-
   public static final LIDARInterface LIDAR = new LIDARInterface(I2C.Port.kOnboard);
   public static final LimelightInterface Limelight = new LimelightInterface();
   public static final PigeonInterface Pigeon = new PigeonInterface(0);

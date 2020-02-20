@@ -1,9 +1,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.Motors;
-import frc.robot.OI;
 import frc.robot.Subsystems;
+import frc.robot.input.Devices;
 
 public class TankDriveCommand extends CommandBase {
 
@@ -34,8 +35,8 @@ public class TankDriveCommand extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    double left = -OI.leftStick.getRawAxis(1);
-    double right = -OI.rightStick.getRawAxis(1);
+    double left = -Devices.leftStick.getY();
+    double right = -Devices.rightStick.getY();
 
     if (Math.abs(left) < 0.1) {
         left = 0;

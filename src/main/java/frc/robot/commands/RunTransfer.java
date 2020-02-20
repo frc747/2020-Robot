@@ -8,7 +8,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import frc.robot.Subsystems;
+import frc.robot.input.Devices;
 
 public class RunTransfer extends CommandBase {
 
@@ -24,7 +26,11 @@ public class RunTransfer extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Subsystems.Transfer.set(-.8);
+    if (Devices.operatorController.getRightBumper()) {
+      Subsystems.Transfer.set(-.8);
+    } else {
+      Subsystems.Transfer.stop();
+    }
   }
 
   // Called once the command ends or is interrupted.
