@@ -76,15 +76,18 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Transfer Pos", Motors.transfer.getSelectedSensorPosition());
-    if (Sensors.Limelight.validTargets()) {
+    //SmartDashboard.putNumber("Transfer Pos", Motors.transfer.getSelectedSensorPosition());
+    /*if (Sensors.Limelight.validTargets()) {
       SmartDashboard.putNumber("Distance (trig): ", 1.16545 * ( (83-13.5) / Math.tan(Math.toRadians(12.5+Sensors.Limelight.getVerticalOffset()))) -12.1941) ;
       SmartDashboard.putNumber("Distance (trig original): ", ( (83-13.5) / Math.tan(Math.toRadians(12.5+Sensors.Limelight.getVerticalOffset())))) ;
       
       SmartDashboard.putNumber("Distance (area):", 194.1278201032424 * Math.sqrt(Sensors.Limelight.getArea()));
-    }
+    }*/
 
     SmartDashboard.putNumber("LIDAR Distance", Sensors.LIDAR.getDistance());
+
+    SmartDashboard.putNumber("Left Intake Arm", Motors.leftIntakeArm.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Right Intake Arm", Motors.rightIntakeArm.getSelectedSensorPosition());
 
   }
 

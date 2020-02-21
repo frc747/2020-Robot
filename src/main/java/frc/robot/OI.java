@@ -41,6 +41,8 @@ public class OI {
     SmartDashboard.putNumber("Joystick Left", Devices.leftStick.getY());
     SmartDashboard.putNumber("Joystick Right", Devices.rightStick.getY());
 
+    SmartDashboard.putNumber("Right stick", Devices.operatorController.getRightY());
+
     SmartDashboard.putNumber("PIGEON ANGLE", Sensors.Pigeon.getAngle());
     SmartDashboard.putNumber("RAW PIGEON ANGLE", Sensors.Pigeon.getRawAngle());
   }

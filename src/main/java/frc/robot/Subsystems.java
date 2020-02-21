@@ -8,8 +8,8 @@
 package frc.robot;
 
 import frc.robot.commands.HoodToAngle;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.RunIndexer;
-import frc.robot.commands.RunIntake;
 import frc.robot.commands.ShiftDriveCommand;
 import frc.robot.commands.RunShooter;
 import frc.robot.subsystems.DriveSubsystem;
@@ -34,7 +34,7 @@ public class Subsystems {
     Subsystems.Drive.setDefaultCommand(new ShiftDriveCommand());
     Subsystems.Shooter.setDefaultCommand(new RunShooter());
     Subsystems.Hood.setDefaultCommand(new HoodToAngle());
-    Subsystems.Intake.setDefaultCommand(new RunIntake());
+    Subsystems.Intake.setDefaultCommand(new IntakeCommand());
     Subsystems.Indexer.setDefaultCommand(new RunIndexer());
   }
 }

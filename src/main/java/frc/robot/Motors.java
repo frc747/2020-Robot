@@ -21,7 +21,7 @@ public class Motors {
 
     public static TalonSRX transfer = new TalonSRX(2);
 
-    //public static TalonSRX motorThree = new TalonSRX(3);
+    public static TalonFX rightIntakeArm = new TalonFX(3);
 
     public static TalonSRX indexer = new TalonSRX(4);
 
@@ -39,7 +39,7 @@ public class Motors {
 
     //public static TalonSRX motorEleven = new TalonSRX(11);
 
-    //public static TalonSRX motorTwelve = new TalonSRX(12);
+    public static TalonFX leftIntakeArm = new TalonFX(12);
 
     public static TalonFX shooter = new TalonFX(13);
 

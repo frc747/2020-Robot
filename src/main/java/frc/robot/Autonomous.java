@@ -2,7 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
-import frc.robot.autonomous.*;
+// /import frc.robot.autonomous.*;
 
 public class Autonomous{
     
@@ -29,7 +29,7 @@ public class Autonomous{
         switch (selectedAutoMode){
             case AUTOMODE_EXAMPLE:
                 Sensors.Limelight.setPipeline(1);
-                new ExampleAuto().schedule();
+                //new ExampleAuto().schedule();
                 break;
             default:
                 break;

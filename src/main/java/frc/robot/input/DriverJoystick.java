@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 
 public class DriverJoystick {
 
-  private static Joystick driverJoystick;
+  private Joystick driverJoystick;
 
   public DriverJoystick(int id) {
     driverJoystick = new Joystick(id);

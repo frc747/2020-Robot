@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class OperatorController {
 
-  private static Joystick operatorController;
+  private Joystick operatorController;
 
   public JoystickButton BUTTON_A;
   public JoystickButton BUTTON_B;
@@ -120,9 +120,9 @@ public class OperatorController {
     public static final int LeftX = 0;
     public static final int LeftY = 1;
     public static final int LeftTrigger = 2;
-    public static final int RightX = 3;
-    public static final int RightY = 4;
-    public static final int RightTrigger = 5;
+    public static final int RightTrigger = 3;
+    public static final int RightX = 4;
+    public static final int RightY = 5;
   }
 
 }
