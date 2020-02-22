@@ -10,12 +10,15 @@ package frc.robot;
 import frc.robot.commands.HoodToAngle;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.RunIndexer;
-import frc.robot.commands.ShiftDriveCommand;
 import frc.robot.commands.RunShooter;
+import frc.robot.commands.RunTransfer;
+import frc.robot.commands.ServoAngle;
+import frc.robot.commands.TankDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightServoSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransferSubsystem;
 
@@ -29,12 +32,15 @@ public class Subsystems {
   public static final HoodSubsystem Hood = new HoodSubsystem();
   public static final IntakeSubsystem Intake = new IntakeSubsystem();
   public static final IndexerSubsystem Indexer = new IndexerSubsystem();
+  public static final LimelightServoSubsystem LimelightServo = new LimelightServoSubsystem();
 
   public static void setDefaultCommands() {
     Subsystems.Drive.setDefaultCommand(new ShiftDriveCommand());
     Subsystems.Shooter.setDefaultCommand(new RunShooter());
+    Subsystems.Transfer.setDefaultCommand(new RunTransfer());
     Subsystems.Hood.setDefaultCommand(new HoodToAngle());
     Subsystems.Intake.setDefaultCommand(new IntakeCommand());
     Subsystems.Indexer.setDefaultCommand(new RunIndexer());
+    Subsystems.LimelightServo.setDefaultCommand(new ServoAngle());
   }
 }
