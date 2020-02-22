@@ -14,10 +14,8 @@ import frc.robot.Servos;
 import java.lang.Math;
 public class LimelightServoSubsystem extends SubsystemBase {
 
-  private double currentPos;//0.5; // set initial angle here
-  private double kP = 2;
   public LimelightServoSubsystem() {
-    currentPos = Servos.limelightServo.getAngle();
+    
   }
 
   public void set(double value) {
@@ -33,9 +31,6 @@ public class LimelightServoSubsystem extends SubsystemBase {
   }
 
   public void printOuts() {
-    currentPos = Servos.limelightServo.getAngle();
-    SmartDashboard.putNumber("ANGLE TO TURN", (kP*Sensors.Limelight.getVerticalOffset()));
-    SmartDashboard.putNumber("Current Pos", currentPos);
     SmartDashboard.putNumber("LIMELIGHT VERITCAL OFFSET", Sensors.Limelight.getVerticalOffset());
   }
 

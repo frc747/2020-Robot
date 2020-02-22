@@ -53,6 +53,8 @@ public class OI {
     SmartDashboard.putNumber("SERVO ANGLE", Servos.limelightServo.getAngle());
     SmartDashboard.putNumber("Servo Value: ", Servos.limelightServo.get());
 
+    SmartDashboard.putBoolean("Ball?", !Sensors.IRBreakBeam.getValue());
+
     Subsystems.LimelightServo.printOuts();
   }
 }

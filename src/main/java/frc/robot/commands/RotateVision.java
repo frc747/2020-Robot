@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.Sensors;
 import frc.robot.Subsystems;
+import frc.robot.interfaces.LimelightInterface.camMode;
 
 public class RotateVision extends CommandBase {
   
@@ -17,6 +18,9 @@ public class RotateVision extends CommandBase {
   @Override
   public void initialize() {
     Robot.limelightPivot = true;
+    // Sensors.Limelight.setPipeline(0);
+    Subsystems.Drive.tracking = true;
+    // Sensors.Limelight.setCamMode(camMode.VISION_PROCESSOR);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,6 +37,9 @@ public class RotateVision extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    // Sensors.Limelight.setPipeline(1);
+    Subsystems.Drive.tracking = false;
+    // Sensors.Limelight.setCamMode(camMode.DRIVER_CAMERA);
     Robot.limelightPivot = false;
     Subsystems.Drive.stop();
   }
