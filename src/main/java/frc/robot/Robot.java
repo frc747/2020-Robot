@@ -10,6 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.input.Devices;
+import frc.robot.input.OperatorController;
 //import edu.wpi.cscore.UsbCamera;
 //import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Preferences;
@@ -44,6 +46,7 @@ public class Robot extends TimedRobot {
     Subsystems.setDefaultCommands();
 
     Sensors.LIDAR.startMeasuring();
+    Subsystems.Drive.tracking = true;
 
     prefs = Preferences.getInstance();
     Subsystems.Drive.resetBothEncoders();
@@ -104,6 +107,12 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     CommandScheduler.getInstance().run();
+
+    if (Devices.operatorController.BUTTON_A.get()) {
+      Subsystems.Drive.tracking = true;
+    } else {
+      Subsystems.Drive.tracking = false;
+    }
   }
 
   /**

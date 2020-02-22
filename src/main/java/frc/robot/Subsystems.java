@@ -35,7 +35,7 @@ public class Subsystems {
   public static final LimelightServoSubsystem LimelightServo = new LimelightServoSubsystem();
 
   public static void setDefaultCommands() {
-    Subsystems.Drive.setDefaultCommand(new ShiftDriveCommand());
+    Subsystems.Drive.setDefaultCommand(new TankDriveCommand());
     Subsystems.Shooter.setDefaultCommand(new RunShooter());
     Subsystems.Transfer.setDefaultCommand(new RunTransfer());
     Subsystems.Hood.setDefaultCommand(new HoodToAngle());
