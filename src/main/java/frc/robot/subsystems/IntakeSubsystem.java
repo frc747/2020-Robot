@@ -13,12 +13,14 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import frc.robot.Motors;
+import frc.robot.Subsystems;
 import frc.robot.input.Devices;
 
 public class IntakeSubsystem extends SubsystemBase {
-  /**
-   * Creates a new IntakeSubsystem.
-   */
+ 
+  double calc;
+  double kP = 1000;
+
   public IntakeSubsystem() {
     Motors.leftIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     Motors.rightIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
@@ -49,5 +51,10 @@ public class IntakeSubsystem extends SubsystemBase {
   public void stopIntakeArms() {
     Motors.leftIntakeArm.set(ControlMode.PercentOutput, 0);
     Motors.rightIntakeArm.set(ControlMode.PercentOutput, 0);
+  }
+
+  public double proportionalIntake() {
+    calc = 0.5+(Subsystems.Drive.getAverageVelocity()/kP);
+    return calc;
   }
 }

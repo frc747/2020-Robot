@@ -244,6 +244,18 @@ public class DriveSubsystem extends SubsystemBase {
         
     }
 
+    public double getLeftVelocity() {
+        return Motors.leftDrivePrimary.getSelectedSensorVelocity();
+    }
+
+    public double getRightVelocity() {
+        return Motors.rightDrivePrimary.getSelectedSensorVelocity();
+    }
+
+    //Returns the average of the absolute value of the left and right side velocities. Used to find average speed of both sides, not to find if the robot is moving.
+    public double getAverageVelocity() {
+        return (Math.abs(getLeftVelocity()) + Math.abs(getRightVelocity()))/2;
+    }
     public double getCombindedEncoderPosition() {
         return (getLeftPosition() + getRightPosition()) / 2;
     }
