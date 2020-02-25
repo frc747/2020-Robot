@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,6 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
     Motors.shooter.setSensorPhase(false);
     Motors.shooter.config_kP(0, kP);
     Motors.shooter.config_kF(0, kF);
+    Motors.shooter.setNeutralMode(NeutralMode.Coast);
   }
 
   @Override

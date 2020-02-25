@@ -31,9 +31,9 @@ public class IntakeCommand extends CommandBase {
     //remove
     if (Devices.operatorController.getLeftTrigger() >= 0.9) {
       Subsystems.Intake.setIntake(0.75); 
-    } else if (Devices.operatorController.getRightTrigger() >= 0.9) {
+    }/* else if (Devices.operatorController.getRightTrigger() >= 0.9) {
       Subsystems.Intake.setIntake(-0.75); 
-    } else {
+    } */else {
       Subsystems.Intake.stopIntake();
     }
   }

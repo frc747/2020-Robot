@@ -8,8 +8,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Motors;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
 
@@ -29,7 +32,7 @@ public class RunShooter extends CommandBase {
   public void execute() {
     SmartDashboard.putString("execute: ", "EXECUTE!");
     if(Devices.operatorController.getRightTrigger() > 0.9) {
-      Subsystems.Shooter.setRPM(6000); // add automatic RPM adjustment based on LIDAR
+      Subsystems.Shooter.setRPM(Devices.operatorController.getLeftY()*6000); // add automatic RPM adjustment based on LIDAR
     } else {
       Subsystems.Shooter.stop();
     }
