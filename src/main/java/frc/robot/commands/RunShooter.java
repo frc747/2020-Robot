@@ -9,8 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Motors;
 import frc.robot.Subsystems;
@@ -25,6 +23,7 @@ public class RunShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Motors.shooter.configClosedloopRamp(1.0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,7 +31,7 @@ public class RunShooter extends CommandBase {
   public void execute() {
     SmartDashboard.putString("execute: ", "EXECUTE!");
     if(Devices.operatorController.getRightTrigger() > 0.9) {
-      Subsystems.Shooter.setRPM(Devices.operatorController.getLeftY()*6000); // add automatic RPM adjustment based on LIDAR
+      Subsystems.Shooter.setRPM(Math.abs(Devices.operatorController.getLeftY())*6000); // add automatic RPM adjustment based on LIDAR
     } else {
       Subsystems.Shooter.stop();
     }
@@ -41,6 +40,7 @@ public class RunShooter extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Motors.shooter.configClosedloopRamp(0);
   }
 
   // Returns true when the command should end.
