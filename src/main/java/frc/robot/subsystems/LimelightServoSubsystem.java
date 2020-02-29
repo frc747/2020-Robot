@@ -14,7 +14,7 @@ import frc.robot.Servos;
 import java.lang.Math;
 public class LimelightServoSubsystem extends SubsystemBase {
 
-  double max = .36;
+  double max = .4;
 
 
   public LimelightServoSubsystem() {
@@ -35,7 +35,7 @@ public class LimelightServoSubsystem extends SubsystemBase {
 
 
 
-    double calc = ((Math.toDegrees(Math.atan(88/Sensors.LIDAR.getDistance())))/125)+((Sensors.Limelight.getVerticalOffset()/600));//*Sensors.LIDAR.getDistance()/45);
+    double calc = ((Math.toDegrees(Math.atan(88/Sensors.LIDAR.getDistance())))/125)+((Sensors.Limelight.getVerticalOffset()/250));//*Sensors.LIDAR.getDistance()/45);
     SmartDashboard.putNumber("CALC: ", calc);
 
     if (calc > max) {

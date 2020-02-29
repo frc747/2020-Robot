@@ -27,7 +27,8 @@ public class HoodToAngle extends CommandBase {
   private static final int timeoutMs = 10;
   private static final int slotIdx = 0;
 
-  private static final double MAX_PERCENT_VOLTAGE = 1.0;
+  private static final double MAX_PERCENT_VOLTAGE = .30
+  ;
   private static final double MIN_PERCENT_VOLTAGE = 0.0;
 
   private final static int allowableCloseLoopError = 1;

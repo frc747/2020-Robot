@@ -11,7 +11,7 @@ public class RotateVision extends CommandBase {
   double modifier = .5;
 
   public RotateVision() {
-    addRequirements(Subsystems.Drive);
+    // addRequirements(Subsystems.Drive);
   }
 
   // Called when the command is initially scheduled.
@@ -31,7 +31,7 @@ public class RotateVision extends CommandBase {
 
     double left = -x/65;
     double right = x/65;
-    Subsystems.Drive.set(left, right);
+    // Subsystems.Drive.set(left, right);
     // Subsystems.Drive.stop();
   }
 

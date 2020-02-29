@@ -158,7 +158,7 @@ public class Robot extends TimedRobot {
     Sensors.Limelight.setPipeline(0);
     Sensors.Pigeon.resetAngle();
     Subsystems.Drive.resetBothEncoders();
-    Subsystems.Drive.changeDriveBrakeMode(true/*true*/);
+    Subsystems.Drive.changeDriveBrakeMode(false/*true*/);
     Motors.shooter.setNeutralMode(NeutralMode.Coast);
 
     Motors.shooter.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
