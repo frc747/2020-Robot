@@ -27,11 +27,12 @@ public class RotateVision extends CommandBase {
   @Override
   public void execute() {
 
-    double x = Sensors.Limelight.getHorizontalOffset();
+    // double x = Sensors.Limelight.getHorizontalOffset();
 
-    double left = -x/52.687;
-    double right = x/52.687;
-    Subsystems.Drive.set(left, right);
+    // double left = -x/52.687;
+    // double right = x/52.687;
+    // Subsystems.Drive.set(left, right);
+    Subsystems.Drive.stop();
   }
 
   // Called once the command ends or is interrupted.

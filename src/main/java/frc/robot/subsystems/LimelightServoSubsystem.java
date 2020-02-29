@@ -19,23 +19,35 @@ public class LimelightServoSubsystem extends SubsystemBase {
   }
 
   public void set(double value) {
+    if(value > .3) {
+      value = .3;
+    }
     Servos.limelightServo.set(value);;
   }
 
   public void trackTarget() {
     //currentPos = Servos.limelightServo.getAngle();
     //Servos.limelightServo.setAngle((kP*Sensors.Limelight.getVerticalOffset()));
+
+
+
+
     double calc = ((Math.toDegrees(Math.atan(88/Sensors.LIDAR.getDistance())))/240)+((Sensors.Limelight.getVerticalOffset()/600));//*Sensors.LIDAR.getDistance()/45);
     SmartDashboard.putNumber("CALC: ", calc);
+
+    if (calc > .3) {
+      calc = .3;
+    }
+
     Servos.limelightServo.set(calc);
   }
 
   public void printOuts() {
     SmartDashboard.putNumber("LIMELIGHT VERITCAL OFFSET", Sensors.Limelight.getVerticalOffset());
+    SmartDashboard.putNumber("Servo Value: ", Servos.limelightServo.get());
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
   }
 }
