@@ -4,6 +4,7 @@ import java.lang.SuppressWarnings;
 
 import edu.wpi.first.wpilibj.*;
 import frc.robot.commands.RotateVision;
+import frc.robot.commands.SmartBallTransfer;
 import frc.robot.input.Devices;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.interfaces.LimelightInterface.camMode;
@@ -19,8 +20,9 @@ public class OI {
   public OI() {
 
     // example : Devices.operatorController.BUTTON_X.whenHeld(command, interruptible)
-
+    // PLACE COMMANDS HERE
     Devices.operatorController.BUTTON_A.whileHeld(new RotateVision());
+    Devices.operatorController.BUTTON_SELECT.whileHeld(new SmartBallTransfer());
 
     // Ignore this error, no known conflict
     new Notifier(() -> updateOI()).startPeriodic(.1);
