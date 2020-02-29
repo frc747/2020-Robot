@@ -51,8 +51,8 @@ public class TankDriveCommand extends CommandBase {
     Subsystems.Drive.set(left * speed, right * speed);
     */
 
-    double leftValue = applyDeadband(-Devices.leftStick.getY(), 0.1);
-    double rightValue = applyDeadband(-Devices.rightStick.getY(), 0.1);
+    double leftValue = applyDeadband(Devices.leftStick.getY(), 0.15);
+    double rightValue = applyDeadband(Devices.rightStick.getY(), 0.15);
     Subsystems.Drive.set(leftValue * speed, rightValue * speed);
   }
 

@@ -26,11 +26,12 @@ public class IntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Subsystems.Intake.setIntakeArms();
+    // Subsystems.Intake.setIntakeArms();
 
     //remove
     if (Devices.operatorController.getLeftTrigger() >= 0.9) {
-      Subsystems.Intake.setIntake(0.75); 
+      // Subsystems.Intake.setIntake(0.75); 
+      Subsystems.Intake.setIntake(Subsystems.Intake.proportionalIntake());
     }/* else if (Devices.operatorController.getRightTrigger() >= 0.9) {
       Subsystems.Intake.setIntake(-0.75); 
     } */else {

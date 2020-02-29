@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -19,7 +20,7 @@ import frc.robot.input.Devices;
 public class IntakeSubsystem extends SubsystemBase {
  
   double calc;
-  double kP = 1000;
+  double kP = 50000; //50000
 
   public IntakeSubsystem() {
     Motors.leftIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
@@ -31,7 +32,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Left Arm Position: ", Motors.leftIntakeArm.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Right Arm Position: ", Motors.rightIntakeArm.getSelectedSensorPosition());
   }
 
   public void setIntake(double output) {
@@ -55,6 +57,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public double proportionalIntake() {
     calc = 0.5+(Subsystems.Drive.getAverageVelocity()/kP);
+    SmartDashboard.putNumber("Calced Value", calc);
     return calc;
   }
 }
