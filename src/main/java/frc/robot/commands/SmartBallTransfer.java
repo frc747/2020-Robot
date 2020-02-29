@@ -13,9 +13,10 @@ import frc.robot.Sensors;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
 
-public class RunTransfer extends CommandBase {
+public class SmartBallTransfer extends CommandBase {
 
-  public RunTransfer() {
+  public SmartBallTransfer() {
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Subsystems.Transfer);
   }
 
@@ -28,9 +29,8 @@ public class RunTransfer extends CommandBase {
   @Override
   public void execute() {
     // SmartDashboard.putBoolean("Select Button", Devices.operatorController.getSelect());
-
-    if (Devices.operatorController.getRightBumper()) {
-      Subsystems.Transfer.set(-0.8);
+    if (Sensors.IRBreakBeam.getValue()) {
+      Subsystems.Transfer.set(-0.3);
     } else {
       Subsystems.Transfer.stop();
     }
@@ -39,13 +39,11 @@ public class RunTransfer extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Subsystems.Transfer.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-  
     return false;
   }
 }
