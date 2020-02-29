@@ -14,13 +14,16 @@ import frc.robot.Servos;
 import java.lang.Math;
 public class LimelightServoSubsystem extends SubsystemBase {
 
+  double max = .36;
+
+
   public LimelightServoSubsystem() {
     
   }
 
   public void set(double value) {
-    if(value > .3) {
-      value = .3;
+    if(value > max) {
+      value = max;
     }
     Servos.limelightServo.set(value);;
   }
@@ -32,11 +35,11 @@ public class LimelightServoSubsystem extends SubsystemBase {
 
 
 
-    double calc = ((Math.toDegrees(Math.atan(88/Sensors.LIDAR.getDistance())))/240)+((Sensors.Limelight.getVerticalOffset()/600));//*Sensors.LIDAR.getDistance()/45);
+    double calc = ((Math.toDegrees(Math.atan(88/Sensors.LIDAR.getDistance())))/125)+((Sensors.Limelight.getVerticalOffset()/600));//*Sensors.LIDAR.getDistance()/45);
     SmartDashboard.putNumber("CALC: ", calc);
 
-    if (calc > .3) {
-      calc = .3;
+    if (calc > max) {
+      calc = max;
     }
 
     Servos.limelightServo.set(calc);
