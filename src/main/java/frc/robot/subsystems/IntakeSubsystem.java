@@ -20,7 +20,7 @@ import frc.robot.input.Devices;
 public class IntakeSubsystem extends SubsystemBase {
  
   double calc;
-  double kP = 50000; //50000
+  double kP = 50000; //this scales the intake roller speed from 0.50 to ~0.92
 
   public IntakeSubsystem() {
     Motors.leftIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
@@ -59,5 +59,45 @@ public class IntakeSubsystem extends SubsystemBase {
     calc = 0.5+(Subsystems.Drive.getAverageVelocity()/kP);
     SmartDashboard.putNumber("Calced Value", calc);
     return calc;
+  }
+
+
+  public void resetLeftEncoder() {
+    Motors.leftIntakeArm.setSelectedSensorPosition(0);
+    try {
+    Thread.sleep(100);
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public void resetRightEncoder() {
+    Motors.rightIntakeArm.setSelectedSensorPosition(0);
+    try {
+      Thread.sleep(100);
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public void resetBothEncoders(){
+    Motors.rightIntakeArm.setSelectedSensorPosition(0);
+    Motors.leftIntakeArm.setSelectedSensorPosition(0);
+    try {
+      Thread.sleep(100);
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  public double getLeftPosition() {
+    return Motors.leftIntakeArm.getSelectedSensorPosition();
+  }
+
+  public double getRightPosition() {
+    return Motors.rightIntakeArm.getSelectedSensorPosition();
   }
 }
