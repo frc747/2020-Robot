@@ -119,10 +119,10 @@ public class IntakeCommand extends CommandBase {
     //remove
     if (Devices.operatorController.getLeftTrigger() >= 0.9) {
       // Subsystems.Intake.setIntake(0.75); 
-      Subsystems.Intake.setIntake(Subsystems.Intake.proportionalIntake());
-    }/* else if (Devices.operatorController.getRightTrigger() >= 0.9) {
-      Subsystems.Intake.setIntake(-0.75); 
-    } */else {
+      Subsystems.Intake.setIntake(0.70/*Subsystems.Intake.proportionalIntake()*/);
+    } else if (Devices.operatorController.getX()) {
+      Subsystems.Intake.setIntake(-0.70/*-Subsystems.Intake.proportionalIntake()*/); 
+    } else {
       Subsystems.Intake.stopIntake();
     }
 

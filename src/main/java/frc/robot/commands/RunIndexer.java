@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Subsystems;
@@ -27,7 +28,11 @@ public class RunIndexer extends CommandBase {
   @Override
   public void execute() {
     if (Devices.operatorController.getLeftBumper()) {
-      Subsystems.Indexer.set(-0.75); // change to setInverted once motor direction has been confirmed
+      if ((int)Timer.getFPGATimestamp() % 2 == 0) {
+        Subsystems.Indexer.set(-0.75); // change to setInverted once motor direction has been confirmed
+      } else {
+        Subsystems.Indexer.set(0.75);
+      }
     } else {
       Subsystems.Indexer.stop();
     }

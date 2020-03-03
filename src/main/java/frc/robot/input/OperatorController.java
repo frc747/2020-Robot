@@ -48,7 +48,7 @@ public class OperatorController {
   }
   
   public boolean getX() {
-    return operatorController.getRawButton(Buttons.A);
+    return operatorController.getRawButton(Buttons.X);
   }
 
   public boolean getY() {
