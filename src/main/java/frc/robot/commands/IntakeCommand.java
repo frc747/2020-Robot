@@ -15,7 +15,9 @@ import frc.robot.Motors;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
 
-public class IntakeCommand extends CommandBase {
+public class IntakeCommand extends CommandBase {  
+
+  public static int armState = 0;
 
   public IntakeCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -43,7 +45,7 @@ public class IntakeCommand extends CommandBase {
   private boolean drivingDown = false;
 
 
-  private static final double ARM_MAX_VOLTAGE = 6.0;
+  private static final double ARM_MAX_VOLTAGE = 2.0;//6.0;
   private static final double ARM_MIN_VOLTAGE = 0.0;
 
   private static final double ARM_MAX_PERCENT_VOLTAGE = ARM_MAX_VOLTAGE / 12;
@@ -132,12 +134,12 @@ public class IntakeCommand extends CommandBase {
       Subsystems.Intake.stopIntake();
     }
 
-    if (Devices.xboxController.getRightY() < (-0.75)) {
+    if (armState % 2 == 1) {
       tickGoal = uprightPosition;
       runMotionMagic = true;
       drivingDown = false;
       drivingUp = true;
-    } else if (Devices.xboxController.getRightY() > 0.75) {
+    } else if (armState % 2 == 0) {
       tickGoal = floorPosition;
       runMotionMagic = true;
       drivingDown = true;

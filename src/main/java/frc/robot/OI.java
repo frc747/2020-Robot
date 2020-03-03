@@ -3,6 +3,7 @@ package frc.robot;
 import java.lang.SuppressWarnings;
 
 import edu.wpi.first.wpilibj.*;
+import frc.robot.commands.FlipIntakeArmsCommand;
 import frc.robot.commands.RotateVision;
 import frc.robot.commands.SmartBallTransfer;
 import frc.robot.input.Devices;
@@ -22,6 +23,7 @@ public class OI {
     // PLACE COMMANDS HERE
     Devices.xboxController.BUTTON_A.whileHeld(new RotateVision());
     Devices.xboxController.BUTTON_SELECT.whileHeld(new SmartBallTransfer());
+    Devices.xboxController.BUTTON_B.whenPressed(new FlipIntakeArmsCommand());
 
     Sensors.LoadCell.begin(10,11);
 

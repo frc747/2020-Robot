@@ -109,7 +109,7 @@ public class HoodToAngle extends CommandBase {
     SmartDashboard.putNumber("angle: ", actualAngle);
     SmartDashboard.putNumber("DriveTicks for hood: ", driveTicks);
 
-    if(!Devices.xboxController.getB()) {
+    if(!Devices.xboxController.getY()) {
       Motors.hood.set(ControlMode.MotionMagic, -200);
       SmartDashboard.putBoolean("Inside motion magic: ", true);
     } else {
