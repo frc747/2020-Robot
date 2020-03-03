@@ -118,10 +118,9 @@ public class IntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Subsystems.Intake.setIntakeArms();
-
     double leftPosition = Subsystems.Intake.getLeftPosition();
     double rightPosition = Subsystems.Intake.getRightPosition();
+    // Subsystems.Intake.setIntakeArms();
 
     //remove
     if (Devices.xboxController.getLeftTrigger() >= 0.9) {
@@ -151,7 +150,7 @@ public class IntakeCommand extends CommandBase {
     }
 
     if ((leftPosition > (tickGoal - STOP_THRESHOLD_TICKS) && leftPosition < (tickGoal + STOP_THRESHOLD_TICKS)) ||
-    (rightPosition > (tickGoal - STOP_THRESHOLD_TICKS) && rightPosition < (tickGoal + STOP_THRESHOLD_TICKS))) {
+      (rightPosition > (tickGoal - STOP_THRESHOLD_TICKS) && rightPosition < (tickGoal + STOP_THRESHOLD_TICKS))) {
       onTargetCount++;
     } else {
       onTargetCount = 0;
@@ -167,8 +166,8 @@ public class IntakeCommand extends CommandBase {
       Motors.rightIntakeArm.set(ControlMode.MotionMagic, tickGoal);
       Motors.leftIntakeArm.set(ControlMode.MotionMagic, tickGoal);
     } else {
-      Motors.rightIntakeArm.set(ControlMode.MotionMagic, 0.0);
-      Motors.leftIntakeArm.set(ControlMode.MotionMagic, 0.0);
+      Motors.rightIntakeArm.set(ControlMode.PercentOutput, 0.0);
+      Motors.leftIntakeArm.set(ControlMode.PercentOutput, 0.0);
     }
   }
 
@@ -183,16 +182,16 @@ public class IntakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //double leftPosition = Subsystems.Intake.getLeftPosition();
-    //double rightPosition = Subsystems.Intake.getRightPosition();
+    // double leftPosition = Subsystems.Intake.getLeftPosition();
+    // double rightPosition = Subsystems.Intake.getRightPosition();
 
-    //SmartDashboard.putNumber("Intake Arm TICK GOAL: ", tickGoal);
+    // SmartDashboard.putNumber("Intake Arm TICK GOAL: ", tickGoal);
 
     // if ((leftPosition > (tickGoal - STOP_THRESHOLD_TICKS) && leftPosition < (tickGoal + STOP_THRESHOLD_TICKS)) ||
     //     (rightPosition > (tickGoal - STOP_THRESHOLD_TICKS) && rightPosition < (tickGoal + STOP_THRESHOLD_TICKS))) {
-    //     onTargetCount++;
+    //   onTargetCount++;
     // } else {
-    //     onTargetCount = 0;
+    //   onTargetCount = 0;
 
     // }
     // SmartDashboard.putNumber("ONTARGETCOUNT ARMS", onTargetCount);
