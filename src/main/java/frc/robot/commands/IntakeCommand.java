@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,23 +24,27 @@ public class IntakeCommand extends CommandBase {
   }
   private double tickGoal;
   
-  private final static double STOP_THRESHOLD_TICKS = 1;
+  private final static double STOP_THRESHOLD_TICKS = 2500;
 
   private final static int TARGET_COUNT_ONE_SECOND = 50;
   private final static double ON_TARGET_MINIMUM_COUNT = TARGET_COUNT_ONE_SECOND * .1;
 
-  private double driveP = 0.1;
+  private double driveP = 0.01;
   private double driveI = 0.0;
-  private double driveD = 0.0;
+  private double driveD = 0.000;
   private double driveF = 0.0;
 
   private double floorPosition = 0;
-  private double uprightPosition = 30000;
+  private double uprightPosition = 45000  ;
 
   private boolean runMotionMagic = false;
+  private boolean armsAreUp = false;
+  private boolean armsAreDown = false;
+  private boolean drivingUp = false;
+  private boolean drivingDown = false;
 
 
-  private static final double ARM_MAX_VOLTAGE = 3.0;
+  private static final double ARM_MAX_VOLTAGE = 6.0;
   private static final double ARM_MIN_VOLTAGE = 0.0;
 
   private static final double ARM_MAX_PERCENT_VOLTAGE = ARM_MAX_VOLTAGE / 12;
@@ -104,16 +109,18 @@ public class IntakeCommand extends CommandBase {
     Motors.rightIntakeArm.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
 
 
-    Motors.leftDrivePrimary.configMotionCruiseVelocity(0, timeoutMs);
-    Motors.leftDrivePrimary.configMotionAcceleration(0, timeoutMs);
-    Motors.rightDrivePrimary.configMotionCruiseVelocity(0, timeoutMs);
-    Motors.rightDrivePrimary.configMotionAcceleration(0, timeoutMs);
+    Motors.leftDrivePrimary.configMotionCruiseVelocity(1000, timeoutMs);
+    Motors.leftDrivePrimary.configMotionAcceleration(500, timeoutMs);
+    Motors.rightDrivePrimary.configMotionCruiseVelocity(1000, timeoutMs);
+    Motors.rightDrivePrimary.configMotionAcceleration(500, timeoutMs);
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double leftPosition = Subsystems.Intake.getLeftPosition();
+    double rightPosition = Subsystems.Intake.getRightPosition();
     // Subsystems.Intake.setIntakeArms();
 
     //remove
@@ -126,15 +133,42 @@ public class IntakeCommand extends CommandBase {
       Subsystems.Intake.stopIntake();
     }
 
-    if (Devices.operatorController.getLeftY() < (-0.75)) {
+    if (Devices.operatorController.getRightY() < (-0.75)) {
       tickGoal = uprightPosition;
       runMotionMagic = true;
-    } else if (Devices.operatorController.getLeftY() > 0.75) {
+      drivingDown = false;
+      drivingUp = true;
+    } else if (Devices.operatorController.getRightY() > 0.75) {
       tickGoal = floorPosition;
       runMotionMagic = true;
+      drivingDown = true;
+      drivingUp = false;
     } else {
       tickGoal = Subsystems.Intake.getLeftPosition();
+      drivingDown = false;
+      drivingUp = false;
       runMotionMagic = false;
+    }
+
+    if ((leftPosition > (tickGoal - STOP_THRESHOLD_TICKS) && leftPosition < (tickGoal + STOP_THRESHOLD_TICKS)) ||
+      (rightPosition > (tickGoal - STOP_THRESHOLD_TICKS) && rightPosition < (tickGoal + STOP_THRESHOLD_TICKS))) {
+      onTargetCount++;
+    } else {
+      onTargetCount = 0;
+    }
+
+    if (onTargetCount > ON_TARGET_MINIMUM_COUNT) {
+      drivingDown = false;
+      drivingUp = false;
+      runMotionMagic = true;
+    }
+
+    if (runMotionMagic) {
+      Motors.rightIntakeArm.set(ControlMode.MotionMagic, tickGoal);
+      Motors.leftIntakeArm.set(ControlMode.MotionMagic, tickGoal);
+    } else {
+      Motors.rightIntakeArm.set(ControlMode.PercentOutput, 0.0);
+      Motors.leftIntakeArm.set(ControlMode.PercentOutput, 0.0);
     }
   }
 
@@ -149,19 +183,20 @@ public class IntakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double leftPosition = Subsystems.Intake.getLeftPosition();
-    double rightPosition = Subsystems.Intake.getRightPosition();
+    // double leftPosition = Subsystems.Intake.getLeftPosition();
+    // double rightPosition = Subsystems.Intake.getRightPosition();
 
-    SmartDashboard.putNumber("Intake Arm TICK GOAL: ", tickGoal);
+    // SmartDashboard.putNumber("Intake Arm TICK GOAL: ", tickGoal);
 
-    if ((leftPosition > (tickGoal - STOP_THRESHOLD_TICKS) && leftPosition < (tickGoal + STOP_THRESHOLD_TICKS)) ||
-        (rightPosition > (tickGoal - STOP_THRESHOLD_TICKS) && rightPosition < (tickGoal + STOP_THRESHOLD_TICKS))) {
-        onTargetCount++;
-    } else {
-        onTargetCount = 0;
+    // if ((leftPosition > (tickGoal - STOP_THRESHOLD_TICKS) && leftPosition < (tickGoal + STOP_THRESHOLD_TICKS)) ||
+    //     (rightPosition > (tickGoal - STOP_THRESHOLD_TICKS) && rightPosition < (tickGoal + STOP_THRESHOLD_TICKS))) {
+    //   onTargetCount++;
+    // } else {
+    //   onTargetCount = 0;
 
-    }
-    SmartDashboard.putNumber("ONTARGETCOUNT ARMS", onTargetCount);
-    return (onTargetCount > ON_TARGET_MINIMUM_COUNT);
-    }
+    // }
+    // SmartDashboard.putNumber("ONTARGETCOUNT ARMS", onTargetCount);
+    // return (onTargetCount > ON_TARGET_MINIMUM_COUNT);
+    return false;
+  }
 }
