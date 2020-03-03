@@ -9,72 +9,72 @@ package frc.robot.input;
 
 import edu.wpi.first.wpilibj.Joystick;
 
-public class DriverJoystick {
+public class LogitechJoystick {
 
-  private Joystick driverJoystick;
+  private Joystick logitechJoystick;
 
-  public DriverJoystick(int id) {
-    driverJoystick = new Joystick(id);
+  public LogitechJoystick(int id) {
+    logitechJoystick = new Joystick(id);
   }
 
   public double getX() {
-    return driverJoystick.getRawAxis(Axes.X);
+    return logitechJoystick.getRawAxis(Axes.X);
   }
 
   public double getY() {
-    return driverJoystick.getRawAxis(Axes.Y);
+    return logitechJoystick.getRawAxis(Axes.Y);
   }
 
   public double getZ() {
-    return driverJoystick.getRawAxis(Axes.Z);
+    return logitechJoystick.getRawAxis(Axes.Z);
   }
 
   public boolean getTrigger() {
-    return driverJoystick.getRawButton(Buttons.Trigger);
+    return logitechJoystick.getRawButton(Buttons.Trigger);
   }
 
   public boolean getThumb() {
-    return driverJoystick.getRawButton(Buttons.Thumb);
+    return logitechJoystick.getRawButton(Buttons.Thumb);
   }
 
   public boolean getStickBottomLeft() {
-    return driverJoystick.getRawButton(Buttons.StickBottomLeft);
+    return logitechJoystick.getRawButton(Buttons.StickBottomLeft);
   }
 
   public boolean getStickBottomRight() {
-    return driverJoystick.getRawButton(Buttons.StickBottomRight);
+    return logitechJoystick.getRawButton(Buttons.StickBottomRight);
   }
   
   public boolean getStickTopLeft() {
-    return driverJoystick.getRawButton(Buttons.StickTopLeft);
+    return logitechJoystick.getRawButton(Buttons.StickTopLeft);
   }
 
   public boolean getStickTopRight() {
-    return driverJoystick.getRawButton(Buttons.StickTopRight);
+    return logitechJoystick.getRawButton(Buttons.StickTopRight);
   }
 
   public boolean getBaseTopLeft() {
-    return driverJoystick.getRawButton(Buttons.BaseTopLeft);
+    return logitechJoystick.getRawButton(Buttons.BaseTopLeft);
   }
 
   public boolean getBaseTopRight() {
-    return driverJoystick.getRawButton(Buttons.BaseTopRight);
+    return logitechJoystick.getRawButton(Buttons.BaseTopRight);
   }
 
   public boolean getBaseMidLeft() {
-    return driverJoystick.getRawButton(Buttons.BaseMidLeft);
+    return logitechJoystick.getRawButton(Buttons.BaseMidLeft);
   }
 
   public boolean getBaseMidRight() {
-    return driverJoystick.getRawButton(Buttons.BaseMidRight);
+    return logitechJoystick.getRawButton(Buttons.BaseMidRight);
   }
 
   public boolean getBaseBottomLeft() {
-    return driverJoystick.getRawButton(Buttons.BaseBottomLeft);
+    return logitechJoystick.getRawButton(Buttons.BaseBottomLeft);
   }
 
   public boolean getBaseBottomRight() {
-    return driverJoystick.getRawButton(Buttons.BaseBottomRight);
+    return logitechJoystick.getRawButton(Buttons.BaseBottomRight);
   }
 
   public static final class Buttons {

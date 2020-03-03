@@ -29,7 +29,7 @@ public class RunTransfer extends CommandBase {
   public void execute() {
     // SmartDashboard.putBoolean("Select Button", Devices.operatorController.getSelect());
 
-    if (Devices.operatorController.getRightBumper()) {
+    if (Devices.xboxController.getRightBumper()) {
       Subsystems.Transfer.set(-0.8);
     } else {
       Subsystems.Transfer.stop();

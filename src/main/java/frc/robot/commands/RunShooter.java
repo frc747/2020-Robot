@@ -30,8 +30,9 @@ public class RunShooter extends CommandBase {
   @Override
   public void execute() {
     SmartDashboard.putString("execute: ", "EXECUTE!");
-    if(Devices.operatorController.getRightTrigger() > 0.9) {
-      Subsystems.Shooter.setRPM(Math.abs(Devices.operatorController.getLeftY())*6000); // add automatic RPM adjustment based on LIDAR
+    if(Devices.xboxController.getRightTrigger() > 0.9) {
+      Subsystems.Shooter.setRPM(Math.abs(Devices.xboxController.getLeftY()) * 6000); // add automatic RPM adjustment
+                                                                                     // based on LIDAR
     } else {
       Subsystems.Shooter.stop();
     }

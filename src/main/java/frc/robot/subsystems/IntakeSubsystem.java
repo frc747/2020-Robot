@@ -42,8 +42,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
  
   public void setIntakeArms() { //TODO: MAKE PID COMMAND 
-    Motors.leftIntakeArm.set(ControlMode.PercentOutput, 0.1 * -Devices.operatorController.getRightY());
-    Motors.rightIntakeArm.set(ControlMode.PercentOutput, 0.1 * -Devices.operatorController.getRightY());
+    Motors.leftIntakeArm.set(ControlMode.PercentOutput, 0.1 * -Devices.xboxController.getRightY());
+    Motors.rightIntakeArm.set(ControlMode.PercentOutput, 0.1 * -Devices.xboxController.getRightY());
   }
 
   public void stopIntake() {
