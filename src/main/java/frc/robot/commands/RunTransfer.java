@@ -27,10 +27,9 @@ public class RunTransfer extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // SmartDashboard.putBoolean("Select Button", Devices.operatorController.getSelect());
 
-    if (Devices.xboxController.getRightBumper()) {
-      Subsystems.Transfer.set(-0.8);
+    if (Devices.xboxController.getLeftTrigger() >= 0.9 && Sensors.IRBreakBeam.getValue()) {
+      Subsystems.Transfer.set(-0.4); // -0.8
     } else {
       Subsystems.Transfer.stop();
     }
