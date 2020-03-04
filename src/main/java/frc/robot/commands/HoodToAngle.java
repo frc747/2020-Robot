@@ -13,10 +13,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import frc.robot.Motors;
+import frc.robot.Robot;
 import frc.robot.Sensors;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
 public class HoodToAngle extends CommandBase {
+
+  private double zeroDistance = 182;
+  private double linearCoefficent;
 
   private double driveTicks;
   
@@ -109,10 +113,12 @@ public class HoodToAngle extends CommandBase {
     SmartDashboard.putNumber("angle: ", actualAngle);
     SmartDashboard.putNumber("DriveTicks for hood: ", driveTicks);
 
-    if(!Devices.operatorController.getB()) {
+    if(!Robot.limelightPivot) {
+      Robot.hoodUp = false;
       Motors.hood.set(ControlMode.MotionMagic, -200);
       SmartDashboard.putBoolean("Inside motion magic: ", true);
     } else {
+      Robot.hoodUp = true;
       Motors.hood.set(ControlMode.MotionMagic, driveTicks);
       SmartDashboard.putBoolean("Inside motion magic: ", false);
     }
@@ -120,8 +126,11 @@ public class HoodToAngle extends CommandBase {
 
   public double angleFromDistance(double distance) {
     if(distance > 35) {
-      return Math.toDegrees( Math.atan( ( 1.45 * (98.25 - 20.375/* robot height */) ) / distance ) );
+      Robot.under35 = false;
+       linearCoefficent = -(Sensors.LIDAR.getDistance()-zeroDistance)/13;
+      return Math.toDegrees( Math.atan( ( 1.45 * (98.25 - 20.375/* robot height */) ) / distance ) )/1.1 + linearCoefficent;
     } else {
+      Robot.under35 = true;
       return 100;
     }
   }

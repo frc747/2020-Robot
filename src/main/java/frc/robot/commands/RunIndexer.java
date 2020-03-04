@@ -27,7 +27,7 @@ public class RunIndexer extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Devices.operatorController.getLeftBumper()) {
+    if (Devices.operatorController.getLeftTrigger() >= 0.9) {
       if ((int)Timer.getFPGATimestamp() % 2 == 0) {
         Subsystems.Indexer.set(-0.75); // change to setInverted once motor direction has been confirmed
       } else {

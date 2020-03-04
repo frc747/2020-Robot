@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Motors;
+import frc.robot.Robot;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
 
@@ -30,8 +31,12 @@ public class RunShooter extends CommandBase {
   @Override
   public void execute() {
     SmartDashboard.putString("execute: ", "EXECUTE!");
-    if(Devices.operatorController.getRightTrigger() > 0.9) {
-      Subsystems.Shooter.setRPM(Math.abs(Devices.operatorController.getLeftY())*6000); // add automatic RPM adjustment based on LIDAR
+    if(Devices.operatorController.getRightTrigger() > 0.9 && Robot.hoodUp) {
+      if (Robot.under35) {
+        Subsystems.Shooter.setRPM(6000);
+      } else {
+        Subsystems.Shooter.setRPM(Subsystems.Shooter.getCalculatedRPM()); // add automatic RPM adjustment based on LIDAR
+      }
     } else {
       Subsystems.Shooter.stop();
     }

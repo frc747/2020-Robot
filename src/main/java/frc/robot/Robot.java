@@ -29,6 +29,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 public class Robot extends TimedRobot {
   public static OI m_oi;
   public static boolean limelightPivot = false;
+  public static boolean hoodUp = false;
+  public static boolean under35 = false;
   private Command autonomousCommand;
   public Autonomous autonomous;
 
@@ -158,7 +160,7 @@ public class Robot extends TimedRobot {
     Sensors.Limelight.setPipeline(0);
     Sensors.Pigeon.resetAngle();
     Subsystems.Drive.resetBothEncoders();
-    Subsystems.Drive.changeDriveBrakeMode(false/*true*/);
+    Subsystems.Drive.changeDriveBrakeMode(true/*true*/);
     Motors.shooter.setNeutralMode(NeutralMode.Coast);
 
     Motors.shooter.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);

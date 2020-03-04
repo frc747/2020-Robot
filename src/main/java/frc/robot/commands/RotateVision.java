@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.Sensors;
@@ -9,7 +10,8 @@ import frc.robot.interfaces.LimelightInterface.camMode;
 public class RotateVision extends CommandBase {
   
   double modifier = .5;
-
+  double left;
+  double right;
   public RotateVision() {
     // addRequirements(Subsystems.Drive);
   }
@@ -28,10 +30,29 @@ public class RotateVision extends CommandBase {
   public void execute() {
 
     double x = Sensors.Limelight.getHorizontalOffset();
-
-    double left = -x/65;
-    double right = x/65;
-    // Subsystems.Drive.set(left, right);
+    
+    if (Math.abs(x) > 12) {
+      left = (-x/50) - .15;
+      right = (x/50) + .15;
+    } else if (Math.abs(x) > 2) {
+      if(x > 0) {
+        left = -.15;
+        right = .15;
+      } else {
+        left = .15;
+        right = -.15;
+      }
+    } else {
+      left = 0;
+      right = 0;
+    }
+    
+    // double left = Math.atan(-x)/10;
+    // double right = Math.atan(x)/10;
+    SmartDashboard.putNumber("X", x);
+    SmartDashboard.putNumber("left", left);
+    SmartDashboard.putNumber("right", right);
+    Subsystems.Drive.set(left, right);
     // Subsystems.Drive.stop();
   }
 
