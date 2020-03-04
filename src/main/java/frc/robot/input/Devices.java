@@ -8,7 +8,8 @@
 package frc.robot.input;
 
 public class Devices {
-  public static DriverJoystick leftStick = new DriverJoystick(0);
-  public static DriverJoystick rightStick = new DriverJoystick(1);
-  public static OperatorController operatorController = new OperatorController(2);
+  public static LogitechJoystick leftStick = new LogitechJoystick(0);
+  public static LogitechJoystick rightStick = new LogitechJoystick(1);
+  public static XboxController xboxController = new XboxController(2);
+  public static GenesisController genesisController = new GenesisController(3);
 }

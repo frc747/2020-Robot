@@ -10,13 +10,14 @@ package frc.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Motors;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
 
-public class IntakeCommand extends CommandBase {
+public class IntakeCommand extends CommandBase {  
+
+  public static int armState = 0;
 
   public IntakeCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -35,7 +36,7 @@ public class IntakeCommand extends CommandBase {
   private double driveF = 0.0;
 
   private double floorPosition = 0;
-  private double uprightPosition = 45000  ;
+  private double uprightPosition = 45000;
 
   private boolean runMotionMagic = false;
   private boolean armsAreUp = false;
@@ -44,7 +45,7 @@ public class IntakeCommand extends CommandBase {
   private boolean drivingDown = false;
 
 
-  private static final double ARM_MAX_VOLTAGE = 6.0;
+  private static final double ARM_MAX_VOLTAGE = 2.0;//6.0;
   private static final double ARM_MIN_VOLTAGE = 0.0;
 
   private static final double ARM_MAX_PERCENT_VOLTAGE = ARM_MAX_VOLTAGE / 12;
@@ -72,10 +73,8 @@ public class IntakeCommand extends CommandBase {
     // Motors.rightIntakeArm.setInverted(false);
     // Motors.rightIntakeArm.setSensorPhase(false);
 
-
     Motors.leftIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     Motors.rightIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-
 
     Motors.leftIntakeArm.setSelectedSensorPosition(0);
     Motors.rightIntakeArm.setSelectedSensorPosition(0);
@@ -108,7 +107,6 @@ public class IntakeCommand extends CommandBase {
     Motors.leftIntakeArm.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
     Motors.rightIntakeArm.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
 
-
     Motors.leftDrivePrimary.configMotionCruiseVelocity(1000, timeoutMs);
     Motors.leftDrivePrimary.configMotionAcceleration(500, timeoutMs);
     Motors.rightDrivePrimary.configMotionCruiseVelocity(1000, timeoutMs);
@@ -124,21 +122,20 @@ public class IntakeCommand extends CommandBase {
     // Subsystems.Intake.setIntakeArms();
 
     //remove
-    if (Devices.operatorController.getLeftTrigger() >= 0.9) {
-      // Subsystems.Intake.setIntake(0.75); 
+    if (Devices.xboxController.getLeftTrigger() >= 0.9 && armState % 2 == 0) {
       Subsystems.Intake.setIntake(0.70/*Subsystems.Intake.proportionalIntake()*/);
-    } else if (Devices.operatorController.getX()) {
-      Subsystems.Intake.setIntake(-0.70/*-Subsystems.Intake.proportionalIntake()*/); 
+    } else if (Devices.xboxController.getX() && armState % 2 == 0) {
+      Subsystems.Intake.setIntake(-0.70/*-Subsystems.Intake.proportionalIntake()*/);
     } else {
       Subsystems.Intake.stopIntake();
     }
 
-    if (Devices.operatorController.getRightY() < (-0.75)) {
+    if (armState % 2 == 1) {
       tickGoal = uprightPosition;
       runMotionMagic = true;
       drivingDown = false;
       drivingUp = true;
-    } else if (Devices.operatorController.getRightY() > 0.75) {
+    } else if (armState % 2 == 0) {
       tickGoal = floorPosition;
       runMotionMagic = true;
       drivingDown = true;

@@ -113,14 +113,23 @@ public class HoodToAngle extends CommandBase {
     SmartDashboard.putNumber("angle: ", actualAngle);
     SmartDashboard.putNumber("DriveTicks for hood: ", driveTicks);
 
+<<<<<<< HEAD
     if(!Robot.limelightPivot) {
       Robot.hoodUp = false;
       Motors.hood.set(ControlMode.MotionMagic, -200);
       SmartDashboard.putBoolean("Inside motion magic: ", true);
     } else {
       Robot.hoodUp = true;
+=======
+    if(!Devices.xboxController.getY()) {
+      Motors.hood.set(ControlMode.MotionMagic, -200);
+      SmartDashboard.putBoolean("Inside motion magic: ", true);
+      Subsystems.Hood.hoodUp = false;
+    } else if (IntakeCommand.armState % 2 == 0) {
+>>>>>>> f5ce2052d8fff11af3b3ba6d172700afc9cd3338
       Motors.hood.set(ControlMode.MotionMagic, driveTicks);
       SmartDashboard.putBoolean("Inside motion magic: ", false);
+      Subsystems.Hood.hoodUp = true;
     }
   }
 

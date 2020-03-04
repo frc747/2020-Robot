@@ -10,9 +10,9 @@ package frc.robot.input;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-public class OperatorController {
+public class XboxController {
 
-  private Joystick operatorController;
+  private Joystick xboxController;
 
   public JoystickButton BUTTON_A;
   public JoystickButton BUTTON_B;
@@ -25,82 +25,82 @@ public class OperatorController {
   public JoystickButton BUTTON_LEFT_STICK;
   public JoystickButton BUTTON_RIGHT_STICK;
 
-  public OperatorController(int id) {
-    operatorController = new Joystick(id);
-    BUTTON_A = new JoystickButton(operatorController, Buttons.A);
-    BUTTON_B = new JoystickButton(operatorController, Buttons.B);
-    BUTTON_X = new JoystickButton(operatorController, Buttons.X);
-    BUTTON_Y = new JoystickButton(operatorController, Buttons.Y);
-    BUTTON_LEFT_BUMPER = new JoystickButton(operatorController, Buttons.LeftBumper);
-    BUTTON_RIGHT_BUMPER = new JoystickButton(operatorController, Buttons.RightBumper);
-    BUTTON_SELECT = new JoystickButton(operatorController, Buttons.Select);
-    BUTTON_START = new JoystickButton(operatorController, Buttons.Start);
-    BUTTON_LEFT_STICK = new JoystickButton(operatorController, Buttons.LeftStick);
-    BUTTON_RIGHT_STICK = new JoystickButton(operatorController, Buttons.RightStick);
+  public XboxController(int id) {
+    xboxController = new Joystick(id);
+    BUTTON_A = new JoystickButton(xboxController, Buttons.A);
+    BUTTON_B = new JoystickButton(xboxController, Buttons.B);
+    BUTTON_X = new JoystickButton(xboxController, Buttons.X);
+    BUTTON_Y = new JoystickButton(xboxController, Buttons.Y);
+    BUTTON_LEFT_BUMPER = new JoystickButton(xboxController, Buttons.LeftBumper);
+    BUTTON_RIGHT_BUMPER = new JoystickButton(xboxController, Buttons.RightBumper);
+    BUTTON_SELECT = new JoystickButton(xboxController, Buttons.Select);
+    BUTTON_START = new JoystickButton(xboxController, Buttons.Start);
+    BUTTON_LEFT_STICK = new JoystickButton(xboxController, Buttons.LeftStick);
+    BUTTON_RIGHT_STICK = new JoystickButton(xboxController, Buttons.RightStick);
   }
 
   public boolean getA() {
-    return operatorController.getRawButton(Buttons.A);
+    return xboxController.getRawButton(Buttons.A);
   }
 
   public boolean getB() {
-    return operatorController.getRawButton(Buttons.B);
+    return xboxController.getRawButton(Buttons.B);
   }
-  
+
   public boolean getX() {
-    return operatorController.getRawButton(Buttons.X);
+    return xboxController.getRawButton(Buttons.X);
   }
 
   public boolean getY() {
-    return operatorController.getRawButton(Buttons.Y);
+    return xboxController.getRawButton(Buttons.Y);
   }
 
   public boolean getLeftBumper() {
-    return operatorController.getRawButton(Buttons.LeftBumper);
+    return xboxController.getRawButton(Buttons.LeftBumper);
   }
 
   public boolean getRightBumper() {
-    return operatorController.getRawButton(Buttons.RightBumper);
+    return xboxController.getRawButton(Buttons.RightBumper);
   }
 
   public boolean getSelect() {
-    return operatorController.getRawButton(Buttons.Select);
+    return xboxController.getRawButton(Buttons.Select);
   }
 
   public boolean getStart() {
-    return operatorController.getRawButton(Buttons.Start);
+    return xboxController.getRawButton(Buttons.Start);
   }
 
   public boolean getLeftStick() {
-    return operatorController.getRawButton(Buttons.LeftStick);
+    return xboxController.getRawButton(Buttons.LeftStick);
   }
 
   public boolean getRightStick() {
-    return operatorController.getRawButton(Buttons.RightStick);
+    return xboxController.getRawButton(Buttons.RightStick);
   }
 
   public double getLeftX() {
-    return operatorController.getRawAxis(Axes.LeftX);
+    return xboxController.getRawAxis(Axes.LeftX);
   }
 
   public double getRightX() {
-    return operatorController.getRawAxis(Axes.RightX);
+    return xboxController.getRawAxis(Axes.RightX);
   }
 
   public double getLeftY() {
-    return operatorController.getRawAxis(Axes.LeftY);
+    return xboxController.getRawAxis(Axes.LeftY);
   }
 
   public double getRightY() {
-    return operatorController.getRawAxis(Axes.RightY);
+    return xboxController.getRawAxis(Axes.RightY);
   }
 
   public double getLeftTrigger() {
-    return operatorController.getRawAxis(Axes.LeftTrigger);
+    return xboxController.getRawAxis(Axes.LeftTrigger);
   }
 
   public double getRightTrigger() {
-    return operatorController.getRawAxis(Axes.RightTrigger);
+    return xboxController.getRawAxis(Axes.RightTrigger);
   }
 
   public static final class Buttons {

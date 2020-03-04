@@ -109,7 +109,7 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {
     CommandScheduler.getInstance().run();
 
-    if (Devices.operatorController.BUTTON_A.get()) {
+    if (Devices.xboxController.BUTTON_A.get()) {
       Subsystems.Drive.tracking = true;
     } else {
       Subsystems.Drive.tracking = false;

@@ -29,7 +29,7 @@ public class HoodStick extends CommandBase {
   @Override
   public void execute() {
 
-    double leftStick = Devices.operatorController.getLeftY();
+    double leftStick = Devices.xboxController.getLeftY();
 
     if(leftStick > max) {
       leftStick = max;

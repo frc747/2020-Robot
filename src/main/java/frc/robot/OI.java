@@ -3,13 +3,13 @@ package frc.robot;
 import java.lang.SuppressWarnings;
 
 import edu.wpi.first.wpilibj.*;
+import frc.robot.commands.FlipIntakeArmsCommand;
 import frc.robot.commands.RotateVision;
 import frc.robot.commands.SmartBallTransfer;
 import frc.robot.input.Devices;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.interfaces.LimelightInterface.camMode;
 import frc.robot.interfaces.LimelightInterface.ledMode;
-import frc.robot.subsystems.LimelightServoSubsystem;
 public class OI {
 
   public static boolean shiftHigh = false;
@@ -21,8 +21,11 @@ public class OI {
 
     // example : Devices.operatorController.BUTTON_X.whenHeld(command, interruptible)
     // PLACE COMMANDS HERE
-    Devices.operatorController.BUTTON_A.whileHeld(new RotateVision());
-    Devices.operatorController.BUTTON_SELECT.whileHeld(new SmartBallTransfer());
+    Devices.xboxController.BUTTON_A.whileHeld(new RotateVision());
+    Devices.xboxController.BUTTON_SELECT.whileHeld(new SmartBallTransfer());
+    Devices.xboxController.BUTTON_B.whenPressed(new FlipIntakeArmsCommand());
+
+    Sensors.LoadCell.begin(10,11);
 
     // Ignore this error, no known conflict
     new Notifier(() -> updateOI()).startPeriodic(.1);
@@ -47,7 +50,7 @@ public class OI {
     SmartDashboard.putNumber("Joystick Left", Devices.leftStick.getY());
     SmartDashboard.putNumber("Joystick Right", Devices.rightStick.getY());
 
-    SmartDashboard.putNumber("Right stick", Devices.operatorController.getRightY());
+    SmartDashboard.putNumber("Right stick", Devices.xboxController.getRightY());
 
     SmartDashboard.putNumber("PIGEON ANGLE", Sensors.Pigeon.getAngle());
     SmartDashboard.putNumber("RAW PIGEON ANGLE", Sensors.Pigeon.getRawAngle());
