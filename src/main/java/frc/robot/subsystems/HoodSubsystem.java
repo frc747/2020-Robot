@@ -16,6 +16,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 public class HoodSubsystem extends SubsystemBase {
 
+  public boolean hoodUp = false;
+
   public HoodSubsystem() {
     Motors.hood.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     Motors.hood.setSensorPhase(true);

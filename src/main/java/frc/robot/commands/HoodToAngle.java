@@ -112,9 +112,11 @@ public class HoodToAngle extends CommandBase {
     if(!Devices.xboxController.getY()) {
       Motors.hood.set(ControlMode.MotionMagic, -200);
       SmartDashboard.putBoolean("Inside motion magic: ", true);
-    } else {
+      Subsystems.Hood.hoodUp = false;
+    } else if (IntakeCommand.armState % 2 == 0) {
       Motors.hood.set(ControlMode.MotionMagic, driveTicks);
       SmartDashboard.putBoolean("Inside motion magic: ", false);
+      Subsystems.Hood.hoodUp = true;
     }
   }
 

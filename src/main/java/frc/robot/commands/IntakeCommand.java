@@ -73,10 +73,8 @@ public class IntakeCommand extends CommandBase {
     // Motors.rightIntakeArm.setInverted(false);
     // Motors.rightIntakeArm.setSensorPhase(false);
 
-
     Motors.leftIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     Motors.rightIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-
 
     Motors.leftIntakeArm.setSelectedSensorPosition(0);
     Motors.rightIntakeArm.setSelectedSensorPosition(0);
@@ -109,7 +107,6 @@ public class IntakeCommand extends CommandBase {
     Motors.leftIntakeArm.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
     Motors.rightIntakeArm.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
 
-
     Motors.leftDrivePrimary.configMotionCruiseVelocity(1000, timeoutMs);
     Motors.leftDrivePrimary.configMotionAcceleration(500, timeoutMs);
     Motors.rightDrivePrimary.configMotionCruiseVelocity(1000, timeoutMs);
@@ -126,9 +123,8 @@ public class IntakeCommand extends CommandBase {
 
     //remove
     if (Devices.xboxController.getLeftTrigger() >= 0.9) {
-      // Subsystems.Intake.setIntake(0.75); 
       Subsystems.Intake.setIntake(0.70/*Subsystems.Intake.proportionalIntake()*/);
-    } else if (Devices.xboxController.getX()) {
+    } else if (Devices.xboxController.getX() && armState % 2 == 0) {
       Subsystems.Intake.setIntake(-0.70/*-Subsystems.Intake.proportionalIntake()*/);
     } else {
       Subsystems.Intake.stopIntake();
