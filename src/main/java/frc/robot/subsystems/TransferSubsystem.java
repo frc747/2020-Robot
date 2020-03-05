@@ -14,6 +14,7 @@ import frc.robot.Motors;
 
 public class TransferSubsystem extends SubsystemBase {
  
+  public boolean targetRPM = false;
   //TalonSRX transferMotor = new TalonSRX(2);
 
   public TransferSubsystem() {

@@ -122,7 +122,7 @@ public class IntakeCommand extends CommandBase {
     // Subsystems.Intake.setIntakeArms();
 
     //remove
-    if (Devices.xboxController.getLeftTrigger() >= 0.9 && armState % 2 == 0) {
+    if (Devices.xboxController.getLeftTrigger() >= 0.9 && armState % 2 == 0 || (Subsystems.Transfer.targetRPM && Subsystems.Hood.hoodUp && Devices.xboxController.getRightBumper())) {
       Subsystems.Intake.setIntake(0.70/*Subsystems.Intake.proportionalIntake()*/);
     } else if (Devices.xboxController.getX() && armState % 2 == 0) {
       Subsystems.Intake.setIntake(-0.70/*-Subsystems.Intake.proportionalIntake()*/);

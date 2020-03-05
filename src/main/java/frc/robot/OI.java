@@ -25,7 +25,7 @@ public class OI {
     Devices.xboxController.BUTTON_SELECT.whileHeld(new SmartBallTransfer());
     Devices.xboxController.BUTTON_B.whenPressed(new FlipIntakeArmsCommand());
 
-    Sensors.LoadCell.begin(10,11);
+    //Sensors.LoadCell.begin(10,11);
 
     // Ignore this error, no known conflict
     new Notifier(() -> updateOI()).startPeriodic(.1);

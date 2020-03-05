@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.Sensors;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
@@ -30,6 +31,8 @@ public class RunTransfer extends CommandBase {
 
     if (Devices.xboxController.getLeftTrigger() >= 0.9 && Sensors.IRBreakBeam.getValue()) {
       Subsystems.Transfer.set(-0.4); // -0.8
+    } else if (Devices.xboxController.getRightBumper() && Subsystems.Hood.hoodUp && Subsystems.Transfer.targetRPM) {
+      Subsystems.Transfer.set(-.8);
     } else {
       Subsystems.Transfer.stop();
     }

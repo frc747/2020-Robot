@@ -29,7 +29,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 public class Robot extends TimedRobot {
   public static OI m_oi;
   public static boolean limelightPivot = false;
-  public static boolean hoodUp = false;
   public static boolean under35 = false;
   private Command autonomousCommand;
   public Autonomous autonomous;

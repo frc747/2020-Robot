@@ -17,6 +17,8 @@ import frc.robot.input.Devices;
 
 public class RunShooter extends CommandBase {
 
+  double calcRPM;
+
   public RunShooter() {
     addRequirements(Subsystems.Shooter);
   }
@@ -32,9 +34,15 @@ public class RunShooter extends CommandBase {
   public void execute() {
     SmartDashboard.putString("execute: ", "EXECUTE!");
     if(Devices.xboxController.getLeftBumper()) {
-      Subsystems.Shooter.setRPM(Math.abs(Devices.xboxController.getLeftY()) * 6000); // add automatic RPM adjustment
-                                                                                     // based on LIDAR
+      calcRPM = Subsystems.Shooter.getCalculatedRPM();
+      Subsystems.Shooter.setRPM(calcRPM); // add automatic RPM adjustment
+      if(Math.abs(Subsystems.Shooter.getRPM()-calcRPM) < 300) {
+        Subsystems.Transfer.targetRPM = true;
+      } else {
+        Subsystems.Transfer.targetRPM = false;
+      }
     } else {
+      Subsystems.Transfer.targetRPM = false;
       Subsystems.Shooter.stop();
     }
   }

@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Motors;
+import frc.robot.Robot;
 import frc.robot.Sensors;
 import frc.robot.interfaces.LIDARInterface;
 public class ShooterSubsystem extends SubsystemBase {
@@ -55,8 +56,13 @@ public class ShooterSubsystem extends SubsystemBase {
     double horDistanceToTarget = Sensors.LIDAR.getDistance();
     linearCoefficent = -(Sensors.LIDAR.getDistance()-zeroDistance)*80;
 
-    startingLinearVelocity = 1.33*Math.sqrt((9.81*(Math.pow(horDistanceToTarget, 2) + (4 * Math.pow(targetHeight, 2)))/2*targetHeight)) + linearCoefficent;
-    if(startingLinearVelocity > 6000) {
+    if(horDistanceToTarget < 175) {
+      startingLinearVelocity = 1.33*Math.sqrt((9.81*(Math.pow(horDistanceToTarget, 2) + (4 * Math.pow(targetHeight, 2)))/2*targetHeight)) + linearCoefficent;
+    } else {
+      //startingLinearVelocity = 6000-(Math.sqrt(horDistanceToTarget-175)*205);
+      startingLinearVelocity = 6000;
+    }
+    if(startingLinearVelocity > 6000 || Robot.under35) {
       startingLinearVelocity = 6000;
     }
     SmartDashboard.putNumber("Calculated RPM: ", startingLinearVelocity);

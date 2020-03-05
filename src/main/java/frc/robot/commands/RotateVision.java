@@ -13,7 +13,7 @@ public class RotateVision extends CommandBase {
   double left;
   double right;
   public RotateVision() {
-    // addRequirements(Subsystems.Drive);
+    addRequirements(Subsystems.Drive);
   }
 
   // Called when the command is initially scheduled.
@@ -32,15 +32,15 @@ public class RotateVision extends CommandBase {
     double x = Sensors.Limelight.getHorizontalOffset();
     
     if (Math.abs(x) > 12) {
-      left = (-x/50) - .15;
-      right = (x/50) + .15;
+      left = (-x/50) - .12;
+      right = (x/50) + .12;
     } else if (Math.abs(x) > 2) {
       if(x > 0) {
-        left = -.15;
-        right = .15;
+        left = -.12;
+        right = .12;
       } else {
-        left = .15;
-        right = -.15;
+        left = .12;
+        right = -.12;
       }
     } else {
       left = 0;
