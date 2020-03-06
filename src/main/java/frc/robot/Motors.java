@@ -14,34 +14,38 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
  * Add your docs here.
  */
 public class Motors {
+    
+    public static TalonFX leftDrivePrimary = new TalonFX(0); // left front
 
-    public static TalonFX rightDrivePrimary = new TalonFX(15);
+    public static TalonFX leftDriveBack = new TalonFX(1); // left back
 
-    public static TalonFX rightDriveBack = new TalonFX(14);
+    //public static TalonSRX motorTwo = new TalonSRX(2); // empty
 
-    public static TalonSRX transfer = new TalonSRX(2);
+    //public static TalonFX motorThree = new TalonSRX(3); // empty
 
-    public static TalonFX rightIntakeArm = new TalonFX(3);
+    public static TalonFX leftIntakeArm = new TalonFX(4); // left intake arm
 
-    public static TalonSRX indexer = new TalonSRX(4);
+    public static TalonSRX hood = new TalonSRX(5); // alleron
 
-    //public static TalonSRX motorFive = new TalonSRX(5);
+    //public static TalonSRX motorSix = new TalonSRX(6); // empty
 
-    //public static TalonSRX motorSix = new TalonSRX(6);
+    //public static TalonSRX motorSeven = new TalonSRX(7); // limelight
 
-    //public static TalonSRX motorSeven = new TalonSRX(7);
+    public static TalonSRX transfer = new TalonSRX(8); // transfer
 
-    //public static TalonSRX motorEight = new TalonSRX(8);
+    public static TalonSRX indexer = new TalonSRX(9); // indexer
 
-    public static TalonSRX intake = new TalonSRX(9);
+    public static TalonSRX intake = new TalonSRX(10); // intake rollers
 
-    public static TalonSRX hood = new TalonSRX(10);
+    public static TalonFX rightIntakeArm = new TalonFX(11); // right intake arm
 
-    //public static TalonSRX motorEleven = new TalonSRX(11);
+    //public static TalonSRX motorTwelve = new TalonSRX(12); // empty
 
-    public static TalonFX leftIntakeArm = new TalonFX(12);
+    public static TalonFX shooter = new TalonFX(13); // shooter
 
-    public static TalonFX shooter = new TalonFX(13);
+    public static TalonFX rightDriveBack = new TalonFX(14); // right back
+    
+    public static TalonFX rightDrivePrimary = new TalonFX(15); // front right
 
     public static TalonFX leftDriveBack = new TalonFX(1);
 
