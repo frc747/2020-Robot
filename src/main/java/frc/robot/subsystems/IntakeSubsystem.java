@@ -19,10 +19,20 @@ import frc.robot.input.Devices;
 
 public class IntakeSubsystem extends SubsystemBase {
  
+  double MIN_PERCENT_VOLTAGE = 0.0;
+  double MAX_PERCENT_VOLTAGE = 1.0;
+  
   double calc;
   double kP = 50000; //this scales the intake roller speed from 0.50 to ~0.92
 
   public IntakeSubsystem() {
+    
+
+    Motors.intake.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, 0);
+    Motors.intake.configNominalOutputReverse(-MIN_PERCENT_VOLTAGE, 0);
+    Motors.intake.configPeakOutputForward(+MAX_PERCENT_VOLTAGE, 0);
+    Motors.intake.configPeakOutputReverse(-MAX_PERCENT_VOLTAGE, 0);
+
     Motors.leftIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     Motors.rightIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     Motors.leftIntakeArm.setInverted(true);

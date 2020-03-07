@@ -33,7 +33,7 @@ public class IntakeCommandAuto extends CommandBase {
 
   private double driveP = 0.01;
   private double driveI = 0.0;
-  private double driveD = 0.000;
+  private double driveD = 0.0;
   private double driveF = 0.0;
 
   private double floorPosition = 0;

@@ -120,9 +120,9 @@ public class IntakeCommand extends CommandBase {
 
     //remove
     if (Devices.xboxController.getLeftTrigger() >= 0.9 && armState % 2 == 0 || (Subsystems.Transfer.targetRPM && Subsystems.Hood.hoodUp && Devices.xboxController.getRightBumper())) {
-      Subsystems.Intake.setIntake(1.0/*Subsystems.Intake.proportionalIntake()*/);
+      Subsystems.Intake.setIntake(.7/*Subsystems.Intake.proportionalIntake()*/);
     } else if (Devices.xboxController.getX() && armState % 2 == 0) {
-      Subsystems.Intake.setIntake(-1.0/*-Subsystems.Intake.proportionalIntake()*/);
+      Subsystems.Intake.setIntake(-.7/*-Subsystems.Intake.proportionalIntake()*/);
     } else {
       Subsystems.Intake.stopIntake();
     }
@@ -177,20 +177,6 @@ public class IntakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // double leftPosition = Subsystems.Intake.getLeftPosition();
-    // double rightPosition = Subsystems.Intake.getRightPosition();
-
-    // SmartDashboard.putNumber("Intake Arm TICK GOAL: ", tickGoal);
-
-    // if ((leftPosition > (tickGoal - STOP_THRESHOLD_TICKS) && leftPosition < (tickGoal + STOP_THRESHOLD_TICKS)) ||
-    //     (rightPosition > (tickGoal - STOP_THRESHOLD_TICKS) && rightPosition < (tickGoal + STOP_THRESHOLD_TICKS))) {
-    //   onTargetCount++;
-    // } else {
-    //   onTargetCount = 0;
-
-    // }
-    // SmartDashboard.putNumber("ONTARGETCOUNT ARMS", onTargetCount);
-    // return (onTargetCount > ON_TARGET_MINIMUM_COUNT);
     return false;
   }
 }
