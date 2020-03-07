@@ -47,4 +47,24 @@ public class Motors {
     
     public static TalonFX rightDrivePrimary = new TalonFX(15); // front right
 
+
+    public static void resetTalons() {
+        leftDrivePrimary.configFactoryDefault();
+        leftDriveBack.configFactoryDefault();
+        //motorTwo.configFactoryDegfault();
+        //motorThree.configFactoryDefault();
+        leftIntakeArm.configFactoryDefault();
+        hood.configFactoryDefault();
+        //motorSix.configFactoryDefault();
+        //motorSeven.configFactoryDefault();
+        transfer.configFactoryDefault();
+        indexer.configFactoryDefault();
+        intake.configFactoryDefault();
+        rightIntakeArm.configFactoryDefault();
+        //motorTwelve.configFactoryDefault();
+        shooter.configFactoryDefault();
+        rightDriveBack.configFactoryDefault();
+        rightDriveBack.configFactoryDefault();
+    }
+
 }
