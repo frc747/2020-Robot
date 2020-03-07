@@ -26,8 +26,6 @@ public class IntakeSubsystem extends SubsystemBase {
     Motors.leftIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     Motors.rightIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     Motors.leftIntakeArm.setInverted(true);
-    Motors.leftIntakeArm.setSelectedSensorPosition(0);
-    Motors.rightIntakeArm.setSelectedSensorPosition(0);
   }
 
   @Override

@@ -47,8 +47,4 @@ public class Motors {
     
     public static TalonFX rightDrivePrimary = new TalonFX(15); // front right
 
-    public static TalonFX leftDriveBack = new TalonFX(1);
-
-    public static TalonFX leftDrivePrimary = new TalonFX(0);
-
 }

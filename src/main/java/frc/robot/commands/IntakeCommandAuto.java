@@ -10,16 +10,17 @@ package frc.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Motors;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
 
-public class IntakeCommand extends CommandBase {  
+public class IntakeCommandAuto extends CommandBase {  
 
   public static int armState = 0;
 
-  public IntakeCommand() {
+  public IntakeCommandAuto() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Subsystems.Intake);
   }
@@ -76,6 +77,9 @@ public class IntakeCommand extends CommandBase {
     Motors.leftIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     Motors.rightIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
+    Motors.leftIntakeArm.setSelectedSensorPosition(0);
+    Motors.rightIntakeArm.setSelectedSensorPosition(0);
+
     Motors.leftIntakeArm.config_kP(pidIdx, driveP, timeoutMs);
     Motors.rightIntakeArm.config_kP(pidIdx, driveP, timeoutMs);
     
@@ -117,15 +121,8 @@ public class IntakeCommand extends CommandBase {
     double leftPosition = Subsystems.Intake.getLeftPosition();
     double rightPosition = Subsystems.Intake.getRightPosition();
     // Subsystems.Intake.setIntakeArms();
-
-    //remove
-    if (Devices.xboxController.getLeftTrigger() >= 0.9 && armState % 2 == 0 || (Subsystems.Transfer.targetRPM && Subsystems.Hood.hoodUp && Devices.xboxController.getRightBumper())) {
-      Subsystems.Intake.setIntake(1.0/*Subsystems.Intake.proportionalIntake()*/);
-    } else if (Devices.xboxController.getX() && armState % 2 == 0) {
-      Subsystems.Intake.setIntake(-1.0/*-Subsystems.Intake.proportionalIntake()*/);
-    } else {
-      Subsystems.Intake.stopIntake();
-    }
+      SmartDashboard.putString("IN AUTO; ", "YES");
+      Subsystems.Intake.setIntake(0.70);
 
     if (armState % 2 == 1) {
       tickGoal = uprightPosition;
@@ -177,20 +174,6 @@ public class IntakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // double leftPosition = Subsystems.Intake.getLeftPosition();
-    // double rightPosition = Subsystems.Intake.getRightPosition();
-
-    // SmartDashboard.putNumber("Intake Arm TICK GOAL: ", tickGoal);
-
-    // if ((leftPosition > (tickGoal - STOP_THRESHOLD_TICKS) && leftPosition < (tickGoal + STOP_THRESHOLD_TICKS)) ||
-    //     (rightPosition > (tickGoal - STOP_THRESHOLD_TICKS) && rightPosition < (tickGoal + STOP_THRESHOLD_TICKS))) {
-    //   onTargetCount++;
-    // } else {
-    //   onTargetCount = 0;
-
-    // }
-    // SmartDashboard.putNumber("ONTARGETCOUNT ARMS", onTargetCount);
-    // return (onTargetCount > ON_TARGET_MINIMUM_COUNT);
     return false;
   }
 }

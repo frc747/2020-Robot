@@ -17,7 +17,7 @@ import frc.robot.Robot;
 import frc.robot.Sensors;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
-public class HoodToAngle extends CommandBase {
+public class HoodToAngleAuto extends CommandBase {
 
   private double zeroDistance = 182;
   private double linearCoefficent;
@@ -52,7 +52,7 @@ public class HoodToAngle extends CommandBase {
    * Do not provide one to auto adjust based on LIDAR Distance
    */
 
-  public HoodToAngle(double angle) {
+  public HoodToAngleAuto(double angle) {
     addRequirements(Subsystems.Hood);
 
     actualAngle = angle + angleConstant;
@@ -64,7 +64,7 @@ public class HoodToAngle extends CommandBase {
     Subsystems.Hood.resetPosition();
   }
 
-  public HoodToAngle() {
+  public HoodToAngleAuto() {
     addRequirements(Subsystems.Hood);
 
     actualAngle = angleFromDistance(Sensors.LIDAR.getDistance()) + angleConstant;
@@ -108,23 +108,10 @@ public class HoodToAngle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    actualAngle = angleFromDistance(Sensors.LIDAR.getDistance()) + angleConstant;
-    driveTicks = -(actualAngle/360)*4096;
-    if(driveTicks > -200) {
-      driveTicks = -200;
-    }
     SmartDashboard.putNumber("angle: ", actualAngle);
     SmartDashboard.putNumber("DriveTicks for hood: ", driveTicks);
 
-    if(!Robot.limelightPivot) {
-      Motors.hood.set(ControlMode.MotionMagic, -200);
-      SmartDashboard.putBoolean("Inside motion magic: ", true);
-      Subsystems.Hood.hoodUp = false;
-    } else if (IntakeCommand.armState % 2 == 0) {
-      Motors.hood.set(ControlMode.MotionMagic, driveTicks);
-      SmartDashboard.putBoolean("Inside motion magic: ", false);
-      Subsystems.Hood.hoodUp = true;
-    }
+    Motors.hood.set(ControlMode.MotionMagic, driveTicks);    
   }
 
   public double angleFromDistance(double distance) {
@@ -143,6 +130,7 @@ public class HoodToAngle extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Motors.hood.set(ControlMode.MotionMagic, -200);
   }
 
   // Returns true when the command should end.

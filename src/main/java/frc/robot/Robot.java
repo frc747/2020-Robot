@@ -43,6 +43,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
+    Motors.leftIntakeArm.setSelectedSensorPosition(0);
+    Motors.rightIntakeArm.setSelectedSensorPosition(0);
+    
     Subsystems.setDefaultCommands();
 
     Sensors.LIDAR.startMeasuring();
