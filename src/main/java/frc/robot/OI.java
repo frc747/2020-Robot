@@ -4,6 +4,7 @@ import java.lang.SuppressWarnings;
 
 import edu.wpi.first.wpilibj.*;
 import frc.robot.commands.FlipIntakeArmsCommand;
+import frc.robot.commands.PresetHood;
 import frc.robot.commands.RotateVision;
 import frc.robot.commands.SmartBallTransfer;
 import frc.robot.input.Devices;
@@ -31,6 +32,13 @@ public class OI {
     Devices.xboxController.BUTTON_A.whileHeld(new RotateVision());
     Devices.xboxController.BUTTON_SELECT.whileHeld(new SmartBallTransfer());
     Devices.xboxController.BUTTON_B.whenPressed(new FlipIntakeArmsCommand());
+
+    Devices.genesisController.BUTTON_A.toggleWhenPressed(new PresetHood(0));
+    Devices.genesisController.BUTTON_B.toggleWhenPressed(new PresetHood(1));
+    Devices.genesisController.BUTTON_C.toggleWhenPressed(new PresetHood(2));
+    Devices.genesisController.BUTTON_X.toggleWhenPressed(new PresetHood(3));
+    Devices.genesisController.BUTTON_Y.toggleWhenPressed(new PresetHood(4));
+    Devices.genesisController.BUTTON_Z.toggleWhenPressed(new PresetHood(5));
 
     //Sensors.LoadCell.begin(10,11);
 

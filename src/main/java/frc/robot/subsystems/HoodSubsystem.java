@@ -18,6 +18,8 @@ public class HoodSubsystem extends SubsystemBase {
 
   public boolean hoodUp = false;
 
+  public int preset = 0;
+
   public HoodSubsystem() {
     Motors.hood.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     Motors.hood.setSensorPhase(true);

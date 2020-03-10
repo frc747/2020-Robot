@@ -6,27 +6,32 @@ import frc.robot.Robot;
 import frc.robot.Sensors;
 import frc.robot.Subsystems;
 
-public class RotateVisionAuto extends CommandBase {
+public class RotateVisionAutoSpin extends CommandBase {
   
   double modifier = .5;
   double left;
   double right;
 
+  boolean spinLeft;
+
   double offset;
 
-  public RotateVisionAuto() {
+  public RotateVisionAutoSpin(boolean turnLeft) {
     addRequirements(Subsystems.Drive);
     offset = 0;
+    this.spinLeft = turnLeft;
   }
 
-  public RotateVisionAuto(double x_offset) {
+  public RotateVisionAutoSpin(double x_offset, boolean turnLeft) {
     addRequirements(Subsystems.Drive);
     offset = x_offset;
+    this.spinLeft = turnLeft;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
     Robot.limelightPivot = true;
     Robot.teleopPivot = false;
     // Sensors.Limelight.setPipeline(0);
@@ -39,7 +44,15 @@ public class RotateVisionAuto extends CommandBase {
   public void execute() {
 
     double x = Sensors.Limelight.getHorizontalOffset() + offset;
-    
+    if(!Sensors.Limelight.validTargets()) {
+      if(spinLeft) {
+        left = .12;
+        right = -.12;
+      } else {
+        left = -.12;
+        right = .12;
+      }
+    } else {
     if (Math.abs(x) > 12) {
       left = (-x/50) - .12;
       right = (x/50) + .12;
@@ -55,7 +68,7 @@ public class RotateVisionAuto extends CommandBase {
       left = 0;
       right = 0;
     }
-    
+  }
     // double left = Math.atan(-x)/10;
     // double right = Math.atan(x)/10;
     SmartDashboard.putNumber("X", x);

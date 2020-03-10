@@ -15,8 +15,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Motors;
 import frc.robot.Robot;
 import frc.robot.Sensors;
+import frc.robot.Subsystems;
 import frc.robot.interfaces.LIDARInterface;
 public class ShooterSubsystem extends SubsystemBase {
+
+  private double preset_1_rpm = 2000;
+  private double preset_2_rpm = 3000;
+  private double preset_3_rpm = 4000;
+  private double preset_4_rpm = 5000;
+  private double preset_5_rpm = 6000;
 
   double zeroDistance = 182;
   public double linearCoefficent;
@@ -56,12 +63,35 @@ public class ShooterSubsystem extends SubsystemBase {
     double horDistanceToTarget = Sensors.LIDAR.getDistance();
     linearCoefficent = -(Sensors.LIDAR.getDistance()-zeroDistance)*80;
 
-    if(horDistanceToTarget < 175) {
-      startingLinearVelocity = 1.33*Math.sqrt((9.81*(Math.pow(horDistanceToTarget, 2) + (4 * Math.pow(targetHeight, 2)))/2*targetHeight)) + linearCoefficent;
-    } else {
-      //startingLinearVelocity = 6000-(Math.sqrt(horDistanceToTarget-175)*205);
-      startingLinearVelocity = 6000;
+    switch(Subsystems.Hood.preset) {
+      case 0:
+        if(horDistanceToTarget < 175) {
+          startingLinearVelocity = 1.33*Math.sqrt((9.81*(Math.pow(horDistanceToTarget, 2) + (4 * Math.pow(targetHeight, 2)))/2*targetHeight)) + linearCoefficent;
+        } else {
+          //startingLinearVelocity = 6000-(Math.sqrt(horDistanceToTarget-175)*205);
+          startingLinearVelocity = 6000;
+        }
+        break;
+      case 1:
+        startingLinearVelocity = preset_1_rpm;
+        break;
+      case 2:
+        startingLinearVelocity = preset_2_rpm;
+        break;
+      case 3:
+        startingLinearVelocity = preset_3_rpm;
+        break;
+      case 4:
+        startingLinearVelocity = preset_4_rpm;
+        break;
+      case 5:
+        startingLinearVelocity = preset_5_rpm;
+        break;
+        
     }
+    
+
+
     if(startingLinearVelocity > 6000 || Robot.under35) {
       startingLinearVelocity = 6000;
     }

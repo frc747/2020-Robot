@@ -54,6 +54,11 @@ public class RotateVision extends CommandBase {
       right = 0;
     }
     
+    if (Sensors.LIDAR.getDistance() <= 25 && Math.abs(x) < 2) {
+      left = 0.1;
+      right = 0.1;
+    }
+
     // double left = Math.atan(-x)/10;
     // double right = Math.atan(x)/10;
     SmartDashboard.putNumber("X", x);

@@ -22,6 +22,14 @@ public class HoodToAngle extends CommandBase {
   private double zeroDistance = 182;
   private double linearCoefficent;
 
+  private double preset_1_ticks = ticksFromAngle(20);
+  private double preset_2_ticks = ticksFromAngle(30);
+  private double preset_3_ticks = ticksFromAngle(40);
+  private double preset_4_ticks = ticksFromAngle(50);
+  private double preset_5_ticks = ticksFromAngle(60);
+
+
+
   private double driveTicks;
   
   private double actualAngle;
@@ -104,6 +112,7 @@ public class HoodToAngle extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
     actualAngle = angleFromDistance(Sensors.LIDAR.getDistance()) + angleConstant;
     driveTicks = -(actualAngle/360)*4096;
     if(driveTicks > -200) {
@@ -111,16 +120,40 @@ public class HoodToAngle extends CommandBase {
     }
     SmartDashboard.putNumber("angle: ", actualAngle);
     SmartDashboard.putNumber("DriveTicks for hood: ", driveTicks);
+    switch (Subsystems.Hood.preset) {
+      case 0:
+        if(!Robot.teleopPivot) {
+          Motors.hood.set(ControlMode.MotionMagic, -200);
+          Subsystems.Hood.hoodUp = false;
+        } else if (IntakeCommand.armState % 2 == 0) {
+          Motors.hood.set(ControlMode.MotionMagic, driveTicks);
+          Subsystems.Hood.hoodUp = true;
+        }
+        break;
+      case 1:
+        Motors.hood.set(ControlMode.MotionMagic, preset_1_ticks);
+        Subsystems.Hood.hoodUp = true;
+        break;
+      case 2:
+        Motors.hood.set(ControlMode.MotionMagic, preset_2_ticks);
+        Subsystems.Hood.hoodUp = true;
+        break;
+      case 3:
+        Motors.hood.set(ControlMode.MotionMagic, preset_3_ticks);
+        Subsystems.Hood.hoodUp = true;
+        break;  
+      case 4:
+        Motors.hood.set(ControlMode.MotionMagic, preset_4_ticks);
+        Subsystems.Hood.hoodUp = true;
+        break;
+      case 5:
+        Motors.hood.set(ControlMode.MotionMagic, preset_5_ticks);
+        Subsystems.Hood.hoodUp = true;
+        break;
+        
 
-    if(!Robot.teleopPivot) {
-      Motors.hood.set(ControlMode.MotionMagic, -200);
-      SmartDashboard.putBoolean("Inside motion magic: ", true);
-      Subsystems.Hood.hoodUp = false;
-    } else if (IntakeCommand.armState % 2 == 0) {
-      Motors.hood.set(ControlMode.MotionMagic, driveTicks);
-      SmartDashboard.putBoolean("Inside motion magic: ", false);
-      Subsystems.Hood.hoodUp = true;
     }
+    
   }
 
   public double angleFromDistance(double distance) {
@@ -136,6 +169,10 @@ public class HoodToAngle extends CommandBase {
     }
   }
 
+  public double ticksFromAngle(double angle) {
+    double actualAngle = angle + angleConstant;
+    return -(angleConstant/360)*4096;
+  }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
