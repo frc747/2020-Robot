@@ -66,7 +66,7 @@ public class PIDDriveRotate extends PIDCommand {
     @Override
     public void initialize() {
         
-        Sensors.Pigeon.resetAngle();
+        //Sensors.Pigeon.resetAngle();
         //Robot.resetNavXAngle();
         
         Motors.leftDrivePrimary.configNominalOutputForward(+MIN_PERCENT_VOLTAGE, timeoutMs);

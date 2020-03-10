@@ -16,6 +16,13 @@ public class OI {
 
   public static double distance;
 
+  public static boolean functioningLidar = false;
+  public static boolean functioningBeamBreak = false;
+  public static boolean functioningPigeon = false;
+  public static boolean functioningLimelight = false;
+  public static boolean functioningHoodEncoder = false;
+  public static boolean functioningServo = false;
+
   @SuppressWarnings("resource")
   public OI() {
 
@@ -61,5 +68,21 @@ public class OI {
     SmartDashboard.putBoolean("Ball?", !Sensors.IRBreakBeam.getValue());
 
     Subsystems.LimelightServo.printOuts();
+  }
+
+  public static void checkSystems() {
+    functioningLidar = Sensors.LIDAR.checkLidar();
+    functioningLimelight = Sensors.Limelight.checkLimelight();
+    functioningPigeon = Sensors.Pigeon.checkPigeon();
+    functioningBeamBreak = Sensors.IRBreakBeam.checkBeamBreak();
+    functioningServo = Subsystems.LimelightServo.checkServo();
+    functioningHoodEncoder = Subsystems.Hood.checkHood();
+
+    SmartDashboard.putBoolean("FUNCTIONING LIDAR: ", functioningLidar);
+    SmartDashboard.putBoolean("FUNCTIONING LIMELIGHT: ", functioningLimelight);
+    SmartDashboard.putBoolean("FUNCTIONING PIGEON: ", functioningPigeon);
+    SmartDashboard.putBoolean("FUNCTIONING BEAM BREAK: ", functioningBeamBreak);
+    SmartDashboard.putBoolean("FUNCTIONING SERVO: ", functioningServo);
+    SmartDashboard.putBoolean("FUNCTIONING HOOD ENCODER: ", functioningHoodEncoder);
   }
 }

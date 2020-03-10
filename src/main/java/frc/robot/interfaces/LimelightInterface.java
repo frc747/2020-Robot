@@ -113,6 +113,18 @@ public class LimelightInterface extends SubsystemBase {
     setEntry("ledMode", mode.state);
   }
 
+  public double getLEDMode() {
+    return getEntry("ledMode");
+  }
+
+  public boolean checkLimelight() {
+    if(getLEDMode() == 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public void setCamMode(camMode mode) {
     setEntry("camMode", mode.state);
   }

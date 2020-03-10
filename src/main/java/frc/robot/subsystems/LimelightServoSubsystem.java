@@ -28,13 +28,11 @@ public class LimelightServoSubsystem extends SubsystemBase {
     Servos.limelightServo.set(value);;
   }
 
+  public boolean checkServo() {
+    return Servos.limelightServo.getPosition() == 0;
+  }
+
   public void trackTarget() {
-    //currentPos = Servos.limelightServo.getAngle();
-    //Servos.limelightServo.setAngle((kP*Sensors.Limelight.getVerticalOffset()));
-
-
-
-
     double calc = ((Math.toDegrees(Math.atan(88/Sensors.LIDAR.getDistance())))/125)+((Sensors.Limelight.getVerticalOffset()/250));//*Sensors.LIDAR.getDistance()/45);
     SmartDashboard.putNumber("CALC: ", calc);
 

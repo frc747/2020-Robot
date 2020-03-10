@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import frc.robot.autonomous.IntakeAuto;
+import frc.robot.autonomous.TestAuto;
 import frc.robot.autonomous.TrenchAuto;
 
 // /import frc.robot.autonomous.*;
@@ -10,7 +11,8 @@ public class Autonomous{
     
     public enum AutoMode{
         AUTOMODE_EXAMPLE,
-        TRENCH_AUTO;
+        TRENCH_AUTO,
+        TEST_AUTO;
     }
     
     private SendableChooser<AutoMode> autoChooser1;
@@ -18,8 +20,9 @@ public class Autonomous{
     public Autonomous(){
         autoChooser1 = new SendableChooser<AutoMode>();
         
-        autoChooser1.setDefaultOption("Example Auto", AutoMode.AUTOMODE_EXAMPLE);
+        autoChooser1.addOption("Example Auto", AutoMode.AUTOMODE_EXAMPLE);
         autoChooser1.setDefaultOption("Trench Auto", AutoMode.TRENCH_AUTO);
+        autoChooser1.addOption("Test Auto", AutoMode.TEST_AUTO);
         SmartDashboard.putData("Auto mode", autoChooser1);
     }
     
@@ -37,6 +40,9 @@ public class Autonomous{
                 break;
             case TRENCH_AUTO:
                 new TrenchAuto().schedule();
+                break;
+            case TEST_AUTO:
+                new TestAuto().schedule();
                 break;
             default:
                 break;

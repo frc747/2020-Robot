@@ -29,6 +29,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 public class Robot extends TimedRobot {
   public static OI m_oi;
   public static boolean limelightPivot = false;
+  public static boolean teleopPivot = false;
   public static boolean under35 = false;
   private Command autonomousCommand;
   public Autonomous autonomous;
@@ -47,9 +48,9 @@ public class Robot extends TimedRobot {
     Motors.rightIntakeArm.setSelectedSensorPosition(0);
     
     Motors.resetTalons(); 
-    
+    Sensors.Pigeon.resetAngle();
     Subsystems.setDefaultCommands();
-
+    Subsystems.Hood.resetPosition();
     Sensors.LIDAR.startMeasuring();
     Subsystems.Drive.tracking = true;
 
@@ -111,6 +112,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    OI.checkSystems();
     CommandScheduler.getInstance().run();
 
     if (Devices.xboxController.BUTTON_A.get()) {

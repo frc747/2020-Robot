@@ -22,6 +22,10 @@ public class IRBreakBeamInterface extends SubsystemBase {
     return IRBreakBeamRaw.get();
   }
 
+  public boolean checkBeamBreak() {
+    return !getValue();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

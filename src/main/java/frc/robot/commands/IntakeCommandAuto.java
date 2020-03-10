@@ -108,10 +108,10 @@ public class IntakeCommandAuto extends CommandBase {
     Motors.leftIntakeArm.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
     Motors.rightIntakeArm.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
 
-    Motors.leftDrivePrimary.configMotionCruiseVelocity(1000, timeoutMs);
-    Motors.leftDrivePrimary.configMotionAcceleration(500, timeoutMs);
-    Motors.rightDrivePrimary.configMotionCruiseVelocity(1000, timeoutMs);
-    Motors.rightDrivePrimary.configMotionAcceleration(500, timeoutMs);
+    Motors.leftIntakeArm.configMotionCruiseVelocity(1000, timeoutMs);
+    Motors.leftIntakeArm.configMotionAcceleration(500, timeoutMs);
+    Motors.rightIntakeArm.configMotionCruiseVelocity(1000, timeoutMs);
+    Motors.rightIntakeArm.configMotionAcceleration(500, timeoutMs);
 
   }
 

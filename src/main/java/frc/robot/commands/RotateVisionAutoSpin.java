@@ -5,28 +5,30 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.Sensors;
 import frc.robot.Subsystems;
-import frc.robot.interfaces.LimelightInterface.camMode;
 
-public class RotateVision extends CommandBase {
+public class RotateVisionAuto extends CommandBase {
   
   double modifier = .5;
   double left;
   double right;
+
   double offset;
-  public RotateVision(double x_offset) {
+
+  public RotateVisionAuto() {
+    addRequirements(Subsystems.Drive);
+    offset = 0;
+  }
+
+  public RotateVisionAuto(double x_offset) {
     addRequirements(Subsystems.Drive);
     offset = x_offset;
   }
 
-  public RotateVision() {
-    addRequirements(Subsystems.Drive);
-    offset = 0;
-  }
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     Robot.limelightPivot = true;
-    Robot.teleopPivot = true;
+    Robot.teleopPivot = false;
     // Sensors.Limelight.setPipeline(0);
     Subsystems.Drive.tracking = true;
     // Sensors.Limelight.setCamMode(camMode.VISION_PROCESSOR);
@@ -69,8 +71,8 @@ public class RotateVision extends CommandBase {
     // Sensors.Limelight.setPipeline(1);
     Subsystems.Drive.tracking = false;
     // Sensors.Limelight.setCamMode(camMode.DRIVER_CAMERA);
-    Robot.limelightPivot = false;
     Robot.teleopPivot = false;
+    Robot.limelightPivot = false;
     Subsystems.Drive.stop();
   }
 

@@ -19,6 +19,8 @@ public class Motors {
 
     public static TalonFX leftDriveBack = new TalonFX(1); // left back
 
+    public static TalonFX shooter = new TalonFX(2); // shooter //TODO: RE ID MOTOR FROM 13
+
     //public static TalonSRX motorTwo = new TalonSRX(2); // empty
 
     //public static TalonFX motorThree = new TalonSRX(3); // empty
@@ -41,7 +43,6 @@ public class Motors {
 
     //public static TalonSRX motorTwelve = new TalonSRX(12); // empty
 
-    public static TalonFX shooter = new TalonFX(13); // shooter
 
     public static TalonFX rightDriveBack = new TalonFX(14); // right back
     

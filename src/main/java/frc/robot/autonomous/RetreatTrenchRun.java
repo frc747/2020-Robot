@@ -8,29 +8,19 @@
 package frc.robot.autonomous;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.HoodToAngleAuto;
 import frc.robot.commands.IntakeCommandAuto;
-import frc.robot.commands.PIDDriveInches;
-import frc.robot.commands.PIDDriveRotateCustom;
-import frc.robot.commands.RotateVisionAuto;
-import frc.robot.commands.RunShooterAuto;
-import frc.robot.commands.RunTransferAuto;
-
+import frc.robot.commands.PIDDriveInchesSkew;
+import frc.robot.commands.RunIndexerAuto;
+import frc.robot.commands.RunTransferPrepAuto;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class TrenchAuto extends SequentialCommandGroup {
+public class RetreatTrenchRun extends ParallelCommandGroup {
   /**
-   * Creates a new TrenchAuto.
+   * Creates a new RetreatTrenchRun.
    */
-  public TrenchAuto() {
+  public RetreatTrenchRun() {
     // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
-    //super(new RotateVisionAuto().withTimeout(3));
-    //super(new FirstShootRoutine().withTimeout(4));
-
-    super(new SecondShootRoutine(), new PIDDriveRotateCustom(0, false, true), new IntakeTrenchRun(), new PIDDriveRotateCustom(0, false, true), new RetreatTrenchRun().withTimeout(4), new PIDDriveRotateCustom(-15, false, true).withTimeout(2), new FirstShootRoutine());
- 
+    super(new PIDDriveInchesSkew(250, true), new IntakeCommandAuto(), new RunIndexerAuto(), new RunTransferPrepAuto());
   }
 }

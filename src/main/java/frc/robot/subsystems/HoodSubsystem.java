@@ -43,4 +43,8 @@ public class HoodSubsystem extends SubsystemBase {
   public void resetPosition() {
     Motors.hood.setSelectedSensorPosition(0);
   }
+
+  public boolean checkHood() {
+    return Motors.hood.getSelectedSensorPosition() == 0;
+  }
 }

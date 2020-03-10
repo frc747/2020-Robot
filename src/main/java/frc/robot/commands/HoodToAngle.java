@@ -60,8 +60,6 @@ public class HoodToAngle extends CommandBase {
     driveTicks = -(actualAngle/360)*4096;
 
     SmartDashboard.putNumber("DriveTicks test", driveTicks);
-
-    Subsystems.Hood.resetPosition();
   }
 
   public HoodToAngle() {
@@ -70,8 +68,6 @@ public class HoodToAngle extends CommandBase {
     actualAngle = angleFromDistance(Sensors.LIDAR.getDistance()) + angleConstant;
 
     driveTicks = -(actualAngle/360)*4096;
-
-    Subsystems.Hood.resetPosition();
   }
 
   // Called when the command is initially scheduled.
@@ -116,7 +112,7 @@ public class HoodToAngle extends CommandBase {
     SmartDashboard.putNumber("angle: ", actualAngle);
     SmartDashboard.putNumber("DriveTicks for hood: ", driveTicks);
 
-    if(!Robot.limelightPivot) {
+    if(!Robot.teleopPivot) {
       Motors.hood.set(ControlMode.MotionMagic, -200);
       SmartDashboard.putBoolean("Inside motion magic: ", true);
       Subsystems.Hood.hoodUp = false;

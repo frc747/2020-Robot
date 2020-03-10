@@ -63,6 +63,11 @@ public class LIDARInterface extends SubsystemBase {
     }
   }
 
+  public boolean checkLidar() {
+    double check = (0.393701 * readShort(0x8F) - 6.5);
+    return check > 0;
+  }
+
   private int writeRegister(int address, int value) {
     mBuffer.put(0, (byte) address);
     mBuffer.put(1, (byte) value);

@@ -7,6 +7,7 @@
 
 package frc.robot.interfaces;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,7 +21,10 @@ public class PigeonInterface extends SubsystemBase {
   public PigeonInterface(int id) {
     PigeonRaw = new PigeonIMU(id);
   }
-  
+  public PigeonInterface(TalonSRX talon) {
+    PigeonRaw = new PigeonIMU(talon);
+  }
+
   public double getAngle() {
     PigeonRaw.getYawPitchRoll(ypr);
 
@@ -53,6 +57,9 @@ public class PigeonInterface extends SubsystemBase {
     }
   }
 
+  public boolean checkPigeon() {
+    return PigeonRaw.getDeviceID() == 0;
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

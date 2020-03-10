@@ -7,9 +7,9 @@ import frc.robot.Subsystems;
 
 public class PIDDriveRotateCustom extends CommandBase {
 
-  double p = 3, i = 0, dAcute = 2.7, dObtuse = 2.7, output;
+  double p = 3, i = 0, dAcute = 2.67, dObtuse = 2.67, output;
 
-  double goal, threshold = 5;//2.5;
+  double goal, threshold = 3.5;//2.5;
 
   double onTargetCount = 0;
 
@@ -80,7 +80,7 @@ public class PIDDriveRotateCustom extends CommandBase {
 
     output = (Math.tanh(error/90)*p)+errorSlope+(totalError*i);
 
-    Subsystems.Drive.set(output, -output);
+    Subsystems.Drive.set(-output, output);
   }
 
   // Make this return true when this Command no longer needs to run execute()

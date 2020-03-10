@@ -9,7 +9,7 @@ import frc.robot.Motors;
 import frc.robot.OI;
 import frc.robot.Subsystems;
 
-public class PIDDriveInches extends CommandBase {
+public class PIDDriveInchesSkew extends CommandBase {
     private double driveTicks;
     private double driveInches;
     
@@ -42,7 +42,7 @@ public class PIDDriveInches extends CommandBase {
     
     private double driveF = 0;//.199;
     
-    public PIDDriveInches(double inches, boolean reverse) {
+    public PIDDriveInchesSkew(double inches, boolean reverse) {
         addRequirements(Subsystems.Drive);
         STOP_THRESHOLD_ADJUSTED*=Math.tanh(0.0625*inches);
         SmartDashboard.putNumber("THRESHOLD", STOP_THRESHOLD_ADJUSTED);
@@ -90,7 +90,7 @@ public class PIDDriveInches extends CommandBase {
         Motors.rightDrivePrimary.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
                 
         if (driveInches > 30) {
-            Motors.leftDrivePrimary.configMotionCruiseVelocity(10000, timeoutMs);
+            Motors.leftDrivePrimary.configMotionCruiseVelocity(10100, timeoutMs);
             Motors.leftDrivePrimary.configMotionAcceleration(20000, timeoutMs);
             Motors.rightDrivePrimary.configMotionCruiseVelocity(10000, timeoutMs);
             Motors.rightDrivePrimary.configMotionAcceleration(20000, timeoutMs);

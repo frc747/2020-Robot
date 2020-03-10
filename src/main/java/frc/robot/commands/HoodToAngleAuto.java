@@ -60,8 +60,6 @@ public class HoodToAngleAuto extends CommandBase {
     driveTicks = -(actualAngle/360)*4096;
 
     SmartDashboard.putNumber("DriveTicks test", driveTicks);
-
-    Subsystems.Hood.resetPosition();
   }
 
   public HoodToAngleAuto() {
@@ -70,8 +68,6 @@ public class HoodToAngleAuto extends CommandBase {
     actualAngle = angleFromDistance(Sensors.LIDAR.getDistance()) + angleConstant;
 
     driveTicks = -(actualAngle/360)*4096;
-
-    Subsystems.Hood.resetPosition();
   }
 
   // Called when the command is initially scheduled.
