@@ -9,6 +9,8 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 /**
  * Add your docs here.
@@ -19,15 +21,13 @@ public class Motors {
 
     public static TalonFX leftDriveBack = new TalonFX(1); // left back
 
-    public static TalonFX shooter = new TalonFX(2); // shooter //TODO: RE ID MOTOR FROM 13
+    public static TalonFX shooter = new TalonFX(2); // shooter
 
-    //public static TalonSRX motorTwo = new TalonSRX(2); // empty
-
-    //public static TalonFX motorThree = new TalonSRX(3); // empty
+    public static CANSparkMax climbRight = new CANSparkMax(3, MotorType.kBrushless);
 
     public static TalonFX leftIntakeArm = new TalonFX(4); // left intake arm
 
-    public static TalonSRX hood = new TalonSRX(5); // alleron
+    public static TalonSRX hood = new TalonSRX(5); // aileron
 
     //public static TalonSRX motorSix = new TalonSRX(6); // empty
 
@@ -41,8 +41,9 @@ public class Motors {
 
     public static TalonFX rightIntakeArm = new TalonFX(11); // right intake arm
 
-    //public static TalonSRX motorTwelve = new TalonSRX(12); // empty
+    public static CANSparkMax climbLeft = new CANSparkMax(12, MotorType.kBrushless); 
 
+    //public static TalonSRX motorThirteen = new TalonSRX(13); // empty
 
     public static TalonFX rightDriveBack = new TalonFX(14); // right back
     
@@ -53,7 +54,7 @@ public class Motors {
         leftDrivePrimary.configFactoryDefault();
         leftDriveBack.configFactoryDefault();
         //motorTwo.configFactoryDegfault();
-        //motorThree.configFactoryDefault();
+        climbRight.restoreFactoryDefaults();
         leftIntakeArm.configFactoryDefault();
         hood.configFactoryDefault();
         //motorSix.configFactoryDefault();
@@ -62,7 +63,7 @@ public class Motors {
         indexer.configFactoryDefault();
         intake.configFactoryDefault();
         rightIntakeArm.configFactoryDefault();
-        //motorTwelve.configFactoryDefault();
+        climbLeft.restoreFactoryDefaults();
         shooter.configFactoryDefault();
         rightDriveBack.configFactoryDefault();
         rightDriveBack.configFactoryDefault();

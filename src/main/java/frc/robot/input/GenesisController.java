@@ -95,6 +95,10 @@ public class GenesisController {
     return (genesisController.getRawAxis(Axes.DpadY) <= -0.9);
   }
 
+  public int getPOV() {
+    return genesisController.getPOV();
+  }
+
   public static final class Buttons {
     public static final int A = 2;
     public static final int B = 3;

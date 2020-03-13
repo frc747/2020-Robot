@@ -103,6 +103,9 @@ public class XboxController {
     return xboxController.getRawAxis(Axes.RightTrigger);
   }
 
+  public int getPOV() {
+    return xboxController.getPOV();
+  }
   public static final class Buttons {
     public static final int A = 1;
     public static final int B = 2;

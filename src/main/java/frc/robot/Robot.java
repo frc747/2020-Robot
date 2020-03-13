@@ -44,10 +44,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
+    
+    Motors.resetTalons();
+    Solenoids.initDefaultStates();
+    Motors.indexer.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    Motors.indexer.setSelectedSensorPosition(0);
     Motors.leftIntakeArm.setSelectedSensorPosition(0);
     Motors.rightIntakeArm.setSelectedSensorPosition(0);
-    
-    Motors.resetTalons(); 
     Sensors.Pigeon.resetAngle();
     Subsystems.setDefaultCommands();
     Subsystems.Hood.resetPosition();

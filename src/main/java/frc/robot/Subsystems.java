@@ -14,6 +14,7 @@ import frc.robot.commands.RunShooter;
 import frc.robot.commands.RunTransfer;
 import frc.robot.commands.ServoAngle;
 import frc.robot.commands.TankDriveCommand;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -26,6 +27,7 @@ import frc.robot.subsystems.TransferSubsystem;
  * Add your docs here.
  */
 public class Subsystems {
+
   public static final DriveSubsystem Drive = new DriveSubsystem();
   public static final ShooterSubsystem Shooter = new ShooterSubsystem();
   public static final TransferSubsystem Transfer = new TransferSubsystem();
@@ -33,7 +35,8 @@ public class Subsystems {
   public static final IntakeSubsystem Intake = new IntakeSubsystem();
   public static final IndexerSubsystem Indexer = new IndexerSubsystem();
   public static final LimelightServoSubsystem LimelightServo = new LimelightServoSubsystem();
-
+  public static final ClimbSubsystem Climb = new ClimbSubsystem();
+  
   public static void setDefaultCommands() {
     Subsystems.Drive.setDefaultCommand(new TankDriveCommand());
     Subsystems.Shooter.setDefaultCommand(new RunShooter());

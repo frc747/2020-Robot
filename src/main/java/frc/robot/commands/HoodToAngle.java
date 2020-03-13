@@ -28,7 +28,8 @@ public class HoodToAngle extends CommandBase {
   private double preset_4_ticks = ticksFromAngle(50);
   private double preset_5_ticks = ticksFromAngle(60);
 
-
+  private boolean upDpadPressed = false;
+  private boolean downDpadPressed = false;
 
   private double driveTicks;
   
@@ -53,6 +54,8 @@ public class HoodToAngle extends CommandBase {
   
   private double driveHatchF = .5;
 
+  private double manual = 0;
+  private double manualTickAdj;
   /***
    * 
    * @param angle
@@ -118,36 +121,56 @@ public class HoodToAngle extends CommandBase {
     if(driveTicks > -200) {
       driveTicks = -200;
     }
+
+    if (Devices.xboxController.getPOV() == 0) {
+      if(!upDpadPressed) {
+        manual += 2;
+        upDpadPressed = true;
+      }
+    } else if (Devices.xboxController.getPOV() == 180) {
+      if(!downDpadPressed) {
+        manual -= 2;
+        downDpadPressed = true;
+      }
+    } else {
+      upDpadPressed = false;
+      downDpadPressed = false;
+    }
+
+
+    manualTickAdj = ticksFromAngle(manual);
+
     SmartDashboard.putNumber("angle: ", actualAngle);
     SmartDashboard.putNumber("DriveTicks for hood: ", driveTicks);
+
     switch (Subsystems.Hood.preset) {
       case 0:
         if(!Robot.teleopPivot) {
           Motors.hood.set(ControlMode.MotionMagic, -200);
           Subsystems.Hood.hoodUp = false;
         } else if (IntakeCommand.armState % 2 == 0) {
-          Motors.hood.set(ControlMode.MotionMagic, driveTicks);
+          Motors.hood.set(ControlMode.MotionMagic, driveTicks + manualTickAdj);
           Subsystems.Hood.hoodUp = true;
         }
         break;
       case 1:
-        Motors.hood.set(ControlMode.MotionMagic, preset_1_ticks);
+        Motors.hood.set(ControlMode.MotionMagic, preset_1_ticks + manualTickAdj);
         Subsystems.Hood.hoodUp = true;
         break;
       case 2:
-        Motors.hood.set(ControlMode.MotionMagic, preset_2_ticks);
+        Motors.hood.set(ControlMode.MotionMagic, preset_2_ticks + manualTickAdj);
         Subsystems.Hood.hoodUp = true;
         break;
       case 3:
-        Motors.hood.set(ControlMode.MotionMagic, preset_3_ticks);
+        Motors.hood.set(ControlMode.MotionMagic, preset_3_ticks + manualTickAdj);
         Subsystems.Hood.hoodUp = true;
         break;  
       case 4:
-        Motors.hood.set(ControlMode.MotionMagic, preset_4_ticks);
+        Motors.hood.set(ControlMode.MotionMagic, preset_4_ticks + manualTickAdj);
         Subsystems.Hood.hoodUp = true;
         break;
       case 5:
-        Motors.hood.set(ControlMode.MotionMagic, preset_5_ticks);
+        Motors.hood.set(ControlMode.MotionMagic, preset_5_ticks + manualTickAdj);
         Subsystems.Hood.hoodUp = true;
         break;
         

@@ -30,7 +30,7 @@ public class TrenchAuto extends SequentialCommandGroup {
     //super(new RotateVisionAuto().withTimeout(3));
     //super(new FirstShootRoutine().withTimeout(4));
 
-    super(new SecondShootRoutine(), new PIDDriveRotateCustom(0, false, true), new IntakeTrenchRun(), new PIDDriveRotateCustom(0, false, true), new RetreatTrenchRun().withTimeout(4), new PIDDriveRotateCustom(-15, false, true).withTimeout(2), new FirstShootRoutine());
+    super(new FirstShootRoutine(), new PIDDriveRotateCustom(0, false, true), new IntakeTrenchRun(), new PIDDriveRotateCustom(0, false, true), new RetreatTrenchRun().withTimeout(4), new PIDDriveRotateCustom(-15, false, true), new SecondShootRoutine());
  
   }
 }
