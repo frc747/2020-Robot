@@ -19,9 +19,9 @@ import frc.robot.Subsystems;
 import frc.robot.interfaces.LIDARInterface;
 public class ShooterSubsystem extends SubsystemBase {
 
-  private double preset_1_rpm = 2000;
-  private double preset_2_rpm = 3000;
-  private double preset_3_rpm = 4000;
+  private double preset_1_rpm = 6000;
+  private double preset_2_rpm = 6000;
+  private double preset_3_rpm = 6000;
   private double preset_4_rpm = 5000;
   private double preset_5_rpm = 6000;
 

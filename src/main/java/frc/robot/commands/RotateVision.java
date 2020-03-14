@@ -53,10 +53,53 @@ public class RotateVision extends CommandBase {
       left = 0;
       right = 0;
     }
-    
-    if (Sensors.LIDAR.getDistance() <= 25 && Math.abs(x) < 2) {
-      left = 0.1;
-      right = 0.1;
+
+    switch(Subsystems.Hood.preset) {
+      case 0:
+        if (Sensors.LIDAR.getDistance() <= 40 && Math.abs(x) < 2) {
+          left = -.2;
+          right = -.2;
+        }
+        break;
+      case 1:
+        
+        if (Sensors.LIDAR.getDistance() <= 40 && Math.abs(x) < 2) {
+          left = -.2;
+          right = -.2;
+        } else if (Sensors.LIDAR.getDistance() >= 44 && Math.abs(x) < 2) {
+          left = .2;
+          right = .2;
+        }
+        break;
+      case 2:
+        if (Sensors.LIDAR.getDistance() <= 208 && Math.abs(x) < 2) {
+          left = -.2;
+          right = -.2;
+        } else if (Sensors.LIDAR.getDistance() >= 212 && Math.abs(x) < 2) {
+          left = .2;
+          right = .2;
+        }
+        break;
+      case 3:
+        /*if (Sensors.LIDAR.getDistance() <= 290 && Math.abs(x) < 2) {
+          left = -.2;
+          right = -.2;
+        } else if (Sensors.LIDAR.getDistance() >= 294 && Math.abs(x) < 2) {
+          left = .2;
+          right = .2;
+        }*/
+        left = 0;
+        right = 0;
+        break;
+      case 4:
+        if (Sensors.LIDAR.getDistance() <= 30 && Math.abs(x) < 2) {
+          left = -.2;
+          right = -.2;
+        }
+        break;
+      case 5:
+       
+        break;
     }
 
     // double left = Math.atan(-x)/10;

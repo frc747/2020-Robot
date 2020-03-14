@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
   public static boolean under35 = false;
   private Command autonomousCommand;
   public Autonomous autonomous;
+  public static double manual = 0;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -44,7 +45,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    
+    manual = 0;
     Motors.resetTalons();
     Solenoids.initDefaultStates();
     Motors.indexer.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);

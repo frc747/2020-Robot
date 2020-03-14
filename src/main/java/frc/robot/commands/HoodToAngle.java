@@ -22,16 +22,17 @@ public class HoodToAngle extends CommandBase {
   private double zeroDistance = 182;
   private double linearCoefficent;
 
-  private double preset_1_ticks = ticksFromAngle(20);
-  private double preset_2_ticks = ticksFromAngle(30);
-  private double preset_3_ticks = ticksFromAngle(40);
+  private double preset_1_ticks = ticksFromAngle(90);
+  private double preset_2_ticks = ticksFromAngle(55); // TRENCH RUN
+  private double preset_3_ticks = ticksFromAngle(60);
   private double preset_4_ticks = ticksFromAngle(50);
-  private double preset_5_ticks = ticksFromAngle(60);
+  private double preset_5_ticks = ticksFromAngle(85);
 
   private boolean upDpadPressed = false;
   private boolean downDpadPressed = false;
 
   private double driveTicks;
+  private double target;
   
   private double actualAngle;
   private double angleConstant = 17.5;
@@ -54,8 +55,8 @@ public class HoodToAngle extends CommandBase {
   
   private double driveHatchF = .5;
 
-  private double manual = 0;
   private double manualTickAdj;
+
   /***
    * 
    * @param angle
@@ -84,7 +85,7 @@ public class HoodToAngle extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    manualTickAdj = 0;
     Motors.hood.setInverted(false);
 
     Motors.hood.set(ControlMode.MotionMagic, -200);
@@ -123,55 +124,102 @@ public class HoodToAngle extends CommandBase {
     }
 
     if (Devices.xboxController.getPOV() == 0) {
+      SmartDashboard.putString("STATE: ", "DPAD UP");
       if(!upDpadPressed) {
-        manual += 2;
+        Robot.manual += 2;
         upDpadPressed = true;
       }
     } else if (Devices.xboxController.getPOV() == 180) {
+      SmartDashboard.putString("STATE: ", "DPAD DOWN");
       if(!downDpadPressed) {
-        manual -= 2;
+        Robot.manual -= 2;
         downDpadPressed = true;
       }
     } else {
+      SmartDashboard.putString("STATE: ", "DPAD NONE");
+
       upDpadPressed = false;
       downDpadPressed = false;
     }
 
 
-    manualTickAdj = ticksFromAngle(manual);
+    manualTickAdj = ticksFromAngle(Robot.manual) + 200;
 
     SmartDashboard.putNumber("angle: ", actualAngle);
     SmartDashboard.putNumber("DriveTicks for hood: ", driveTicks);
-
+    SmartDashboard.putNumber("Manual tick adjust: ", manualTickAdj);
+    SmartDashboard.putNumber("Raw Manual: ", Robot.manual);
     switch (Subsystems.Hood.preset) {
       case 0:
         if(!Robot.teleopPivot) {
           Motors.hood.set(ControlMode.MotionMagic, -200);
           Subsystems.Hood.hoodUp = false;
         } else if (IntakeCommand.armState % 2 == 0) {
-          Motors.hood.set(ControlMode.MotionMagic, driveTicks + manualTickAdj);
+          target = driveTicks + manualTickAdj;
+          if(target < -1200) {
+            target = -1200;
+          } else if(target > -200) {
+            target = -200;
+          }
+          Motors.hood.set(ControlMode.MotionMagic, target);
           Subsystems.Hood.hoodUp = true;
         }
+        SmartDashboard.putNumber("CASE: ", 0);
         break;
       case 1:
-        Motors.hood.set(ControlMode.MotionMagic, preset_1_ticks + manualTickAdj);
+        target = preset_1_ticks + manualTickAdj;
+        if(target < -1200) {
+          target = -1200;
+        } else if(target > -200) {
+          target = -200;
+        }
+        Motors.hood.set(ControlMode.MotionMagic, target);
         Subsystems.Hood.hoodUp = true;
+        SmartDashboard.putNumber("CASE: ", 1);
         break;
       case 2:
+        target = preset_2_ticks + manualTickAdj;
+        if(target < -1200) {
+          target = -1200;
+        } else if(target > -200) {
+          target = -200;
+        }
         Motors.hood.set(ControlMode.MotionMagic, preset_2_ticks + manualTickAdj);
         Subsystems.Hood.hoodUp = true;
+        SmartDashboard.putNumber("CASE: ", 2);
         break;
       case 3:
+        target = preset_3_ticks + manualTickAdj;
+        if(target < -1200) {
+          target = -1200;
+        } else if(target > -200) {
+          target = -200;
+        }
         Motors.hood.set(ControlMode.MotionMagic, preset_3_ticks + manualTickAdj);
         Subsystems.Hood.hoodUp = true;
+        SmartDashboard.putNumber("CASE: ", 3);
         break;  
       case 4:
+        target = preset_4_ticks + manualTickAdj;
+        if(target < -1200) {
+          target = -1200;
+        } else if(target > -200) {
+          target = -200;
+        }
         Motors.hood.set(ControlMode.MotionMagic, preset_4_ticks + manualTickAdj);
         Subsystems.Hood.hoodUp = true;
+        SmartDashboard.putNumber("CASE: ", 4);
         break;
       case 5:
+        target = preset_5_ticks + manualTickAdj;
+        if(target < -1200) {
+          target = -1200;
+        } else if(target > -200) {
+          target = -200;
+        }
         Motors.hood.set(ControlMode.MotionMagic, preset_5_ticks + manualTickAdj);
         Subsystems.Hood.hoodUp = true;
+        SmartDashboard.putNumber("CASE: ", 5);
         break;
         
 
@@ -188,13 +236,13 @@ public class HoodToAngle extends CommandBase {
       return 30;
     } else {
       Robot.under35 = true;
-      return 100;
+      return 90;
     }
   }
 
   public double ticksFromAngle(double angle) {
     double actualAngle = angle + angleConstant;
-    return -(angleConstant/360)*4096;
+    return -(actualAngle/360)*4096;
   }
   // Called once the command ends or is interrupted.
   @Override

@@ -7,26 +7,12 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * Add your docs here.
  */
-public class Solenoids {
-
-
-    // public static Solenoid shifter = new Solenoid(0);
-
-    // public static Solenoid climbLatch = new Solenoid(1);
-
-    // public static Solenoid climbBrake = new Solenoid(2);
-
-    public static void initDefaultStates() {
-        // //TODO: Figure out states 
-        // shifter.set(false);
-        // climbLatch.set(false);
-        // climbBrake.set(false);
-    }
-
-    
+public class LimitSwitches {
+    DigitalInput frontArmLeft = new DigitalInput(0);
+    DigitalInput frontArmRight = new DigitalInput(1);
 }

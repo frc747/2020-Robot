@@ -119,7 +119,7 @@ public class HoodToAngleAuto extends CommandBase {
       return 30;
     } else {
       Robot.under35 = true;
-      return 100;
+      return 90;
     }
   }
 

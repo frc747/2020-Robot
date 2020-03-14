@@ -22,7 +22,7 @@ public class PopLatch extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Solenoids.climbLatch.set(true);
+    // Solenoids.climbLatch.set(true);
     Subsystems.Climb.set(.25);
   }
 
