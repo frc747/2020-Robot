@@ -35,24 +35,28 @@ public class RotateVision extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     double x = Sensors.Limelight.getHorizontalOffset() + offset;
-    
-    if (Math.abs(x) > 12) {
-      left = (-x/50) - .12;
-      right = (x/50) + .12;
-    } else if (Math.abs(x) > 2) {
-      if(x > 0) {
-        left = -.12;
-        right = .12;
+
+    if(!(Sensors.LIDAR.getDistance() < 10 && Subsystems.Hood.preset == 4) && !(Subsystems.Hood.preset == 5)) {
+      if (Math.abs(x) > 12) {
+        left = (-x/50) - .12;
+        right = (x/50) + .12;
+      } else if (Math.abs(x) > 2) {
+        if(x > 0) {
+          left = -.12;
+          right = .12;
+        } else {
+          left = .12;
+          right = -.12;
+        }
       } else {
-        left = .12;
-        right = -.12;
+        left = 0;
+        right = 0;
       }
-    } else {
-      left = 0;
-      right = 0;
     }
+    
+    
+    
 
     switch(Subsystems.Hood.preset) {
       case 0:
@@ -92,10 +96,16 @@ public class RotateVision extends CommandBase {
         right = 0;
         break;
       case 4:
-        if (Sensors.LIDAR.getDistance() <= 30 && Math.abs(x) < 2) {
-          left = -.2;
-          right = -.2;
-        }
+      if (Sensors.LIDAR.getDistance() >= 15 && Math.abs(x) < 2) {
+        left = .25;
+        right = .25;
+      } else if (Sensors.LIDAR.getDistance() < 15 && Sensors.LIDAR.getDistance() > 8) {
+        left = .25;
+        right = .25;
+      } else if(Sensors.LIDAR.getDistance() < 8){
+        left = 0;
+        right = 0;
+      }
         break;
       case 5:
        

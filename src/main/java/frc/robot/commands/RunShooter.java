@@ -33,7 +33,7 @@ public class RunShooter extends CommandBase {
   @Override
   public void execute() {
     SmartDashboard.putString("execute: ", "EXECUTE!");
-    if(Devices.xboxController.getLeftBumper()) {
+    if(Devices.xboxController.getLeftBumper() && Subsystems.Hood.hoodUp) {
       calcRPM = Subsystems.Shooter.getCalculatedRPM();
       Subsystems.Shooter.setRPM(calcRPM); // add automatic RPM adjustment
       if(Math.abs(Subsystems.Shooter.getRPM()-calcRPM) < 300) {

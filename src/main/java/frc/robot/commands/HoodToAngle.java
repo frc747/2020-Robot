@@ -22,11 +22,11 @@ public class HoodToAngle extends CommandBase {
   private double zeroDistance = 182;
   private double linearCoefficent;
 
-  private double preset_1_ticks = ticksFromAngle(90);
+  private double preset_1_ticks = ticksFromAngle(90); // CLOSE SHOTS
   private double preset_2_ticks = ticksFromAngle(55); // TRENCH RUN
-  private double preset_3_ticks = ticksFromAngle(60);
-  private double preset_4_ticks = ticksFromAngle(50);
-  private double preset_5_ticks = ticksFromAngle(85);
+  private double preset_3_ticks = ticksFromAngle(60); // DEEP SHOTS
+  private double preset_4_ticks = ticksFromAngle(45); // LOW GOAL
+  private double preset_5_ticks = ticksFromAngle(45); // PASSER
 
   private boolean upDpadPressed = false;
   private boolean downDpadPressed = false;
