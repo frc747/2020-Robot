@@ -10,6 +10,7 @@ package frc.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Motors;
 import frc.robot.Subsystems;
@@ -17,6 +18,9 @@ import frc.robot.input.Devices;
 
 public class IntakeCommand extends CommandBase {  
 
+  // if runMotionMagic == true
+  // when arm state = 0, the robot will try to drive the arms towards the ground position
+  // when arm state = 1, the robot will try to drive the arms towards the upright poistion
   public static int armState = 0;
 
   public IntakeCommand() {
@@ -25,27 +29,43 @@ public class IntakeCommand extends CommandBase {
   }
   private double tickGoal;
   
+  private final static double ON_TARGET_MINIMUM_SECONDS = 0.2;
   private final static double STOP_THRESHOLD_TICKS = 2500;
 
+
   private final static int TARGET_COUNT_ONE_SECOND = 50;
-  private final static double ON_TARGET_MINIMUM_COUNT = TARGET_COUNT_ONE_SECOND * .1;
+  private final static double ON_TARGET_MINIMUM_COUNT = TARGET_COUNT_ONE_SECOND * ON_TARGET_MINIMUM_SECONDS;
 
-  private double driveP = 0.01;
-  private double driveI = 0.0;
-  private double driveD = 0.000;
-  private double driveF = 0.0;
-
-  private double floorPosition = 0;
+  // will have to make floorPosition = -45000 and uprightPosition 0
   private double uprightPosition = 45000;
+  private double floorPosition = 0;
 
+
+  private double driveP;
+  private double driveI;
+  private double driveD;
+  private double driveF;
+
+  private double driveUpP = 0.01; //0.01;
+  private double driveUpI = 0.0;
+  private double driveUpD = 0.000;
+  private double driveUpF = 0.00;
+
+  private double driveDownP = 0.01;
+  private double driveDownI = 0.0;
+  private double driveDownD = 0.000;
+  private double driveDownF = 0.0;
+
+  // TODO: will have to swap armsAreUp and armsAreDown starting configuration
   private boolean runMotionMagic = false;
   private boolean armsAreUp = false;
-  private boolean armsAreDown = false;
+  private boolean armsAreDown = true;
+
   private boolean drivingUp = false;
   private boolean drivingDown = false;
 
 
-  private static final double ARM_MAX_VOLTAGE = 2.0;//6.0;
+  private static final double ARM_MAX_VOLTAGE = 6.0;//6.0;
   private static final double ARM_MIN_VOLTAGE = 0.0;
 
   private static final double ARM_MAX_PERCENT_VOLTAGE = ARM_MAX_VOLTAGE / 12;
@@ -76,17 +96,6 @@ public class IntakeCommand extends CommandBase {
     Motors.leftIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     Motors.rightIntakeArm.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
-    Motors.leftIntakeArm.config_kP(pidIdx, driveP, timeoutMs);
-    Motors.rightIntakeArm.config_kP(pidIdx, driveP, timeoutMs);
-    
-    Motors.leftIntakeArm.config_kI(pidIdx, driveI, timeoutMs);
-    Motors.rightIntakeArm.config_kI(pidIdx, driveI, timeoutMs);
-    
-    Motors.leftIntakeArm.config_kD(pidIdx, driveD, timeoutMs);
-    Motors.rightIntakeArm.config_kD(pidIdx, driveD, timeoutMs);
-    
-    Motors.leftIntakeArm.config_kF(pidIdx, driveF, timeoutMs);
-    Motors.rightIntakeArm.config_kF(pidIdx, driveF, timeoutMs);
 
     Motors.leftIntakeArm.configNominalOutputForward(+ARM_MIN_PERCENT_VOLTAGE, 0);
     Motors.leftIntakeArm.configNominalOutputReverse(-ARM_MIN_PERCENT_VOLTAGE, 0);
@@ -104,11 +113,10 @@ public class IntakeCommand extends CommandBase {
     Motors.leftIntakeArm.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
     Motors.rightIntakeArm.configAllowableClosedloopError(slotIdx, allowableCloseLoopError, timeoutMs);
 
-    Motors.leftIntakeArm.configMotionCruiseVelocity(1000, timeoutMs);
-    Motors.leftIntakeArm.configMotionAcceleration(500, timeoutMs);
-    Motors.rightIntakeArm.configMotionCruiseVelocity(1000, timeoutMs);
-    Motors.rightIntakeArm.configMotionAcceleration(500, timeoutMs);
-
+    Motors.leftIntakeArm.configMotionCruiseVelocity(0, timeoutMs); // was testing with 10000
+    Motors.leftIntakeArm.configMotionAcceleration(0, timeoutMs); // " " 500
+    Motors.rightIntakeArm.configMotionCruiseVelocity(0, timeoutMs); // " " 10000
+    Motors.rightIntakeArm.configMotionAcceleration(0, timeoutMs); // " " 500
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -127,22 +135,26 @@ public class IntakeCommand extends CommandBase {
       Subsystems.Intake.stopIntake();
     }
 
+
     if (armState % 2 == 1) {
       tickGoal = uprightPosition;
-      runMotionMagic = true;
-      drivingDown = false;
-      drivingUp = true;
+      // drivingDown = false;
+      // drivingUp = true;
+      driveP = driveUpP;
+      driveI = driveUpI;
+      driveD = driveUpD;
+      driveF = driveUpF;
     } else if (armState % 2 == 0) {
       tickGoal = floorPosition;
-      runMotionMagic = true;
-      drivingDown = true;
-      drivingUp = false;
-    } else {
-      tickGoal = Subsystems.Intake.getLeftPosition();
-      drivingDown = false;
-      drivingUp = false;
-      runMotionMagic = false;
+      // runMotionMagic = true;
+      // drivingDown = true;
+      // drivingUp = false;
+      driveP = driveDownP;
+      driveI = driveDownI;
+      driveD = driveDownD;
+      driveF = driveDownF;
     }
+
 
     if ((leftPosition > (tickGoal - STOP_THRESHOLD_TICKS) && leftPosition < (tickGoal + STOP_THRESHOLD_TICKS)) ||
       (rightPosition > (tickGoal - STOP_THRESHOLD_TICKS) && rightPosition < (tickGoal + STOP_THRESHOLD_TICKS))) {
@@ -151,16 +163,51 @@ public class IntakeCommand extends CommandBase {
       onTargetCount = 0;
     }
 
+    // the arms have reached the desired position +/- the given threshold for at least ON_TARGET_MINIMUM_SECONDS
     if (onTargetCount > ON_TARGET_MINIMUM_COUNT) {
-      drivingDown = false;
+      runMotionMagic = false;
       drivingUp = false;
+      drivingDown = false;
+      if (armState % 2 == 1) {
+        armsAreUp = true;
+        armsAreDown = false;
+      } else if (armState % 2 == 0) {
+        armsAreUp = false;
+        armsAreDown = true;
+      }
+    } else { // when the arms are not within the desired position +/- the given threshold
       runMotionMagic = true;
+      armsAreUp = false;
+      armsAreDown = false;
+      if (armState % 2 == 1) {
+        drivingUp = true;
+        drivingDown = false;
+      } else if (armState % 2 == 0) {
+        drivingUp = false;
+        drivingDown = true;
+      }
     }
 
+    Motors.leftIntakeArm.config_kP(pidIdx, driveP, timeoutMs);
+    Motors.rightIntakeArm.config_kP(pidIdx, driveP, timeoutMs);
+    
+    // Motors.leftIntakeArm.config_kI(pidIdx, driveI, timeoutMs);
+    // Motors.rightIntakeArm.config_kI(pidIdx, driveI, timeoutMs);
+    
+    // Motors.leftIntakeArm.config_kD(pidIdx, driveD, timeoutMs);
+    // Motors.rightIntakeArm.config_kD(pidIdx, driveD, timeoutMs);
+    
+    Motors.leftIntakeArm.config_kF(pidIdx, driveF, timeoutMs);
+    Motors.rightIntakeArm.config_kF(pidIdx, driveF, timeoutMs);
+
+    SmartDashboard.putNumber("Arm Tick Current Goal", tickGoal);
+
     if (runMotionMagic) {
+      SmartDashboard.putBoolean("Arm Motion Magic is Running", true);
       Motors.rightIntakeArm.set(ControlMode.MotionMagic, tickGoal);
       Motors.leftIntakeArm.set(ControlMode.MotionMagic, tickGoal);
     } else {
+      SmartDashboard.putBoolean("Arm Motion Magic is Running", false);
       Motors.rightIntakeArm.set(ControlMode.PercentOutput, 0.0);
       Motors.leftIntakeArm.set(ControlMode.PercentOutput, 0.0);
     }
