@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     manual = 0;
-    Motors.resetTalons();
+    Motors.resetControllers();
     Solenoids.initDefaultStates();
     Motors.indexer.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     Motors.indexer.setSelectedSensorPosition(0);

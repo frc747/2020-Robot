@@ -50,7 +50,7 @@ public class Motors {
     public static TalonFX rightDrivePrimary = new TalonFX(15); // front right
 
 
-    public static void resetTalons() {
+    public static void resetControllers() {
         leftDrivePrimary.configFactoryDefault();
         leftDriveBack.configFactoryDefault();
         //motorTwo.configFactoryDegfault();
