@@ -7,6 +7,9 @@
 
 package frc.robot.input;
 
+/**
+ * This class contains public definitions for all of your input devices
+ */
 public class Devices {
   public static LogitechJoystick leftStick = new LogitechJoystick(0);
   public static LogitechJoystick rightStick = new LogitechJoystick(1);

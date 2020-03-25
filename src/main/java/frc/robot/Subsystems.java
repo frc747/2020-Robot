@@ -24,7 +24,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TransferSubsystem;
 
 /**
- * Add your docs here.
+ * This class contains public definitions of all of your Subsystems
  */
 public class Subsystems {
 
@@ -37,6 +37,11 @@ public class Subsystems {
   public static final LimelightServoSubsystem LimelightServo = new LimelightServoSubsystem();
   public static final ClimbSubsystem Climb = new ClimbSubsystem();
   
+  
+  /**
+   * Sets the default commands for all of your defined subsystems.
+   * Must be called in robotInit() in Robot.java
+   */
   public static void setDefaultCommands() {
     Subsystems.Drive.setDefaultCommand(new TankDriveCommand());
     Subsystems.Shooter.setDefaultCommand(new RunShooter());

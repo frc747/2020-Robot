@@ -7,13 +7,14 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.Sensors;
 import frc.robot.Subsystems;
-import frc.robot.input.Devices;
 
+/**
+ * This command preps loads the shooter, but does
+ * not fire, during auto
+ */
 public class RunTransferPrepAuto extends CommandBase {
 
   public RunTransferPrepAuto() {

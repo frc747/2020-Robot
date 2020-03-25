@@ -5,6 +5,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Sensors;
 import frc.robot.Subsystems;
 
+/**
+ * This command allows for rotation to a specific heading read from
+ * the Pigeon. This specific implementation was written from scratch
+ */
 public class PIDDriveRotateCustom extends CommandBase {
 
   double p = 3, i = 0, dAcute = 2.67, dObtuse = 2.67, output;

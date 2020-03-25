@@ -11,6 +11,10 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/**
+ * This class allows for interaction with the Limelight
+ * via a NetworkTable
+ */
 public class LimelightInterface extends SubsystemBase {
 
   private static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");

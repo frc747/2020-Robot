@@ -9,6 +9,10 @@ import frc.robot.Motors;
 import frc.robot.OI;
 import frc.robot.Subsystems;
 
+/**
+ * This command allows for driving straight a certain number of inches
+ * (forwards or backwards)
+ */
 public class PIDDriveInches extends CommandBase {
     private double driveTicks;
     private double driveInches;

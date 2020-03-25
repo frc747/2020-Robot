@@ -9,11 +9,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Subsystems;
-import frc.robot.subsystems.HoodSubsystem;
 
+/**
+ * This command toggles the current position of the intake arms 
+ * (up or down)
+ */
 public class FlipIntakeArmsCommand extends CommandBase {
   /**
-   * Creates a new ReverseIntakeCommand.
+   * Creates a new FlipIntakeArmsCommand.
    */
   public FlipIntakeArmsCommand() {
     // Use addRequirements() here to declare subsystem dependencies.

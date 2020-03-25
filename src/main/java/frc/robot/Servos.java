@@ -10,7 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Servo;
 
 /**
- * Add your docs here.
+ * This class contains public definitions of all of your servos
  */
 public class Servos {
     public static Servo limelightServo = new Servo(9);

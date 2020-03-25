@@ -17,6 +17,10 @@ import frc.robot.Robot;
 import frc.robot.Sensors;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
+
+/**
+ * This PID command sets the aileron to a speciric angle in degrees
+ */
 public class HoodToAngle extends CommandBase {
 
   private double zeroDistance = 182;

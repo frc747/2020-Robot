@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Subsystems;
 
+/**
+ * Resets the aileron encoder to zero
+ */
 public class ResetHoodEncoder extends CommandBase {
 
   public ResetHoodEncoder() {

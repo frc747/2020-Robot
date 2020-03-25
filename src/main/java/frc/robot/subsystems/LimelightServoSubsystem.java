@@ -12,6 +12,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Sensors;
 import frc.robot.Servos;
 import java.lang.Math;
+
+/**
+ * This subsystem controls all functionality related to adjusting
+ * the Limelight's angle so it can always see the target
+ */
 public class LimelightServoSubsystem extends SubsystemBase {
 
   double max = .4;

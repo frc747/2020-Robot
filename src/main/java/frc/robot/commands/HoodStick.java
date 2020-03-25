@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
 
+/**
+ * This command controls the Aileron via thumbstick
+ */
 public class HoodStick extends CommandBase {
 
   double max = .1;

@@ -13,7 +13,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 /**
- * Add your docs here.
+ * This class contains public definitions of all of your Motors
  */
 public class Motors {
     

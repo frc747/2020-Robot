@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Subsystems;
 
+/**
+ * This command allows for toggling of the Limelight's current LED mode
+ */
 public class LimelightPreviewCommand extends CommandBase {
   public LimelightPreviewCommand() {
     // Use requires() here to declare subsystem dependencies

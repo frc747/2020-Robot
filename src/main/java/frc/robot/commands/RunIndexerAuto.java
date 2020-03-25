@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Subsystems;
-import frc.robot.input.Devices;
 
+/**
+ * This command controls the indexer bands during autonomous
+ */
 public class RunIndexerAuto extends CommandBase {
 
   public RunIndexerAuto() {

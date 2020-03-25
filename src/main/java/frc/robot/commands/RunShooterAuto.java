@@ -9,12 +9,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Motors;
-import frc.robot.Robot;
 import frc.robot.Subsystems;
-import frc.robot.input.Devices;
 
+/**
+ * This command revs the shooter flywheel during auto
+ */
 public class RunShooterAuto extends CommandBase {
 
   double calcRPM;

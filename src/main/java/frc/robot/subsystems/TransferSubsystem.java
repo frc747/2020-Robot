@@ -12,6 +12,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Motors;
 
+/**
+ * This subsystem controls all functionality related to the transfer
+ */
 public class TransferSubsystem extends SubsystemBase {
  
   public boolean targetRPM = false;

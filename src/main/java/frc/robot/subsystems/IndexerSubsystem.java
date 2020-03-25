@@ -13,6 +13,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import frc.robot.Motors;
 
+/**
+ * This subsystem controls all functionality related to the ball indexer
+ */
 public class IndexerSubsystem extends SubsystemBase {
   /**
    * Creates a new IntakeSubsystem.

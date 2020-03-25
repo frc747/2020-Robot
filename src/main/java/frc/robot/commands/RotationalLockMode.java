@@ -5,6 +5,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Sensors;
 import frc.robot.Subsystems;
 
+/**
+ * This command implements a function that locks the 
+ * drive train so that the robot cannot be pushed around
+ * on the floor
+ */
 public class RotationalLockMode extends CommandBase {
 
   double p = 1, i = 0, dAcute = .2, dObtuse = .2, output ;

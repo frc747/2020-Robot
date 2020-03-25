@@ -14,7 +14,7 @@ import frc.robot.interfaces.LimelightInterface;
 import frc.robot.interfaces.PigeonInterface;
 
 /**
- * Add your docs here.
+ * This class contains public definitions of all of your servos
  */
 public class Sensors {
   public static final IRBreakBeamInterface IRBreakBeam = new IRBreakBeamInterface(0);

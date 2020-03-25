@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
 
+/**
+ * This command controls the indexer bands
+ */
 public class RunIndexer extends CommandBase {
 
   public RunIndexer() {

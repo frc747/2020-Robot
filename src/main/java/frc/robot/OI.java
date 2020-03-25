@@ -11,6 +11,11 @@ import frc.robot.input.Devices;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.interfaces.LimelightInterface.camMode;
 import frc.robot.interfaces.LimelightInterface.ledMode;
+
+/**
+ * This class is mostly used for output to SmartDashboard, as well as
+ * assignment of commands to buttons
+ */
 public class OI {
 
   public static boolean shiftHigh = false;
@@ -40,13 +45,14 @@ public class OI {
     Devices.genesisController.BUTTON_Y.toggleWhenPressed(new PresetHood(4));
     Devices.genesisController.BUTTON_Z.toggleWhenPressed(new PresetHood(5));
 
-    //Sensors.LoadCell.begin(10,11);
-
     // Ignore this error, no known conflict
     new Notifier(() -> updateOI()).startPeriodic(.1);
   }
 
-  // Anything to be updated should be done in here
+  /**
+   * This function is updated every 1/10th of a second
+   * It is usually used for SmartDashboard printouts
+   */
   public void updateOI() {
     
     // Limelight Value SmartDashboard display
@@ -78,6 +84,11 @@ public class OI {
     Subsystems.LimelightServo.printOuts();
   }
 
+
+  /**
+   * This function checks if important robot sensors are functioning and prints the 
+   * results to SmartDashboard
+   */
   public static void checkSystems() {
     functioningLidar = Sensors.LIDAR.checkLidar();
     functioningLimelight = Sensors.Limelight.checkLimelight();

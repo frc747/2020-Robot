@@ -17,6 +17,9 @@ import frc.robot.Motors;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
 
+/**
+ * This subsystem controls all functionality related to the ball intake
+ */
 public class IntakeSubsystem extends SubsystemBase {
  
   double MIN_PERCENT_VOLTAGE = 0.0;

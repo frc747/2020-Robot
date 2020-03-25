@@ -6,6 +6,9 @@ import frc.robot.Motors;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
 
+/**
+ * This command controls our drivetrain in a tank drive setup
+ */
 public class TankDriveCommand extends CommandBase {
 
   int timeoutMs = 10;

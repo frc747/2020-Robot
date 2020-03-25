@@ -7,6 +7,11 @@ import frc.robot.Sensors;
 import frc.robot.Subsystems;
 import frc.robot.interfaces.LimelightInterface.camMode;
 
+/**
+ * This command pivots the Limelight to see the target, 
+ * and rotates the drivetrain using the Limelight in 
+ * order to be centered on the goal.
+ */
 public class RotateVision extends CommandBase {
   
   double modifier = .5;

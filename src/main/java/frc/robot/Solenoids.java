@@ -10,10 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Solenoid;
 
 /**
- * Add your docs here.
+ * This class contains public definitions of all of your Solenoids
  */
 public class Solenoids {
-
 
     // public static Solenoid shifter = new Solenoid(0);
 
@@ -21,6 +20,10 @@ public class Solenoids {
 
     // public static Solenoid climbBrake = new Solenoid(2);
 
+    /**
+     * Sets the default states of all of your solenoids
+     * Must be called in robotInit() in Robot.java
+     */
     public static void initDefaultStates() {
         // //TODO: Figure out states 
         // shifter.set(false);

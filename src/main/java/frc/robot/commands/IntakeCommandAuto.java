@@ -16,6 +16,9 @@ import frc.robot.Motors;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
 
+/**
+ * This command controls the intake rollers during autonomous
+ */
 public class IntakeCommandAuto extends CommandBase {  
 
   public static int armState = 0;

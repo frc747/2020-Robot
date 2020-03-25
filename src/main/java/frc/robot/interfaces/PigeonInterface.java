@@ -12,6 +12,10 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/**
+ * This class allow for interaction with the Pigeon over either
+ * CAN or connection to a Talon via encoder cable
+ */
 public class PigeonInterface extends SubsystemBase {
 
   public static PigeonIMU PigeonRaw;

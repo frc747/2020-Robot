@@ -16,6 +16,9 @@ import frc.robot.Motors;
 import frc.robot.Subsystems;
 import frc.robot.input.Devices;
 
+/**
+ * This command controls the intake rollers
+ */
 public class IntakeCommand extends CommandBase {  
 
   // if runMotionMagic == true

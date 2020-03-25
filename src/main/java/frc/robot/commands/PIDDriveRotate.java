@@ -12,6 +12,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpiutil.math.MathUtil;
 
+/**
+ * This command allows for rotation to a specific heading read from
+ * the Pigeon. This specific implementation uses the PIDCommand class
+ */
 public class PIDDriveRotate extends PIDCommand {
 
     private double angleToRotate;

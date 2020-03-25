@@ -14,6 +14,9 @@ import frc.robot.Motors;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
+/**
+ * This class controls all functionality related to the aileron 
+ */
 public class HoodSubsystem extends SubsystemBase {
 
   public boolean hoodUp = false;

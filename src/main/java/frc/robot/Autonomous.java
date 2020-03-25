@@ -1,12 +1,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.*;
-import frc.robot.autonomous.IntakeAuto;
 import frc.robot.autonomous.TestAuto;
 import frc.robot.autonomous.TrenchAuto;
 
-// /import frc.robot.autonomous.*;
-
+/**
+ * This class is for creation  of the autonomous selector in
+ * SmartDashboard, as well as the assignment of what commands
+ * the various selections actually run
+ */
 public class Autonomous{
     
     public enum AutoMode{
@@ -15,23 +17,31 @@ public class Autonomous{
         TEST_AUTO;
     }
     
-    private SendableChooser<AutoMode> autoChooser1;
+    private SendableChooser<AutoMode> autoChooser;
     
+    /**
+     * Constructor creates autonomous chooser and adds options chosen from 
+     * AutoMode enumerator
+     */
     public Autonomous(){
-        autoChooser1 = new SendableChooser<AutoMode>();
+        autoChooser = new SendableChooser<AutoMode>();
         
-        autoChooser1.addOption("Example Auto", AutoMode.AUTOMODE_EXAMPLE);
-        autoChooser1.setDefaultOption("Trench Auto", AutoMode.TRENCH_AUTO);
-        autoChooser1.addOption("Test Auto", AutoMode.TEST_AUTO);
-        SmartDashboard.putData("Auto mode", autoChooser1);
+        autoChooser.addOption("Example Auto", AutoMode.AUTOMODE_EXAMPLE);
+        autoChooser.setDefaultOption("Trench Auto", AutoMode.TRENCH_AUTO);
+        autoChooser.addOption("Test Auto", AutoMode.TEST_AUTO);
+        SmartDashboard.putData("Auto mode", autoChooser);
     }
     
+    /**
+     * This function schedules an autonomous command/command group
+     * based on the currently chosen autonomous routine
+     */
     public void startMode(){
         
     	System.out.println("In Auto.StartMode");
     	
     	
-        AutoMode selectedAutoMode = (AutoMode)(autoChooser1.getSelected());
+        AutoMode selectedAutoMode = (AutoMode)(autoChooser.getSelected());
                     
         switch (selectedAutoMode){
             case AUTOMODE_EXAMPLE:

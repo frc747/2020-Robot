@@ -16,7 +16,10 @@ import frc.robot.Motors;
 import frc.robot.Robot;
 import frc.robot.Sensors;
 import frc.robot.Subsystems;
-import frc.robot.input.Devices;
+
+/**
+ * This command sets the aileron to a specific angle in degrees during auto
+ */
 public class HoodToAngleAuto extends CommandBase {
 
   private double zeroDistance = 182;

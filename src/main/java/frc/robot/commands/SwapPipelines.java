@@ -4,6 +4,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Sensors;
 
+/**
+ * This command toggles the current Limelight pipeline
+ * between Driver Cam and Threshold modes
+ */
 public class SwapPipelines extends CommandBase {
 
   public SwapPipelines() {

@@ -10,6 +10,10 @@ package frc.robot.input;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
+/**
+ * This class implements all of the functionality of the Sega Genesis
+ * USB Controller. 
+ */
 public class GenesisController {
 
   private Joystick genesisController;

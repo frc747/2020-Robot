@@ -7,6 +7,10 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/**
+ * This subsystem controls all functionality related to the
+ * drive train.
+ */
 public class DriveSubsystem extends SubsystemBase {
 
     private static final int pidIdx = 0;

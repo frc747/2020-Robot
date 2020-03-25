@@ -19,6 +19,10 @@ import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.PathfinderFRC;
 import jaci.pathfinder.followers.EncoderFollower;
 
+/**
+ * This command implements trajectory following via pathfinder
+ * DOES NOT WORK - DEPRECATED
+ */
 public class FollowPath extends CommandBase {
 
   String pathName;

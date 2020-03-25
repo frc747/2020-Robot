@@ -10,6 +10,10 @@ package frc.robot.interfaces;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/**
+ * This Interface allows for interaction with the Adafruit IR break 
+ * beam through a DIO port
+ */
 public class IRBreakBeamInterface extends SubsystemBase {
 
   public static DigitalInput IRBreakBeamRaw;

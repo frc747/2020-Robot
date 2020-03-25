@@ -10,7 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
- * Add your docs here.
+ * This class contains public definitions of all of your Limit Switches
  */
 public class LimitSwitches {
     DigitalInput frontArmLeft = new DigitalInput(0);

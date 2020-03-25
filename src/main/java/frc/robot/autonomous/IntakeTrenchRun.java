@@ -7,7 +7,6 @@
 
 package frc.robot.autonomous;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import frc.robot.commands.IntakeCommandAuto;
 import frc.robot.commands.PIDDriveInches;

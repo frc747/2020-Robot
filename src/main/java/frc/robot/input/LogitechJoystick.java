@@ -9,6 +9,10 @@ package frc.robot.input;
 
 import edu.wpi.first.wpilibj.Joystick;
 
+/**
+ * This class implements all of the functionality of the Logitech Extreme
+ * 3D Pro Joystick
+ */
 public class LogitechJoystick {
 
   private Joystick logitechJoystick;

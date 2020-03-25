@@ -7,15 +7,8 @@
 
 package frc.robot.autonomous;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.HoodToAngleAuto;
-import frc.robot.commands.IntakeCommandAuto;
-import frc.robot.commands.PIDDriveInches;
 import frc.robot.commands.PIDDriveRotateCustom;
-import frc.robot.commands.RotateVisionAuto;
-import frc.robot.commands.RunShooterAuto;
-import frc.robot.commands.RunTransferAuto;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:

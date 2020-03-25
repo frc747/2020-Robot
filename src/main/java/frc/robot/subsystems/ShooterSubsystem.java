@@ -17,6 +17,10 @@ import frc.robot.Robot;
 import frc.robot.Sensors;
 import frc.robot.Subsystems;
 import frc.robot.interfaces.LIDARInterface;
+
+/**
+ * This subsystem controls all functionality related to the shooter
+ */
 public class ShooterSubsystem extends SubsystemBase {
 
   private double preset_1_rpm = 6000; // CLOSE SHOTS
